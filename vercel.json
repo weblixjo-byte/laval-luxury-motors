@@ -1,3 +1,4 @@
 {
+  "comment": "Force redeploy for routing",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
