@@ -7,14 +7,14 @@ const PopularMakes = () => {
   const [brands, setBrands] = useState([]);
 
   const staticFallbackBrands = [
-    { name: 'Bugatti', logo: 'https://logo.clearbit.com/bugatti.com' },
-    { name: 'Ferrari', logo: 'https://logo.clearbit.com/ferrari.com' },
-    { name: 'Lamborghini', logo: 'https://logo.clearbit.com/lamborghini.com' },
-    { name: 'Porsche', logo: 'https://logo.clearbit.com/porsche.com' },
-    { name: 'Koenigsegg', logo: 'https://logo.clearbit.com/koenigsegg.com' },
-    { name: 'McLaren', logo: 'https://logo.clearbit.com/mclaren.com' },
-    { name: 'Rolls Royce', logo: 'https://logo.clearbit.com/rolls-roycemotorcars.com' },
-    { name: 'Aston Martin', logo: 'https://logo.clearbit.com/astonmartin.com' }
+    { name: 'Bugatti', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/bugatti.png' },
+    { name: 'Ferrari', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/ferrari.png' },
+    { name: 'Lamborghini', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/lamborghini.png' },
+    { name: 'Porsche', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/porsche.png' },
+    { name: 'Koenigsegg', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/koenigsegg.png' },
+    { name: 'McLaren', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/mclaren.png' },
+    { name: 'Rolls Royce', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/rolls_royce.png' },
+    { name: 'Aston Martin', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/aston_martin.png' }
   ];
 
   useEffect(() => {
