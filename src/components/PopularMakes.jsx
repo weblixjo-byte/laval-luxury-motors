@@ -17,7 +17,7 @@ const PopularMakes = () => {
     { name: 'Aston Martin', logo: 'https://cdn.simpleicons.org/astonmartin' },
     { name: 'Bentley', logo: 'https://cdn.simpleicons.org/bentley' },
     { name: 'Maserati', logo: 'https://cdn.simpleicons.org/maserati' },
-    { name: 'Mercedes Benz', logo: 'https://car-logos.org/wp-content/uploads/2024/03/channels4_profile-14.jpg' },
+    { name: 'Mercedes Benz', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1280px-Mercedes-Logo.svg.png' },
     { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/pagani.png' },
     { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/maybach.png' },
     { name: 'Brabus', logo: 'https://logo.clearbit.com/brabus.com' }
@@ -58,11 +58,11 @@ const PopularMakes = () => {
             <h2 className="text-[10px] uppercase tracking-[0.4em] text-gray-400 mb-4 font-bold">Discover Excellence</h2>
             <h3 className="text-4xl font-serif">Popular Makes</h3>
           </div>
-          <Link 
-            to="/inventory" 
+          <Link
+            to="/inventory"
             className="text-xs uppercase tracking-widest text-gray-500 hover:text-black transition-colors flex items-center group"
           >
-            view all 
+            view all
             <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
@@ -86,8 +86,8 @@ const PopularMakes = () => {
               </div>
 
               {/* Logo Image */}
-              <img 
-                src={brand.logo} 
+              <img
+                src={brand.logo}
                 alt={brand.name}
                 className="w-full h-auto max-w-[80px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
               />
