@@ -17,10 +17,10 @@ const PopularMakes = () => {
     { name: 'Aston Martin', logo: 'https://cdn.simpleicons.org/astonmartin' },
     { name: 'Bentley', logo: 'https://cdn.simpleicons.org/bentley' },
     { name: 'Maserati', logo: 'https://cdn.simpleicons.org/maserati' },
-    { name: 'Mercedes Benz', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/mercedes_benz.png' },
-    { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/pagani.png' },
-    { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/maybach.png' },
-    { name: 'Brabus', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/brabus.png' }
+    { name: 'Mercedes Benz', logo: 'https://car-logos.org/wp-content/uploads/2024/03/channels4_profile-14.jpg' },
+    { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/pagani.png' },
+    { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/maybach.png' },
+    { name: 'Brabus', logo: 'https://logo.clearbit.com/brabus.com' }
   ];
 
   useEffect(() => {
