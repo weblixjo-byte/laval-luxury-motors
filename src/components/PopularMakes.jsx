@@ -1,24 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { client, urlFor } from '../client';
 
 const PopularMakes = () => {
-  const brands = [
+  const [brands, setBrands] = useState([]);
+
+  const staticFallbackBrands = [
     { name: 'Bugatti', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/bugatti.png' },
     { name: 'Ferrari', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/ferrari.png' },
     { name: 'Lamborghini', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/lamborghini.png' },
     { name: 'Porsche', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/porsche.png' },
     { name: 'Koenigsegg', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/koenigsegg.png' },
     { name: 'McLaren', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/mclaren.png' },
-    { name: 'Rolls Royce', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/rolls_royce.png' },
-    { name: 'Bentley', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/bentley.png' },
-    { name: 'Aston Martin', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/aston_martin.png' },
-    { name: 'Maserati', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/maserati.png' },
-    { name: 'Mercedes Benz', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/mercedes_benz.png' },
-    { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/pagani.png' },
-    { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/maybach.png' },
-    { name: 'Brabus', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/brabus.png' }
+    { name: 'Rolls Royce', logo: 'https://www.car-logos.org/wp-content/uploads/2011/09/rolls_royce.png' }
   ];
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const query = `*[_type == "brand"] {
+          name,
+          "logo": logo
+        }`;
+        const data = await client.fetch(query);
+        if (data && data.length > 0) {
+          // Map Sanity dynamic images
+          const formattedBrands = data.map(b => ({
+            name: b.name,
+            logo: b.logo ? urlFor(b.logo).url() : null
+          }));
+          setBrands(formattedBrands);
+        } else {
+          setBrands(staticFallbackBrands);
+        }
+      } catch (err) {
+        console.error("Sanity brands fetch error:", err);
+        setBrands(staticFallbackBrands);
+      }
+    };
+
+    fetchBrands();
+  }, []);
 
   return (
     <section className="py-24 bg-white">
