@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Prata&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-luxury-black: #151515;
+  --color-luxury-grey: #F5F5F5;
+  --color-luxury-accent: #C5A059; /* Subtle gold accent */
+  
+  --font-serif: "Prata", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #151515;
+  --text-secondary: #666666;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.luxury-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 768px) {
+  .luxury-container {
+    padding: 0 1rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #151515;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
