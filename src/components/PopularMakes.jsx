@@ -7,7 +7,6 @@ const PopularMakes = () => {
   const [brands, setBrands] = useState([]);
 
   const staticFallbackBrands = [
-  const staticFallbackBrands = [
     { name: 'Bugatti', logo: 'https://logo.clearbit.com/bugatti.com' },
     { name: 'Ferrari', logo: 'https://logo.clearbit.com/ferrari.com' },
     { name: 'Lamborghini', logo: 'https://logo.clearbit.com/lamborghini.com' },
