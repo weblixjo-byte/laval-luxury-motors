@@ -7,14 +7,15 @@ const PopularMakes = () => {
   const [brands, setBrands] = useState([]);
 
   const staticFallbackBrands = [
-    { name: 'Bugatti', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Bugatti_logo.svg/2560px-Bugatti_logo.svg.png' },
-    { name: 'Ferrari', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/1024px-Ferrari-Logo.svg.png' },
-    { name: 'Lamborghini', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/1024px-Lamborghini_Logo.svg.png' },
-    { name: 'Porsche', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Porsche_logo.svg/1024px-Porsche_logo.svg.png' },
-    { name: 'Koenigsegg', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ef/Koenigsegg_logo.svg/1200px-Koenigsegg_logo.svg.png' },
-    { name: 'McLaren', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/McLaren_Logo.svg/2560px-McLaren_Logo.svg.png' },
-    { name: 'Rolls Royce', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/11/Rolls-Royce_Motor_Cars_logo.svg/1200px-Rolls-Royce_Motor_Cars_logo.svg.png' },
-    { name: 'Aston Martin', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/b/bd/Aston_Martin_logo.svg/1200px-Aston_Martin_logo.svg.png' }
+  const staticFallbackBrands = [
+    { name: 'Bugatti', logo: 'https://logo.clearbit.com/bugatti.com' },
+    { name: 'Ferrari', logo: 'https://logo.clearbit.com/ferrari.com' },
+    { name: 'Lamborghini', logo: 'https://logo.clearbit.com/lamborghini.com' },
+    { name: 'Porsche', logo: 'https://logo.clearbit.com/porsche.com' },
+    { name: 'Koenigsegg', logo: 'https://logo.clearbit.com/koenigsegg.com' },
+    { name: 'McLaren', logo: 'https://logo.clearbit.com/mclaren.com' },
+    { name: 'Rolls Royce', logo: 'https://logo.clearbit.com/rolls-roycemotorcars.com' },
+    { name: 'Aston Martin', logo: 'https://logo.clearbit.com/astonmartin.com' }
   ];
 
   useEffect(() => {
