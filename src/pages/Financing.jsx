@@ -1,31 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { motion } from 'framer-motion';
 
 const Financing = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative h-[60vh] w-full overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src="/images/financing-hero.png" 
-            alt="Financing Hero" 
+          <img
+            src="/images/financing-hero.png"
+            alt="Luxury Financing"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
         </div>
-        
-        <div className="relative z-10 text-center text-white px-4">
-          <motion.h1 
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl mb-6 font-serif"
-          >
-            Bespoke <br /><span className="italic text-luxury-accent">Financing</span>
-          </motion.h1>
-          <p className="text-lg md:text-xl font-light tracking-[0.2em] uppercase">
-            Tailored Capital Solutions for Extraordinary Assets
+
+        <div className="relative h-full luxury-container flex flex-col justify-center items-center text-center text-white">
+          <h1 className="text-5xl md:text-7xl mb-6 font-serif">Tailored Financing</h1>
+          <p className="text-sm md:text-base uppercase tracking-[0.4em] font-bold opacity-80 max-w-2xl">
+            Bespoke financial solutions for the worlds most discerning collectors.
           </p>
         </div>
       </section>
@@ -38,74 +32,63 @@ const Financing = () => {
           <p className="text-lg text-gray-600 mb-12 leading-relaxed font-light">
             Acquiring a masterpiece requires more than just capital; it requires a partner who understands the unique value of high-end automotive assets. At Laval, we offer private financing structures designed to align with your personal wealth strategy.
           </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
-            <div className="space-y-4">
-              <div className="w-10 h-10 bg-luxury-accent/10 flex items-center justify-center text-luxury-accent font-serif text-xl">1</div>
-              <h3 className="text-lg font-serif">Competitive Rates</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">Securing the most favorable terms through our network of elite global banking partners.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-gray-100">
+            <div>
+              <h4 className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Interest Rates</h4>
+              <p className="text-xl font-serif">Competitive</p>
             </div>
-            <div className="space-y-4">
-              <div className="w-10 h-10 bg-luxury-accent/10 flex items-center justify-center text-luxury-accent font-serif text-xl">2</div>
-              <h3 className="text-lg font-serif">Confidential Process</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">Discretion is our hallmark. Every inquiry is handled with the utmost privacy and professional care.</p>
+            <div>
+              <h4 className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Terms</h4>
+              <p className="text-xl font-serif">Flexible</p>
             </div>
-            <div className="space-y-4">
-              <div className="w-10 h-10 bg-luxury-accent/10 flex items-center justify-center text-luxury-accent font-serif text-xl">3</div>
-              <h3 className="text-lg font-serif">Rapid Approval</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">Our streamlined valuation and credit process ensures you never miss a rare acquisition opportunity.</p>
+            <div>
+              <h4 className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Approval</h4>
+              <p className="text-xl font-serif">Expedited</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Inquiry Form Section */}
-      <section className="py-24 bg-luxury-grey">
+      {/* Services Grid */}
+      <section className="py-24 bg-gray-50">
         <div className="luxury-container">
-          <div className="bg-white p-8 md:p-16 shadow-2xl max-w-5xl mx-auto border-t-4 border-luxury-accent">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <div>
-                <h2 className="text-3xl font-serif mb-6">Financing Application</h2>
-                <p className="text-gray-600 mb-8 font-light">
-                  Complete this brief form to start a private consultation with our financing specialists. We will provide a tailored proposal within 24 hours.
-                </p>
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="w-2 h-2 rounded-full bg-luxury-accent"></span>
-                    Flexible payment structures
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="w-2 h-2 rounded-full bg-luxury-accent"></span>
-                    Asset-backed lending options
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="w-2 h-2 rounded-full bg-luxury-accent"></span>
-                    Equity release from current collections
-                  </div>
-                </div>
-              </div>
-              
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 font-bold">Estimated Loan Amount</label>
-                  <select className="w-full bg-gray-50 border border-gray-100 p-4 outline-none focus:border-luxury-accent transition-all appearance-none text-sm">
-                    <option>$100,000 - $500,000</option>
-                    <option>$500,000 - $1,000,000</option>
-                    <option>$1,000,000 - $5,000,000</option>
-                    <option>$5,000,000+</option>
-                  </select>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input type="text" placeholder="Full Name" className="w-full bg-gray-50 border border-gray-100 p-4 text-sm outline-none focus:border-luxury-accent" />
-                  <input type="email" placeholder="Email Address" className="w-full bg-gray-50 border border-gray-100 p-4 text-sm outline-none focus:border-luxury-accent" />
-                </div>
-                <textarea placeholder="Tell us about the vehicle you wish to finance" className="w-full bg-gray-50 border border-gray-100 p-4 text-sm h-32 outline-none focus:border-luxury-accent resize-none"></textarea>
-                <button className="w-full bg-luxury-black text-white py-5 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500">
-                  Request Proposal
-                </button>
-              </form>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div className="bg-white p-12 border border-gray-100 shadow-sm">
+              <h3 className="text-2xl font-serif mb-6">Asset-Backed Lending</h3>
+              <p className="text-gray-500 mb-8 leading-relaxed">
+                Unlock capital from your existing collection with our specialized asset-backed lending programs. We provide liquidity against individual vehicles or entire portfolios.
+              </p>
+              <ul className="space-y-4 text-sm text-gray-600 italic">
+                <li>• Confidential valuation services</li>
+                <li>• Non-recourse options available</li>
+                <li>• Portfolios of 5+ cars welcome</li>
+              </ul>
+            </div>
+            <div className="bg-white p-12 border border-gray-100 shadow-sm">
+              <h3 className="text-2xl font-serif mb-6">Acquisition Financing</h3>
+              <p className="text-gray-500 mb-8 leading-relaxed">
+                Our acquisition programs are tailored for the purchase of rare hypercars, classic masterpieces, and modern icons. We facilitate transactions globally.
+              </p>
+              <ul className="space-y-4 text-sm text-gray-600 italic">
+                <li>• Cross-border transaction support</li>
+                <li>• Custom amortization schedules</li>
+                <li>• Balloon payment structures</li>
+              </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Inquiry CTA */}
+      <section className="py-32 bg-white text-center">
+        <div className="luxury-container max-w-2xl">
+          <h2 className="text-4xl font-serif mb-8">Ready to Discuss?</h2>
+          <p className="text-gray-500 mb-12">
+            Contact our private finance desk for a confidential consultation regarding your next acquisition.
+          </p>
+          <button className="px-16 py-5 bg-[#151515] text-white text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-black transition-all shadow-xl">
+            Request Private Consultation
+          </button>
         </div>
       </section>
     </div>

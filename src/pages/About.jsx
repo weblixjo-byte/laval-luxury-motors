@@ -1,18 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 
 const About = () => {
   // Safe item variants that don't start at opacity 0 if possible, 
   // but for Framer Motion to work they usually need to.
   // I will use a shorter duration and ensure they are visible.
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
+  // itemVariants removed as it was unused
 
   return (
     <div className="min-h-screen bg-white">

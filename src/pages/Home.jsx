@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -85,6 +86,7 @@ const Home = ({ onInquire }) => {
     };
 
     fetchFeatured();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

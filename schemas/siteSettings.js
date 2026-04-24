@@ -16,6 +16,8 @@ export default {
       of: [
         {
           type: 'object',
+          name: 'navbarLink',
+          title: 'Navbar Link',
           fields: [
             { name: 'title', title: 'Link Title', type: 'string' },
             { name: 'path', title: 'Path (e.g. /inventory?brand=Ferrari or /about)', type: 'string' }

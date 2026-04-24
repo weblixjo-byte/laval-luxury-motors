@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -45,7 +46,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
       } else {
         setError("Something went wrong. Please try again or contact us directly.");
       }
-    } catch (err) {
+    } catch (_err) {
       setError("Network error. Please check your connection.");
     } finally {
       setIsSubmitting(false);

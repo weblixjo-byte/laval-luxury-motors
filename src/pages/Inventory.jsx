@@ -75,6 +75,7 @@ const Inventory = ({ onInquire }) => {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredCars = filter === 'All' 

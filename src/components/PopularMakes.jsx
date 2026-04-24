@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
 import { client, urlFor } from '../client';
 
@@ -61,6 +61,7 @@ const PopularMakes = () => {
     };
 
     fetchBrands();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

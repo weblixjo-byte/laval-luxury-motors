@@ -8,7 +8,7 @@ import siteSettings from './schemas/siteSettings';
 
 export default defineConfig({
   name: 'default',
-  title: 'Laval Luxury Motors | Admin Dashboard',
+  title: 'Laval Luxury Motors | Admin',
 
   projectId: 'nyiie8qw', 
   dataset: 'production',
@@ -16,26 +16,7 @@ export default defineConfig({
   basePath: '/studio',
 
   plugins: [
-    structureTool({
-      structure: (S) =>
-        S.list()
-          .title('Website Content')
-          .items([
-            // Singleton for Site Settings
-            S.listItem()
-              .title('Site Settings')
-              .id('siteSettings')
-              .child(
-                S.document()
-                  .schemaType('siteSettings')
-                  .documentId('siteSettings')
-              ),
-            S.divider(),
-            ...S.documentTypeListItems().filter(
-              (listItem) => !['siteSettings'].includes(listItem.getId())
-            ),
-          ]),
-    }),
+    structureTool(),
     visionTool(),
   ],
 
