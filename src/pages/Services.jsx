@@ -1,22 +1,36 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client, urlFor } from '../client';
 
 const Services = () => {
-  const serviceCategories = [
-    {
-      title: "Mechanical Mastery",
-      description: "Our certified master technicians specialize in the preservation and performance of high-performance powerplants, from V12 masterpieces to modern hybrid systems.",
-      features: ["Precision Tuning", "Engine Overhaul", "Performance Upgrades", "Scheduled Maintenance"],
-      image: "/images/service-mechanic.png"
-    },
-    {
-      title: "The Atelier (Detailing)",
-      description: "A sanctuary for automotive aesthetics. We provide surgical-level detailing and protection services to ensure your vehicle remains in concours condition.",
-      features: ["Paint Protection Film", "Ceramic Coating", "Paint Correction", "Interior Restoration"],
-      image: "/images/service-tuning.png"
-    }
-  ];
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const query = `*[_type == "pageServices"][0] {
+          title,
+          subtitle,
+          "heroImage": heroImage.asset->url,
+          introQuote,
+          services[] {
+            title,
+            description,
+            "image": image.asset->url,
+            features
+          }
+        }`;
+        const data = await client.fetch(query);
+        if (data) setContent(data);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  if (!content) return <div className="pt-40 text-center serif italic">Loading...</div>;
 
   return (
     <div className="flex flex-col">
@@ -24,7 +38,7 @@ const Services = () => {
       <section className="relative h-[65vh] w-full overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/images/services-hero.png"
+            src={content.heroImage || "/images/services-hero.png"}
             alt="The Laval Atelier"
             className="w-full h-full object-cover"
           />
@@ -33,9 +47,9 @@ const Services = () => {
 
         <div className="relative h-full luxury-container flex flex-col justify-center items-start text-left text-white">
           <h2 className="text-[10px] uppercase tracking-[0.5em] mb-4 opacity-70">The Atelier</h2>
-          <h1 className="text-5xl md:text-8xl mb-8 font-serif leading-tight">Mastery & <br />Preservation.</h1>
+          <h1 className="text-5xl md:text-8xl mb-8 font-serif leading-tight">{content.title}</h1>
           <p className="text-sm md:text-base uppercase tracking-[0.3em] font-bold opacity-80 max-w-2xl">
-            Beyond the showroom, we offer world-class maintenance and aesthetic refinement for the worlds most exquisite automobiles.
+            {content.subtitle || 'Beyond the showroom, we offer world-class maintenance and aesthetic refinement.'}
           </p>
         </div>
       </section>
@@ -44,7 +58,7 @@ const Services = () => {
       <section className="py-24 bg-white">
         <div className="luxury-container max-w-4xl text-center">
           <h3 className="text-3xl font-serif mb-8 leading-relaxed">
-            "We do not merely service cars; we curate their longevity and enhance their legacy."
+            {content.introQuote || '"We do not merely service cars; we curate their longevity and enhance their legacy."'}
           </h3>
           <div className="w-24 h-px bg-luxury-accent mx-auto"></div>
         </div>
@@ -53,12 +67,12 @@ const Services = () => {
       {/* Detailed Services */}
       <section className="pb-32">
         <div className="luxury-container space-y-32">
-          {serviceCategories.map((service, idx) => (
+          {(content.services || []).map((service, idx) => (
             <div key={idx} className={`flex flex-col ${idx % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-16 md:gap-24`}>
               {/* Image */}
               <div className="w-full md:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-gray-100">
                 <img
-                  src={service.image}
+                  src={service.image || "/images/service-mechanic.png"}
                   alt={service.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -71,7 +85,7 @@ const Services = () => {
                   {service.description}
                 </p>
                 <div className="grid grid-cols-2 gap-y-4 pt-4">
-                  {service.features.map(feature => (
+                  {(service.features || []).map(feature => (
                     <div key={feature} className="flex items-center space-x-3">
                       <div className="w-1.5 h-1.5 bg-luxury-accent rounded-full"></div>
                       <span className="text-[10px] uppercase tracking-widest font-bold text-gray-500">{feature}</span>

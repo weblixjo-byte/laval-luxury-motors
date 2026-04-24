@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { client } from '../client';
 
 const Footer = () => {
+  const [footerText, setFooterText] = useState('© 2026 LAVAL LUXURY MOTORS');
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await client.fetch(`*[_type == "siteSettings"][0]{footerText}`);
+        if (data && data.footerText) setFooterText(data.footerText);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   return (
     <footer className="bg-luxury-black text-white pt-24 pb-12">
       <div className="luxury-container">
@@ -9,7 +24,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link to="/" className="text-2xl tracking-[0.2em] font-serif mb-6 block">LAVAL</Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              The world's ultimate luxury car marketplace. Exceptional vehicles for the global connoisseur.
+              The worlds ultimate luxury car marketplace. Exceptional vehicles for the global connoisseur.
             </p>
           </div>
           
@@ -50,7 +65,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-gray-500">
           <div className="flex space-x-8 mb-4 md:mb-0">
-            <span>© 2026 LAVAL LUXURY MOTORS</span>
+            <span>{footerText}</span>
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
           </div>

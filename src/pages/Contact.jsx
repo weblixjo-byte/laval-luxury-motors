@@ -1,8 +1,27 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client } from '../client';
 
 const Contact = () => {
+  const [contactInfo, setContactInfo] = useState({
+    email: 'concierge@lavalmotors.com',
+    phone: '+41 22 123 4567',
+    address: '123 Luxury Boulevard\nGeneva, Switzerland\n1201'
+  });
+
+  useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        const data = await client.fetch(`*[_type == "siteSettings"][0]{contactInfo}`);
+        if (data && data.contactInfo) setContactInfo(data.contactInfo);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchInfo();
+  }, []);
+
   return (
     <div className="pt-32 pb-24 bg-white">
       <div className="luxury-container">
@@ -39,10 +58,8 @@ const Contact = () => {
             <div className="space-y-12">
               <div>
                 <h3 className="text-xl font-serif mb-6">Showroom Location</h3>
-                <p className="text-gray-600 leading-relaxed text-sm">
-                  123 Luxury Boulevard<br />
-                  Geneva, Switzerland<br />
-                  1201
+                <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-line">
+                  {contactInfo.address}
                 </p>
               </div>
               <div>
@@ -50,11 +67,11 @@ const Contact = () => {
                 <div className="space-y-4 text-sm">
                   <p className="flex justify-between">
                     <span className="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Email</span>
-                    <span className="text-black">concierge@lavalmotors.com</span>
+                    <span className="text-black">{contactInfo.email}</span>
                   </p>
                   <p className="flex justify-between">
                     <span className="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Phone</span>
-                    <span className="text-black">+41 22 123 4567</span>
+                    <span className="text-black">{contactInfo.phone}</span>
                   </p>
                 </div>
               </div>

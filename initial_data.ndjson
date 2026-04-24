@@ -1,0 +1,17 @@
+{"_type": "category", "_id": "cat-hypercar", "title": "Hypercar"}
+{"_type": "category", "_id": "cat-supercar", "title": "Supercar"}
+{"_type": "category", "_id": "cat-classic", "title": "Classic"}
+{"_type": "category", "_id": "cat-luxury", "title": "Luxury"}
+{"_type": "category", "_id": "cat-suv", "title": "SUV"}
+{"_type": "brand", "_id": "brand-ferrari", "name": "Ferrari"}
+{"_type": "brand", "_id": "brand-lamborghini", "name": "Lamborghini"}
+{"_type": "brand", "_id": "brand-porsche", "name": "Porsche"}
+{"_type": "brand", "_id": "brand-bugatti", "name": "Bugatti"}
+{"_type": "brand", "_id": "brand-rolls", "name": "Rolls-Royce"}
+{"_type": "brand", "_id": "brand-mclaren", "name": "McLaren"}
+{"_type": "brand", "_id": "brand-bentley", "name": "Bentley"}
+{"_type": "brand", "_id": "brand-aston", "name": "Aston Martin"}
+{"_type": "siteSettings", "_id": "siteSettings", "title": "Laval Luxury Motors", "footerText": "© 2026 LAVAL LUXURY MOTORS"}
+{"_type": "pageAbout", "_id": "pageAbout", "title": "The Art of Driving", "subtitle": "A legacy of automotive excellence"}
+{"_type": "pageFinancing", "_id": "pageFinancing", "title": "Tailored Financing", "subtitle": "Bespoke financial solutions"}
+{"_type": "pageServices", "_id": "pageServices", "title": "Mastery & Preservation", "subtitle": "Beyond the showroom"}

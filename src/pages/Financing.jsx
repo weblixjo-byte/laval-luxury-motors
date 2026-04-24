@@ -1,15 +1,40 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client, urlFor } from '../client';
 
 const Financing = () => {
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const query = `*[_type == "pageFinancing"][0] {
+          title,
+          subtitle,
+          "heroImage": heroImage.asset->url,
+          philosophyTitle,
+          philosophyText,
+          services
+        }`;
+        const data = await client.fetch(query);
+        if (data) setContent(data);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  if (!content) return <div className="pt-40 text-center serif italic">Loading...</div>;
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative h-[60vh] w-full overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/images/financing-hero.png"
+            src={content.heroImage || "/images/financing-hero.png"}
             alt="Luxury Financing"
             className="w-full h-full object-cover"
           />
@@ -17,9 +42,9 @@ const Financing = () => {
         </div>
 
         <div className="relative h-full luxury-container flex flex-col justify-center items-center text-center text-white">
-          <h1 className="text-5xl md:text-7xl mb-6 font-serif">Tailored Financing</h1>
+          <h1 className="text-5xl md:text-7xl mb-6 font-serif">{content.title}</h1>
           <p className="text-sm md:text-base uppercase tracking-[0.4em] font-bold opacity-80 max-w-2xl">
-            Bespoke financial solutions for the worlds most discerning collectors.
+            {content.subtitle || 'Bespoke financial solutions for the worlds most discerning collectors.'}
           </p>
         </div>
       </section>
@@ -28,9 +53,11 @@ const Financing = () => {
       <section className="py-24 luxury-container relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-accent/5 rounded-full blur-3xl -z-10"></div>
         <div className="max-w-4xl mx-auto text-center bg-white/40 backdrop-blur-sm p-12 border border-gray-100 rounded-sm shadow-sm">
-          <h2 className="text-3xl md:text-5xl mb-10 font-serif leading-tight">Financial Flexibility <br />for the Modern Collector</h2>
+          <h2 className="text-3xl md:text-5xl mb-10 font-serif leading-tight">
+            {content.philosophyTitle || 'Financial Flexibility for the Modern Collector'}
+          </h2>
           <p className="text-lg text-gray-600 mb-12 leading-relaxed font-light">
-            Acquiring a masterpiece requires more than just capital; it requires a partner who understands the unique value of high-end automotive assets. At Laval, we offer private financing structures designed to align with your personal wealth strategy.
+            {content.philosophyText || 'Acquiring a masterpiece requires more than just capital; it requires a partner who understands the unique value of high-end automotive assets.'}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-gray-100">
             <div>
@@ -53,28 +80,19 @@ const Financing = () => {
       <section className="py-24 bg-gray-50">
         <div className="luxury-container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="bg-white p-12 border border-gray-100 shadow-sm">
-              <h3 className="text-2xl font-serif mb-6">Asset-Backed Lending</h3>
-              <p className="text-gray-500 mb-8 leading-relaxed">
-                Unlock capital from your existing collection with our specialized asset-backed lending programs. We provide liquidity against individual vehicles or entire portfolios.
-              </p>
-              <ul className="space-y-4 text-sm text-gray-600 italic">
-                <li>• Confidential valuation services</li>
-                <li>• Non-recourse options available</li>
-                <li>• Portfolios of 5+ cars welcome</li>
-              </ul>
-            </div>
-            <div className="bg-white p-12 border border-gray-100 shadow-sm">
-              <h3 className="text-2xl font-serif mb-6">Acquisition Financing</h3>
-              <p className="text-gray-500 mb-8 leading-relaxed">
-                Our acquisition programs are tailored for the purchase of rare hypercars, classic masterpieces, and modern icons. We facilitate transactions globally.
-              </p>
-              <ul className="space-y-4 text-sm text-gray-600 italic">
-                <li>• Cross-border transaction support</li>
-                <li>• Custom amortization schedules</li>
-                <li>• Balloon payment structures</li>
-              </ul>
-            </div>
+            {(content.services || []).map((service, idx) => (
+              <div key={idx} className="bg-white p-12 border border-gray-100 shadow-sm">
+                <h3 className="text-2xl font-serif mb-6">{service.title}</h3>
+                <p className="text-gray-500 mb-8 leading-relaxed">
+                  {service.description}
+                </p>
+                <ul className="space-y-4 text-sm text-gray-600 italic">
+                  {(service.features || []).map((f, i) => (
+                    <li key={i}>• {f}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>

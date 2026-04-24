@@ -1,135 +1,100 @@
-import React from 'react';
-import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { client, urlFor } from '../client';
 
 const About = () => {
-  // Safe item variants that don't start at opacity 0 if possible, 
-  // but for Framer Motion to work they usually need to.
-  // I will use a shorter duration and ensure they are visible.
-  // itemVariants removed as it was unused
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const query = `*[_type == "pageAbout"][0] {
+          title,
+          subtitle,
+          "heroImage": heroImage.asset->url,
+          historyTitle,
+          historyText,
+          philosophyTitle,
+          philosophyText,
+          "craftsmanshipImage": craftsmanshipImage.asset->url
+        }`;
+        const data = await client.fetch(query);
+        if (data) setContent(data);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  if (!content) return <div className="pt-40 text-center serif italic">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src="/images/about-hero.png" 
-            alt="Luxury Car Hero" 
+          <img
+            src={content.heroImage || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80"}
+            alt="Laval Heritage"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
         </div>
         
-        <div className="relative z-10 text-center text-white px-4">
-          <motion.h1 
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-6xl md:text-8xl mb-6 font-serif"
-          >
-            Laval Heritage
-          </motion.h1>
-          <p className="text-xl md:text-2xl font-light tracking-[0.2em] uppercase">
-            Defining Automotive Excellence
+        <div className="relative text-center text-white px-4">
+          <h1 className="text-6xl md:text-8xl font-serif mb-6">{content.title}</h1>
+          <p className="text-sm md:text-base uppercase tracking-[0.5em] font-light">
+            {content.subtitle || 'A legacy of automotive excellence'}
           </p>
         </div>
       </section>
 
-      {/* Our Legacy Section */}
+      {/* History & Philosophy */}
       <section className="py-24 luxury-container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl mb-8 leading-tight font-serif">The Pursuit of <br /><span className="italic text-luxury-accent">Perfection</span></h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Founded in the heart of automotive passion, Laval Luxury Motors has spent decades curating a collection that transcends mere transportation. We believe a car is not just a machine, but a masterpiece of engineering and art.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-start">
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-5xl font-serif">{content.historyTitle || 'Our History'}</h2>
+            <p className="text-lg text-gray-600 leading-relaxed font-light">
+              {content.historyText || 'Founded on the principle that a car is more than just transportation, Laval Luxury Motors has grown from a private collection into one of the worlds most respected curators of rare automotive art.'}
             </p>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed font-light">
-              Our journey began with a single vision: to provide the world's most discerning collectors with access to vehicles that represent the absolute pinnacle of performance and luxury.
+          </div>
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-5xl font-serif">{content.philosophyTitle || 'Our Philosophy'}</h2>
+            <p className="text-lg text-gray-600 leading-relaxed font-light italic serif">
+              {content.philosophyText || '"We do not sell cars; we facilitate the acquisition of heritage. Every vehicle in our showroom has been selected for its unique story, engineering purity, and investment potential."'}
             </p>
-            <div className="flex gap-12 pt-4">
+          </div>
+        </div>
+      </section>
+
+      {/* Craftsmanship Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="luxury-container grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="order-2 md:order-1">
+            <h2 className="text-4xl font-serif mb-8">Unrivaled Expertise</h2>
+            <p className="text-gray-600 mb-10 leading-relaxed">
+              Our team consists of industry veterans, master technicians, and market analysts who live and breathe high-performance automobiles. This depth of knowledge ensures that every vehicle we represent is authenticated and maintained to the highest global standards.
+            </p>
+            <div className="grid grid-cols-2 gap-8">
               <div>
-                <span className="block text-3xl font-serif text-luxury-black">25+</span>
-                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Years Experience</span>
+                <h4 className="text-2xl font-serif text-luxury-accent">20+</h4>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Years of Heritage</p>
               </div>
               <div>
-                <span className="block text-3xl font-serif text-luxury-black">500+</span>
-                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Masterpieces Sold</span>
+                <h4 className="text-2xl font-serif text-luxury-accent">500+</h4>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Exotic Cars Sourced</p>
               </div>
             </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
+          </div>
+          <div className="order-1 md:order-2 aspect-square overflow-hidden shadow-2xl">
             <img 
-              src="/images/about-legacy.png" 
-              alt="Luxury Craftsmanship" 
-              className="w-full rounded-sm shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000"
+              src={content.craftsmanshipImage || "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80"} 
+              alt="Craftsmanship" 
+              className="w-full h-full object-cover"
             />
-            <div className="absolute -bottom-6 -left-6 bg-luxury-black text-white p-8 hidden md:block border-l-4 border-luxury-accent">
-              <p className="font-serif italic text-xl">"Luxury is in each detail."</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Core Values - No Lucide icons, using simple shapes/text */}
-      <section className="py-24 bg-luxury-grey">
-        <div className="luxury-container">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl mb-4 font-serif">The Laval Standard</h2>
-            <div className="w-20 h-1 bg-luxury-accent mx-auto mb-6"></div>
-            <p className="text-gray-500 uppercase tracking-[0.3em] text-[10px] font-bold">Our Unwavering Commitment</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { title: "Integrity", desc: "Every vehicle is rigorously inspected and certified to meet our uncompromising standards." },
-              { title: "Exclusivity", desc: "We source only the rarest and most sought-after automotive treasures globally." },
-              { title: "Performance", desc: "Our collection represents the cutting edge of automotive engineering and power." },
-              { title: "Service", desc: "Tailored concierge experiences designed around your unique lifestyle and needs." }
-            ].map((value, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-                className="bg-white p-10 text-center group hover:bg-luxury-black transition-all duration-500 border border-gray-100"
-              >
-                <div className="w-12 h-12 mx-auto mb-6 border border-luxury-accent flex items-center justify-center group-hover:bg-luxury-accent transition-colors">
-                  <span className="text-luxury-accent group-hover:text-white font-serif text-xl">{value.title[0]}</span>
-                </div>
-                <h3 className="text-xl mb-4 group-hover:text-white transition-colors font-serif">{value.title}</h3>
-                <p className="text-gray-500 group-hover:text-gray-400 transition-colors text-sm leading-relaxed">{value.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-32 bg-white text-center">
-        <div className="luxury-container">
-          <h2 className="text-5xl md:text-6xl mb-8 leading-tight font-serif italic">Your journey into <br />excellence begins here.</h2>
-          <p className="text-xl text-gray-500 mb-12 max-w-2xl mx-auto font-light">
-            Experience the world's most exclusive automotive collection in person.
-          </p>
-          <a 
-            href="/inventory" 
-            className="inline-block bg-luxury-black text-white px-12 py-5 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500"
-          >
-            Explore Collection
-          </a>
         </div>
       </section>
     </div>
