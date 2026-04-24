@@ -6,12 +6,12 @@ import brand from './schemas/brand';
 import category from './schemas/category';
 import siteSettings from './schemas/siteSettings';
 
-// Custom Theme Colors (Laval Luxury Motors Brand)
+// Custom Light Theme Colors (Laval Luxury Motors Brand)
 const props = {
-  '--laval-white': '#fff',
-  '--laval-black': '#000',
+  '--laval-white': '#ffffff',
+  '--laval-black': '#101112',
   '--laval-gold': '#C5A059',
-  '--laval-grey': '#151515',
+  '--laval-light-grey': '#f4f4f5',
 };
 
 export const myTheme = buildLegacyTheme({
@@ -22,8 +22,8 @@ export const myTheme = buildLegacyTheme({
   '--gray': '#666',
   '--gray-base': '#666',
 
-  '--component-bg': props['--laval-grey'],
-  '--component-text-color': props['--laval-white'],
+  '--component-bg': props['--laval-white'],
+  '--component-text-color': props['--laval-black'],
 
   /* Brand */
   '--brand-primary': props['--laval-gold'],
@@ -51,7 +51,7 @@ export const myTheme = buildLegacyTheme({
 export default defineConfig({
   name: 'default',
   title: 'Laval Luxury Motors | Admin',
-  theme: myTheme, // Apply the custom gold theme
+  theme: myTheme, 
 
   projectId: 'nyiie8qw', 
   dataset: 'production',
