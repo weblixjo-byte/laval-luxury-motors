@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { client } from '../client';
-import heroImage from '../assets/hero_v2.png';
+import heroImage from '../assets/hero.png';
 import ferrariImage from '../assets/ferrari.png';
 import porscheImage from '../assets/porsche.png';
 import CarCard from '../components/CarCard';
@@ -44,20 +44,39 @@ const Home = ({ onInquire }) => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const query = `*[_type == "vehicle" && featured == true] {
-          "id": _id,
-          name,
-          year,
-          location,
-          price,
-          category,
-          "image": mainImage
+        // First try to get the hand-picked collection from siteSettings
+        const settingsQuery = `*[_type == "siteSettings"][0] {
+          featuredCollection[]-> {
+            "id": _id,
+            name,
+            year,
+            location,
+            price,
+            "category": category->title,
+            "image": mainImage
+          }
         }`;
-        const data = await client.fetch(query);
-        if (data && data.length > 0) {
-          setFeaturedCars(data);
+        const settingsData = await client.fetch(settingsQuery);
+
+        if (settingsData && settingsData.featuredCollection && settingsData.featuredCollection.length > 0) {
+          setFeaturedCars(settingsData.featuredCollection);
         } else {
-          setFeaturedCars(staticFallbackCars);
+          // Fallback to cars marked as featured
+          const query = `*[_type == "vehicle" && featured == true] {
+            "id": _id,
+            name,
+            year,
+            location,
+            price,
+            "category": category->title,
+            "image": mainImage
+          }`;
+          const data = await client.fetch(query);
+          if (data && data.length > 0) {
+            setFeaturedCars(data);
+          } else {
+            setFeaturedCars(staticFallbackCars);
+          }
         }
       } catch (err) {
         console.error("Sanity fetch error:", err);
@@ -129,8 +148,8 @@ const Home = ({ onInquire }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {featuredCars.map(car => (
-              <CarCard key={car.id} car={car} onInquire={onInquire} />
+            {featuredCars.map((car, idx) => (
+              <CarCard key={car.id || idx} car={car} onInquire={onInquire} />
             ))}
           </div>
         </div>

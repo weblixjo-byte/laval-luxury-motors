@@ -42,8 +42,8 @@ const CarCard = ({ car, onInquire }) => {
           {car.year} • {car.location}
         </p>
         <div className="flex justify-between items-end pt-2">
-          <p className="text-sm font-medium">
-            {car.price}
+          <p className="text-sm font-medium text-luxury-accent uppercase tracking-widest">
+            Price on Request
           </p>
           <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
             Details →

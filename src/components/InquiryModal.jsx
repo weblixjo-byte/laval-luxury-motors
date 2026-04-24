@@ -90,7 +90,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span>List Price</span>
-                  <span className="text-black">{car.price}</span>
+                  <span className="text-luxury-accent">Price on Request</span>
                 </div>
               </div>
             </div>

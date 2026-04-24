@@ -48,16 +48,8 @@ export default {
     {
       name: 'category',
       title: 'Category',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Hypercar', value: 'Hypercar' },
-          { title: 'Supercar', value: 'Supercar' },
-          { title: 'Classic', value: 'Classic' },
-          { title: 'Luxury', value: 'Luxury' },
-          { title: 'Ultimate', value: 'Ultimate' }
-        ]
-      },
+      type: 'reference',
+      to: [{ type: 'category' }],
       validation: Rule => Rule.required()
     },
     {

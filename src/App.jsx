@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Inventory from './pages/Inventory';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Financing from './pages/Financing';
+import Services from './pages/Services';
 import StudioPage from './pages/StudioPage';
 import InquiryModal from './components/InquiryModal';
 
@@ -30,6 +32,8 @@ function App() {
           <Route path="/inventory" element={<Inventory onInquire={openInquiry} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/financing" element={<Financing />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/studio/*" element={<StudioPage />} />
         </Routes>
       </main>

@@ -26,20 +26,33 @@ const PopularMakes = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const query = `*[_type == "brand"] {
-          name,
-          "logo": logo
+        const query = `*[_type == "siteSettings"][0] {
+          featuredBrands[]-> {
+            name,
+            "logo": logo
+          }
         }`;
         const data = await client.fetch(query);
-        if (data && data.length > 0) {
-          // Map Sanity dynamic images
-          const formattedBrands = data.map(b => ({
+        
+        if (data && data.featuredBrands && data.featuredBrands.length > 0) {
+          const formattedBrands = data.featuredBrands.map(b => ({
             name: b.name,
             logo: b.logo ? urlFor(b.logo).url() : null
           }));
           setBrands(formattedBrands);
         } else {
-          setBrands(staticFallbackBrands);
+          // Fallback to all brands if no featured brands selected
+          const allBrandsQuery = `*[_type == "brand"] { name, "logo": logo }`;
+          const allData = await client.fetch(allBrandsQuery);
+          if (allData && allData.length > 0) {
+             const formattedBrands = allData.map(b => ({
+                name: b.name,
+                logo: b.logo ? urlFor(b.logo).url() : null
+              }));
+              setBrands(formattedBrands);
+          } else {
+            setBrands(staticFallbackBrands);
+          }
         }
       } catch (err) {
         console.error("Sanity brands fetch error:", err);
@@ -78,21 +91,22 @@ const PopularMakes = () => {
               whileHover={{ zIndex: 10 }}
               className="relative group bg-white p-8 flex items-center justify-center aspect-square cursor-pointer overflow-hidden transition-all hover:shadow-2xl"
             >
-              {/* Subtle Background Text */}
               <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] group-hover:opacity-[0.05] transition-opacity duration-700 select-none">
                 <span className="text-4xl font-bold uppercase tracking-tighter transform -rotate-12">
                   {brand.name}
                 </span>
               </div>
 
-              {/* Logo Image */}
-              <img
-                src={brand.logo}
-                alt={brand.name}
-                className="w-full h-auto max-w-[80px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
-              />
+              {brand.logo ? (
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="w-full h-auto max-w-[80px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
+                />
+              ) : (
+                <span className="text-sm font-bold uppercase tracking-widest">{brand.name}</span>
+              )}
 
-              {/* Brand Name on Hover (Bottom) */}
               <div className="absolute bottom-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400">
                   {brand.name}

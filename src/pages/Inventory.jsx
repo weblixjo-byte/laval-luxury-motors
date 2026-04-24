@@ -8,6 +8,7 @@ import heroImage from '../assets/hero.png';
 const Inventory = ({ onInquire }) => {
   const [filter, setFilter] = useState('All');
   const [allCars, setAllCars] = useState([]);
+  const [categories, setCategories] = useState(['All']);
 
   const staticFallbackCars = [
     {
@@ -36,46 +37,29 @@ const Inventory = ({ onInquire }) => {
       price: 'Price on Request',
       category: 'Hypercar',
       image: heroImage
-    },
-    {
-      id: 4,
-      name: 'Lamborghini Revuelto',
-      year: '2025',
-      location: 'SantAgata, Italy',
-      price: '$890,000',
-      category: 'Supercar',
-      image: ferrariImage
-    },
-    {
-      id: 5,
-      name: 'Aston Martin Valour',
-      year: '2024',
-      location: 'Gaydon, UK',
-      price: '$1,500,000',
-      category: 'Supercar',
-      image: porscheImage
-    },
-    {
-      id: 6,
-      name: 'Rolls-Royce Spectre',
-      year: '2024',
-      location: 'Goodwood, UK',
-      price: '$420,000',
-      category: 'Luxury',
-      image: heroImage
     }
   ];
 
   useEffect(() => {
-    const fetchAllCars = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch categories
+        const catQuery = `*[_type == "category"] { title }`;
+        const catData = await client.fetch(catQuery);
+        if (catData && catData.length > 0) {
+          setCategories(['All', ...catData.map(c => c.title)]);
+        } else {
+          setCategories(['All', 'Hypercar', 'Supercar', 'Classic', 'Luxury']);
+        }
+
+        // Fetch vehicles
         const query = `*[_type == "vehicle"] | order(year desc) {
           "id": _id,
           name,
           year,
           location,
           price,
-          category,
+          "category": category->title,
           "image": mainImage
         }`;
         const data = await client.fetch(query);
@@ -90,11 +74,9 @@ const Inventory = ({ onInquire }) => {
       }
     };
 
-    fetchAllCars();
+    fetchData();
   }, []);
 
-  const categories = ['All', 'Hypercar', 'Supercar', 'Classic', 'Luxury'];
-  
   const filteredCars = filter === 'All' 
     ? allCars 
     : allCars.filter(car => car.category === filter);
@@ -126,8 +108,8 @@ const Inventory = ({ onInquire }) => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-          {filteredCars.map(car => (
-            <CarCard key={car.id} car={car} onInquire={onInquire} />
+          {filteredCars.map((car, idx) => (
+            <CarCard key={car.id || idx} car={car} onInquire={onInquire} />
           ))}
         </div>
 

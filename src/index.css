@@ -61,3 +61,18 @@ h1, h2, h3, h4, .serif {
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gold {
+  color: var(--color-luxury-accent);
+}
+
+.bg-gold {
+  background-color: var(--color-luxury-accent);
+}

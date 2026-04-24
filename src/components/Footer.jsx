@@ -20,6 +20,7 @@ const Footer = () => {
               <li><Link to="/inventory">Hypercars</Link></li>
               <li><Link to="/inventory">Classic Collections</Link></li>
               <li><Link to="/inventory">SUVs & Off-road</Link></li>
+              <li><Link to="/services">Atelier Services</Link></li>
             </ul>
           </div>
 
