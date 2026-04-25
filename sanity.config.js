@@ -48,8 +48,7 @@ export const myTheme = buildLegacyTheme({
 export default defineConfig({
   name: 'default',
   title: 'Laval Luxury Motors | Admin',
-  // theme: myTheme,
-
+  theme: myTheme,
 
   projectId: 'nyiie8qw', 
   dataset: 'production',
@@ -71,5 +70,7 @@ export default defineConfig({
     types: [vehicle, brand],
   },
 });
+
+
 
 
