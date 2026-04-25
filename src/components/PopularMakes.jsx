@@ -3,48 +3,61 @@ import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
 import { client, urlFor } from '../client';
 
-const PopularMakes = () => {
-  const staticFallbackBrands = [
-    { name: 'Bugatti', logo: 'https://cdn.simpleicons.org/bugatti' },
-    { name: 'Ferrari', logo: 'https://cdn.simpleicons.org/ferrari' },
-    { name: 'Lamborghini', logo: 'https://cdn.simpleicons.org/lamborghini' },
-    { name: 'Porsche', logo: 'https://cdn.simpleicons.org/porsche' },
-    { name: 'Koenigsegg', logo: 'https://cdn.simpleicons.org/koenigsegg' },
-    { name: 'McLaren', logo: 'https://cdn.simpleicons.org/mclaren' },
-    { name: 'Rolls Royce', logo: 'https://cdn.simpleicons.org/rollsroyce' },
-    { name: 'Aston Martin', logo: 'https://cdn.simpleicons.org/astonmartin' },
-    { name: 'Bentley', logo: 'https://cdn.simpleicons.org/bentley' },
-    { name: 'Maserati', logo: 'https://cdn.simpleicons.org/maserati' },
-    { name: 'Mercedes Benz', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1280px-Mercedes-Logo.svg.png' },
-    { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/pagani.png' },
-    { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/maybach.png' },
-    { name: 'Brabus', logo: 'https://logo.clearbit.com/brabus.com' }
-  ];
+const staticFallbackBrands = [
+  { name: 'Bugatti', logo: 'https://cdn.simpleicons.org/bugatti' },
+  { name: 'Ferrari', logo: 'https://cdn.simpleicons.org/ferrari' },
+  { name: 'Lamborghini', logo: 'https://cdn.simpleicons.org/lamborghini' },
+  { name: 'Porsche', logo: 'https://cdn.simpleicons.org/porsche' },
+  { name: 'Koenigsegg', logo: 'https://cdn.simpleicons.org/koenigsegg' },
+  { name: 'McLaren', logo: 'https://cdn.simpleicons.org/mclaren' },
+  { name: 'Rolls-Royce', logo: 'https://cdn.simpleicons.org/rollsroyce' },
+  { name: 'Aston Martin', logo: 'https://cdn.simpleicons.org/astonmartin' },
+  { name: 'Bentley', logo: 'https://cdn.simpleicons.org/bentley' },
+  { name: 'Maserati', logo: 'https://cdn.simpleicons.org/maserati' },
+  { name: 'Mercedes-Benz', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1280px-Mercedes-Logo.svg.png' },
+  { name: 'Pagani', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/pagani.png' },
+  { name: 'Maybach', logo: 'https://www.car-logos.org/wp-content/uploads/2022/08/maybach.png' },
+  { name: 'Brabus', logo: 'https://logo.clearbit.com/brabus.com' }
+];
 
+const PopularMakes = () => {
   const [brands, setBrands] = useState(staticFallbackBrands);
 
 
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        // Fetch all brands directly since siteSettings is removed
         const query = `*[_type == "brand"] { name, "logo": logo }`;
         const data = await client.fetch(query);
         
         if (data && data.length > 0) {
-          const formattedBrands = data.map(b => ({
+          const formattedSanityBrands = data.map(b => ({
             name: b.name,
             logo: b.logo ? urlFor(b.logo).url() : null
           }));
-          setBrands(formattedBrands);
+
+          // Merge: use Sanity brands but if they have no logo, try to find one in fallbacks
+          const mergedBrands = formattedSanityBrands.map(sBrand => {
+            if (!sBrand.logo) {
+              const fallback = staticFallbackBrands.find(f => f.name.toLowerCase() === sBrand.name.toLowerCase());
+              return fallback ? { ...sBrand, logo: fallback.logo } : sBrand;
+            }
+            return sBrand;
+          });
+
+          setBrands(mergedBrands);
+        } else {
+          setBrands(staticFallbackBrands);
         }
       } catch (err) {
         console.error("Sanity brands fetch error:", err);
+        setBrands(staticFallbackBrands);
       }
     };
 
     fetchBrands();
   }, []);
+
 
 
 
