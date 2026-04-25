@@ -17,5 +17,12 @@ export default {
         hotspot: true
       }
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'name',
+      media: 'logo'
+    }
+  }
 }
+

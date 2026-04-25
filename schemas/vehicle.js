@@ -46,14 +46,8 @@ export default {
       validation: Rule => Rule.required()
     },
     {
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
-      validation: Rule => Rule.required()
-    },
-    {
       name: 'mainImage',
+
       title: 'Main Image',
       type: 'image',
       options: {

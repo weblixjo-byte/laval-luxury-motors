@@ -2,7 +2,6 @@ import { defineConfig, buildLegacyTheme } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import vehicle from './schemas/vehicle';
 import brand from './schemas/brand';
-import category from './schemas/category';
 
 const props = {
   '--laval-white': '#ffffff',
@@ -62,14 +61,14 @@ export default defineConfig({
           .title('Inventory Management')
           .items([
             S.documentTypeListItem('vehicle').title('Vehicles (Inventory)'),
-            S.documentTypeListItem('category').title('Categories'),
             S.documentTypeListItem('brand').title('Brands'),
           ]),
     }),
   ],
 
   schema: {
-    types: [vehicle, brand, category],
+    types: [vehicle, brand],
   },
 });
+
 

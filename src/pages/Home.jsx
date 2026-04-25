@@ -16,7 +16,6 @@ const Home = ({ onInquire }) => {
       year: '2023',
       location: 'Maranello, Italy',
       price: '$2,250,000',
-      category: 'Hypercar',
       image: ferrariImage
     },
     {
@@ -25,7 +24,6 @@ const Home = ({ onInquire }) => {
       year: '1992 (Restomod)',
       location: 'California, USA',
       price: '$1,100,000',
-      category: 'Classic',
       image: porscheImage
     },
     {
@@ -34,7 +32,6 @@ const Home = ({ onInquire }) => {
       year: '2024',
       location: 'Molsheim, France',
       price: 'Price on Request',
-      category: 'Ultimate',
       image: heroImage
     }
   ];
@@ -51,7 +48,6 @@ const Home = ({ onInquire }) => {
           year,
           location,
           price,
-          "category": category->title,
           "image": mainImage
         }`;
         const data = await client.fetch(query);
@@ -65,6 +61,7 @@ const Home = ({ onInquire }) => {
 
     fetchFeatured();
   }, []);
+
 
 
   return (

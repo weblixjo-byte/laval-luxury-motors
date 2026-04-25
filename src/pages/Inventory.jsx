@@ -36,23 +36,13 @@ const Inventory = ({ onInquire }) => {
     }
   ];
 
-  const [filter, setFilter] = useState('All');
   const [brandFilter, setBrandFilter] = useState('All');
   const [allCars, setAllCars] = useState(staticFallbackCars);
-
-  const [categories, setCategories] = useState(['All']);
   const [brands, setBrands] = useState(['All']);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories
-        const catQuery = `*[_type == "category"] { title }`;
-        const catData = await client.fetch(catQuery);
-        if (catData && catData.length > 0) {
-          setCategories(['All', ...catData.map(c => c.title)]);
-        }
-
         // Fetch brands
         const brandQuery = `*[_type == "brand"] { name }`;
         const brandData = await client.fetch(brandQuery);
@@ -67,7 +57,6 @@ const Inventory = ({ onInquire }) => {
           year,
           location,
           price,
-          "category": category->title,
           "brand": brand->name,
           "image": mainImage
         }`;
@@ -84,9 +73,8 @@ const Inventory = ({ onInquire }) => {
   }, []);
 
   const filteredCars = allCars.filter(car => {
-    const matchCat = filter === 'All' || car.category === filter;
     const matchBrand = brandFilter === 'All' || car.brand === brandFilter;
-    return matchCat && matchBrand;
+    return matchBrand;
   });
 
   return (
@@ -99,27 +87,9 @@ const Inventory = ({ onInquire }) => {
 
         {/* Filters */}
         <div className="space-y-8 border-b border-gray-100 pb-12 mb-12">
-          {/* Category Filters */}
-          <div className="flex flex-wrap gap-8">
-            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold w-full mb-2">Category</span>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`text-xs uppercase tracking-widest pb-2 transition-all ${
-                  filter === cat 
-                    ? 'border-b-2 border-luxury-black font-bold' 
-                    : 'text-gray-400 hover:text-luxury-black'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
           {/* Brand Filters */}
           <div className="flex flex-wrap gap-8">
-            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold w-full mb-2">Brand</span>
+            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold w-full mb-2">Filter by Brand</span>
             {brands.map(brand => (
               <button
                 key={brand}
@@ -142,6 +112,7 @@ const Inventory = ({ onInquire }) => {
             <CarCard key={car.id || idx} car={car} onInquire={onInquire} />
           ))}
         </div>
+
 
 
         {filteredCars.length === 0 && (
