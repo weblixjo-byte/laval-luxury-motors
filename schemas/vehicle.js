@@ -68,12 +68,6 @@ export default {
       of: [{ type: 'image', options: { hotspot: true } }]
     },
     {
-      name: 'featured',
-      title: 'Is Featured Highlight?',
-      type: 'boolean',
-      initialValue: false
-    },
-    {
       name: 'specs',
       title: 'Technical Specifications',
       type: 'object',
@@ -85,6 +79,14 @@ export default {
       ]
     },
     {
+      name: 'isFeatured',
+      title: 'Featured on Home Page?',
+      type: 'boolean',
+      initialValue: false,
+      description: 'If enabled, this car will appear in the Featured Collection section on the home page.'
+    },
+
+    {
       name: 'description',
       title: 'Description',
       type: 'text'
@@ -93,8 +95,18 @@ export default {
   preview: {
     select: {
       title: 'name',
-      subtitle: 'year',
+      brand: 'brand.name',
+      year: 'year',
       media: 'mainImage'
+    },
+    prepare(selection) {
+      const { title, brand, year, media } = selection;
+      return {
+        title: title,
+        subtitle: `${brand ? brand : 'No Brand'} | ${year}`,
+        media: media
+      }
     }
   }
 }
+

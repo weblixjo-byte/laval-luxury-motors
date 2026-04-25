@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { client, urlFor } from '../client';
 
 const PopularMakes = () => {
-  const [brands, setBrands] = useState([]);
-
   const staticFallbackBrands = [
     { name: 'Bugatti', logo: 'https://cdn.simpleicons.org/bugatti' },
     { name: 'Ferrari', logo: 'https://cdn.simpleicons.org/ferrari' },
@@ -23,46 +21,32 @@ const PopularMakes = () => {
     { name: 'Brabus', logo: 'https://logo.clearbit.com/brabus.com' }
   ];
 
+  const [brands, setBrands] = useState(staticFallbackBrands);
+
+
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const query = `*[_type == "siteSettings"][0] {
-          featuredBrands[]-> {
-            name,
-            "logo": logo
-          }
-        }`;
+        // Fetch all brands directly since siteSettings is removed
+        const query = `*[_type == "brand"] { name, "logo": logo }`;
         const data = await client.fetch(query);
         
-        if (data && data.featuredBrands && data.featuredBrands.length > 0) {
-          const formattedBrands = data.featuredBrands.map(b => ({
+        if (data && data.length > 0) {
+          const formattedBrands = data.map(b => ({
             name: b.name,
             logo: b.logo ? urlFor(b.logo).url() : null
           }));
           setBrands(formattedBrands);
-        } else {
-          // Fallback to all brands if no featured brands selected
-          const allBrandsQuery = `*[_type == "brand"] { name, "logo": logo }`;
-          const allData = await client.fetch(allBrandsQuery);
-          if (allData && allData.length > 0) {
-             const formattedBrands = allData.map(b => ({
-                name: b.name,
-                logo: b.logo ? urlFor(b.logo).url() : null
-              }));
-              setBrands(formattedBrands);
-          } else {
-            setBrands(staticFallbackBrands);
-          }
         }
       } catch (err) {
         console.error("Sanity brands fetch error:", err);
-        setBrands(staticFallbackBrands);
       }
     };
 
     fetchBrands();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 
   return (
     <section className="py-24 bg-white">

@@ -1,58 +1,71 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
-import { client, urlFor } from '../client';
-import heroImageFallback from '../assets/hero.png';
-import porscheImageFallback from '../assets/porsche.png';
+import { client } from '../client';
+import heroImage from '../assets/hero.png';
+import ferrariImage from '../assets/ferrari.png';
+import porscheImage from '../assets/porsche.png';
 import CarCard from '../components/CarCard';
 import PopularMakes from '../components/PopularMakes';
 
 const Home = ({ onInquire }) => {
-  const [featuredCars, setFeaturedCars] = useState([]);
-  const [homeContent, setHomeContent] = useState(null);
+  const staticFallbackCars = [
+    {
+      id: 1,
+      name: 'Ferrari Daytona SP3',
+      year: '2023',
+      location: 'Maranello, Italy',
+      price: '$2,250,000',
+      category: 'Hypercar',
+      image: ferrariImage
+    },
+    {
+      id: 2,
+      name: 'Porsche 911 Singer',
+      year: '1992 (Restomod)',
+      location: 'California, USA',
+      price: '$1,100,000',
+      category: 'Classic',
+      image: porscheImage
+    },
+    {
+      id: 3,
+      name: 'Bugatti Mistral',
+      year: '2024',
+      location: 'Molsheim, France',
+      price: 'Price on Request',
+      category: 'Ultimate',
+      image: heroImage
+    }
+  ];
+
+  const [featuredCars, setFeaturedCars] = useState(staticFallbackCars);
+
 
   useEffect(() => {
-    const fetchContent = async () => {
+    const fetchFeatured = async () => {
       try {
-        const query = `*[_type == "siteSettings"][0] {
-          homeHero {
-            title,
-            subtitle,
-            "image": image.asset->url
-          },
-          homeHeritage {
-            title,
-            text,
-            "image": image.asset->url
-          },
-          featuredCollection[]-> {
-            "id": _id,
-            name,
-            year,
-            location,
-            price,
-            "category": category->title,
-            "image": mainImage
-          }
+        const query = `*[_type == "vehicle" && isFeatured == true] {
+          "id": _id,
+          name,
+          year,
+          location,
+          price,
+          "category": category->title,
+          "image": mainImage
         }`;
         const data = await client.fetch(query);
-        if (data) {
-          setHomeContent(data);
-          if (data.featuredCollection && data.featuredCollection.length > 0) {
-            setFeaturedCars(data.featuredCollection);
-          }
+        if (data && data.length > 0) {
+          setFeaturedCars(data);
         }
       } catch (err) {
         console.error("Sanity fetch error:", err);
       }
     };
 
-    fetchContent();
+    fetchFeatured();
   }, []);
 
-  const hero = homeContent?.homeHero;
-  const heritage = homeContent?.homeHeritage;
 
   return (
     <div className="flex flex-col">
@@ -65,7 +78,7 @@ const Home = ({ onInquire }) => {
           className="absolute inset-0"
         >
           <img
-            src={hero?.image || heroImageFallback}
+            src={heroImage}
             alt="Luxury Hypercar"
             className="w-full h-full object-cover"
           />
@@ -80,10 +93,10 @@ const Home = ({ onInquire }) => {
             className="max-w-3xl"
           >
             <h1 className="text-6xl md:text-8xl mb-8 font-serif leading-tight">
-              {hero?.title || 'Luxury Cars'}
+              Luxury Cars
             </h1>
             <p className="text-sm md:text-base uppercase tracking-[0.3em] font-bold opacity-100 mb-12">
-              {hero?.subtitle || 'EXPLORE 31,000+ LUXURY CARS, SUPERCARS AND EXOTIC CARS FOR SALE WORLDWIDE IN ONE SIMPLE SEARCH'}
+              EXPLORE 31,000+ LUXURY CARS, SUPERCARS AND EXOTIC CARS FOR SALE WORLDWIDE IN ONE SIMPLE SEARCH
             </p>
 
             <div className="flex space-x-6">
@@ -115,8 +128,8 @@ const Home = ({ onInquire }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {featuredCars.map((car, idx) => (
-              <CarCard key={car.id || idx} car={car} onInquire={onInquire} />
+            {featuredCars.map(car => (
+              <CarCard key={car.id} car={car} onInquire={onInquire} />
             ))}
           </div>
         </div>
@@ -127,18 +140,16 @@ const Home = ({ onInquire }) => {
         <div className="luxury-container grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <div className="aspect-[4/5] bg-gray-200 overflow-hidden">
             <img
-              src={heritage?.image || porscheImageFallback}
+              src={porscheImage}
               alt="Laval Heritage"
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
             />
           </div>
           <div className="space-y-8">
             <h2 className="text-sm uppercase tracking-[0.3em] text-gray-400">Our Heritage</h2>
-            <h3 className="text-4xl md:text-6xl font-serif leading-tight">
-              {heritage?.title || 'Defining Luxury Since 2004.'}
-            </h3>
+            <h3 className="text-4xl md:text-6xl font-serif leading-tight">Defining Luxury Since 2004.</h3>
             <p className="text-lg text-gray-600 leading-relaxed serif italic">
-              {heritage?.text || '"We believe that a car is more than a machine; it is a work of art, a statement of intent, and a legacy to be preserved."'}
+              "We believe that a car is more than a machine; it is a work of art, a statement of intent, and a legacy to be preserved."
             </p>
             <div className="pt-8">
               <Link to="/about" className="px-12 py-4 border border-luxury-black uppercase tracking-widest text-xs font-bold hover:bg-luxury-black hover:text-white transition-all">
@@ -166,3 +177,4 @@ const Home = ({ onInquire }) => {
 };
 
 export default Home;
+

@@ -1,64 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
-import { client } from '../client';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [dynamicLinks, setDynamicLinks] = useState([]);
-  const [dynamicBrands, setDynamicBrands] = useState([]);
   const location = useLocation();
-
-  const fallbackBrands = [
-    'Bugatti', 'Pagani', 'Koenigsegg', 'Ferrari', 'Lamborghini', 'Mercedes', 'Rolls-Royce', 'McLaren', 'Brabus', 'Porsche', 'Aston Martin'
-  ];
-
-  const fallbackLinks = [
-    { title: 'Inventory', path: '/inventory' },
-    { title: 'Services', path: '/services' },
-    { title: 'Financing', path: '/financing' }
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-
-    const fetchSiteSettings = async () => {
-      try {
-        const query = `*[_type == "siteSettings"][0] {
-          navbarLinks,
-          "brands": featuredBrands[]->name
-        }`;
-        const data = await client.fetch(query);
-        if (data) {
-          if (data.navbarLinks && data.navbarLinks.length > 0) {
-            setDynamicLinks(data.navbarLinks);
-          } else {
-            setDynamicLinks(fallbackLinks);
-          }
-          if (data.brands && data.brands.length > 0) {
-            setDynamicBrands(data.brands);
-          } else {
-            setDynamicBrands(fallbackBrands);
-          }
-        } else {
-          setDynamicLinks(fallbackLinks);
-          setDynamicBrands(fallbackBrands);
-        }
-      } catch (err) {
-        console.error("Sanity fetch error:", err);
-        setDynamicLinks(fallbackLinks);
-        setDynamicBrands(fallbackBrands);
-      }
-    };
-
-    fetchSiteSettings();
     return () => window.removeEventListener('scroll', handleScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const brands = [
+    'Bugatti', 'Pagani', 'Koenigsegg', 'Ferrari', 'Lamborghini', 'Mercedes', 'Rolls-Royce', 'McLaren', 'Brabus', 'Porsche', 'Aston Martin'
+  ];
 
   const isHome = location.pathname === '/';
 
@@ -111,12 +70,13 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Right Actions - Dynamic Links */}
+        {/* Right Actions */}
         <div className={`hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold ${isScrolled || !isHome ? 'text-luxury-black' : 'text-white'
           }`}>
-          {dynamicLinks.map((link, idx) => (
-            <Link key={idx} to={link.path} className="hover:opacity-70 transition-opacity">{link.title}</Link>
-          ))}
+          <Link to="/inventory" className="hover:opacity-70 transition-opacity">Inventory</Link>
+          <Link to="/services" className="hover:opacity-70 transition-opacity">Services</Link>
+          <Link to="/financing" className="hover:opacity-70 transition-opacity">Financing</Link>
+          <Link to="/about" className="hover:opacity-70 transition-opacity">About</Link>
           <Link
             to="/contact"
             className={`px-6 py-2 border transition-all ${isScrolled || !isHome
@@ -129,13 +89,13 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Brands Row - Dynamic Brands */}
+      {/* Brands Row */}
       <div className={`hidden md:block border-t transition-all duration-300 ${isScrolled || !isHome
         ? 'bg-white border-gray-100 py-3'
         : 'bg-transparent border-white/10 py-3'
         }`}>
         <div className="luxury-container flex justify-between">
-          {dynamicBrands.map(brand => (
+          {brands.map(brand => (
             <Link
               key={brand}
               to={`/inventory?brand=${brand}`}
@@ -188,3 +148,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

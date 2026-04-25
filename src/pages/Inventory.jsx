@@ -6,10 +6,6 @@ import porscheImage from '../assets/porsche.png';
 import heroImage from '../assets/hero.png';
 
 const Inventory = ({ onInquire }) => {
-  const [filter, setFilter] = useState('All');
-  const [allCars, setAllCars] = useState([]);
-  const [categories, setCategories] = useState(['All']);
-
   const staticFallbackCars = [
     {
       id: 1,
@@ -40,6 +36,13 @@ const Inventory = ({ onInquire }) => {
     }
   ];
 
+  const [filter, setFilter] = useState('All');
+  const [brandFilter, setBrandFilter] = useState('All');
+  const [allCars, setAllCars] = useState(staticFallbackCars);
+
+  const [categories, setCategories] = useState(['All']);
+  const [brands, setBrands] = useState(['All']);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,8 +51,13 @@ const Inventory = ({ onInquire }) => {
         const catData = await client.fetch(catQuery);
         if (catData && catData.length > 0) {
           setCategories(['All', ...catData.map(c => c.title)]);
-        } else {
-          setCategories(['All', 'Hypercar', 'Supercar', 'Classic', 'Luxury']);
+        }
+
+        // Fetch brands
+        const brandQuery = `*[_type == "brand"] { name }`;
+        const brandData = await client.fetch(brandQuery);
+        if (brandData && brandData.length > 0) {
+          setBrands(['All', ...brandData.map(b => b.name)]);
         }
 
         // Fetch vehicles
@@ -60,27 +68,26 @@ const Inventory = ({ onInquire }) => {
           location,
           price,
           "category": category->title,
+          "brand": brand->name,
           "image": mainImage
         }`;
         const data = await client.fetch(query);
         if (data && data.length > 0) {
           setAllCars(data);
-        } else {
-          setAllCars(staticFallbackCars);
         }
       } catch (err) {
         console.error("Sanity fetch error:", err);
-        setAllCars(staticFallbackCars);
       }
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredCars = filter === 'All' 
-    ? allCars 
-    : allCars.filter(car => car.category === filter);
+  const filteredCars = allCars.filter(car => {
+    const matchCat = filter === 'All' || car.category === filter;
+    const matchBrand = brandFilter === 'All' || car.brand === brandFilter;
+    return matchCat && matchBrand;
+  });
 
   return (
     <div className="pt-32 pb-32">
@@ -91,20 +98,42 @@ const Inventory = ({ onInquire }) => {
         </header>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-8 border-b border-gray-100 pb-8 mb-12">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`text-xs uppercase tracking-widest pb-2 transition-all ${
-                filter === cat 
-                  ? 'border-b-2 border-luxury-black font-bold' 
-                  : 'text-gray-400 hover:text-luxury-black'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="space-y-8 border-b border-gray-100 pb-12 mb-12">
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-8">
+            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold w-full mb-2">Category</span>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`text-xs uppercase tracking-widest pb-2 transition-all ${
+                  filter === cat 
+                    ? 'border-b-2 border-luxury-black font-bold' 
+                    : 'text-gray-400 hover:text-luxury-black'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Brand Filters */}
+          <div className="flex flex-wrap gap-8">
+            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold w-full mb-2">Brand</span>
+            {brands.map(brand => (
+              <button
+                key={brand}
+                onClick={() => setBrandFilter(brand)}
+                className={`text-xs uppercase tracking-widest pb-2 transition-all ${
+                  brandFilter === brand 
+                    ? 'border-b-2 border-luxury-black font-bold' 
+                    : 'text-gray-400 hover:text-luxury-black'
+                }`}
+              >
+                {brand}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Grid */}
@@ -113,6 +142,7 @@ const Inventory = ({ onInquire }) => {
             <CarCard key={car.id || idx} car={car} onInquire={onInquire} />
           ))}
         </div>
+
 
         {filteredCars.length === 0 && (
           <div className="py-24 text-center">

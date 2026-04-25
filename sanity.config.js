@@ -1,42 +1,50 @@
 import { defineConfig, buildLegacyTheme } from 'sanity';
 import { structureTool } from 'sanity/structure';
-import { visionTool } from '@sanity/vision';
 import vehicle from './schemas/vehicle';
 import brand from './schemas/brand';
 import category from './schemas/category';
-import siteSettings from './schemas/siteSettings';
-import pageAbout from './schemas/pageAbout';
-import pageFinancing from './schemas/pageFinancing';
-import pageServices from './schemas/pageServices';
 
 const props = {
   '--laval-white': '#ffffff',
-  '--laval-black': '#101112',
-  '--laval-gold': '#C5A059',
-  '--laval-light-grey': '#f4f4f5',
+  '--laval-black': '#000000',
+  '--laval-grey': '#f8f9fa',
+  '--laval-accent': '#101112',
 };
 
 export const myTheme = buildLegacyTheme({
+  /* Base theme colors */
   '--black': props['--laval-black'],
   '--white': props['--laval-white'],
-  '--gray': '#666',
-  '--gray-base': '#666',
+
+  '--gray': '#999',
+  '--gray-base': '#999',
+
   '--component-bg': props['--laval-white'],
   '--component-text-color': props['--laval-black'],
-  '--brand-primary': props['--laval-gold'],
+
+  /* Brand */
+  '--brand-primary': props['--laval-accent'],
+
+  /* Default button */
   '--default-button-color': '#666',
-  '--default-button-primary-color': props['--laval-gold'],
-  '--default-button-success-color': '#0f9d58',
-  '--default-button-warning-color': '#f4b400',
-  '--default-button-danger-color': '#db4437',
-  '--state-info-color': props['--laval-gold'],
-  '--state-success-color': '#0f9d58',
-  '--state-warning-color': '#f4b400',
-  '--state-danger-color': '#db4437',
-  '--main-navigation-color': props['--laval-black'],
-  '--main-navigation-color--inverted': props['--laval-white'],
-  '--focus-color': props['--laval-gold'],
+  '--default-button-primary-color': props['--laval-accent'],
+  '--default-button-success-color': '#4caf50',
+  '--default-button-warning-color': '#ff9800',
+  '--default-button-danger-color': '#f44336',
+
+  /* State */
+  '--state-info-color': props['--laval-accent'],
+  '--state-success-color': '#4caf50',
+  '--state-warning-color': '#ff9800',
+  '--state-danger-color': '#f44336',
+
+  /* Navbar */
+  '--main-navigation-color': props['--laval-white'],
+  '--main-navigation-color--inverted': props['--laval-black'],
+
+  '--focus-color': props['--laval-accent'],
 });
+
 
 export default defineConfig({
   name: 'default',
@@ -51,42 +59,17 @@ export default defineConfig({
     structureTool({
       structure: (S) =>
         S.list()
-          .title('Website Content')
+          .title('Inventory Management')
           .items([
-            // Site Settings Singleton
-            S.listItem()
-              .title('Site Settings')
-              .id('siteSettings')
-              .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
-            
-            S.divider(),
-            
-            // Page Singletons
-            S.listItem()
-              .title('About Page Content')
-              .id('pageAbout')
-              .child(S.document().schemaType('pageAbout').documentId('pageAbout')),
-            S.listItem()
-              .title('Financing Page Content')
-              .id('pageFinancing')
-              .child(S.document().schemaType('pageFinancing').documentId('pageFinancing')),
-            S.listItem()
-              .title('Services Page Content')
-              .id('pageServices')
-              .child(S.document().schemaType('pageServices').documentId('pageServices')),
-            
-            S.divider(),
-
-            // Collections
             S.documentTypeListItem('vehicle').title('Vehicles (Inventory)'),
-            S.documentTypeListItem('brand').title('Brands'),
             S.documentTypeListItem('category').title('Categories'),
+            S.documentTypeListItem('brand').title('Brands'),
           ]),
     }),
-    visionTool(),
   ],
 
   schema: {
-    types: [vehicle, brand, category, siteSettings, pageAbout, pageFinancing, pageServices],
+    types: [vehicle, brand, category],
   },
 });
+
