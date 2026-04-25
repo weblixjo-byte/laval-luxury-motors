@@ -10,27 +10,10 @@ export default {
       validation: Rule => Rule.required()
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96
-      },
-      validation: Rule => Rule.required()
-    },
-    {
       name: 'brand',
       title: 'Brand',
       type: 'reference',
       to: [{ type: 'brand' }],
-      validation: Rule => Rule.required()
-    },
-    {
-      name: 'price',
-      title: 'Price',
-      type: 'string',
-      description: 'e.g. $1,200,000 or "Price on Request"',
       validation: Rule => Rule.required()
     },
     {
@@ -39,12 +22,7 @@ export default {
       type: 'number',
       validation: Rule => Rule.required()
     },
-    {
-      name: 'location',
-      title: 'Location',
-      type: 'string',
-      validation: Rule => Rule.required()
-    },
+
     {
       name: 'mainImage',
 

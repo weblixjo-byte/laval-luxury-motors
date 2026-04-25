@@ -21,9 +21,6 @@ const CarCard = ({ car, onInquire }) => {
           alt={car.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase tracking-widest font-medium">
-          {car.category}
-        </div>
         
         {/* Hover Overlay Button */}
         <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
@@ -39,12 +36,13 @@ const CarCard = ({ car, onInquire }) => {
       <div className="space-y-1">
         <h3 className="text-lg font-serif">{car.name}</h3>
         <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">
-          {car.year} • {car.location}
+          {car.year} {car.brand ? `• ${car.brand}` : ''}
         </p>
         <div className="flex justify-between items-end pt-2">
           <p className="text-sm font-medium text-luxury-accent uppercase tracking-widest">
             Price on Request
           </p>
+
           <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
             Details →
           </span>
