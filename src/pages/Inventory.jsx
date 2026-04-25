@@ -38,19 +38,25 @@ const Inventory = ({ onInquire }) => {
 
   const [brandFilter, setBrandFilter] = useState('All');
   const [allCars, setAllCars] = useState(staticFallbackCars);
-  const [brands, setBrands] = useState(['All']);
+  const [brands, setBrands] = useState([
+    'All', 'Bugatti', 'Ferrari', 'Lamborghini', 'Porsche', 'Koenigsegg', 
+    'McLaren', 'Rolls Royce', 'Aston Martin', 'Bentley', 'Maserati', 
+    'Mercedes Benz', 'Pagani', 'Maybach', 'Brabus'
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch brands
+        // Fetch brands from Sanity
         const brandQuery = `*[_type == "brand"] { name }`;
         const brandData = await client.fetch(brandQuery);
         if (brandData && brandData.length > 0) {
+          // If the user has added brands to Sanity, use them instead of the default list
           setBrands(['All', ...brandData.map(b => b.name)]);
         }
 
         // Fetch vehicles
+
         const query = `*[_type == "vehicle"] | order(year desc) {
           "id": _id,
           name,
