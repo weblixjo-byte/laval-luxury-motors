@@ -14,8 +14,10 @@ export default {
       title: 'Brand',
       type: 'reference',
       to: [{ type: 'brand' }],
+      weak: true,
       validation: Rule => Rule.required()
     },
+
     {
       name: 'year',
       title: 'Year',
