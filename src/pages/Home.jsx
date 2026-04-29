@@ -36,6 +36,7 @@ const Home = ({ onInquire }) => {
           model,
           name,
           "image": mainImage,
+          gallery,
           specifications
         }`;
         const data = await client.fetch(query);

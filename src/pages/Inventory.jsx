@@ -34,6 +34,7 @@ const Inventory = ({ onInquire }) => {
           model,
           year,
           "image": mainImage,
+          gallery,
           specifications
         }`;
         const vehiclesData = await client.fetch(vehiclesQuery);

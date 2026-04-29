@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { urlFor } from '../client';
 
 // TODO: Replace with the Access Key from web3forms.com
 const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
@@ -10,8 +11,14 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   if (!car) return null;
+
+  // Prepare images array
+  const mainImg = car.image?.asset ? urlFor(car.image).url() : car.image;
+  const galleryImgs = car.gallery?.map(img => img.asset ? urlFor(img).url() : img) || [];
+  const allImages = [mainImg, ...galleryImgs].filter(Boolean);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +52,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
       } else {
         setError("Something went wrong. Please try again or contact us directly.");
       }
-    } catch (_err) {
+    } catch {
       setError("Network error. Please check your connection.");
     } finally {
       setIsSubmitting(false);
@@ -66,37 +73,70 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row relative"
+            className="bg-white w-full max-w-5xl max-h-[95vh] md:max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row relative rounded-sm"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button 
               onClick={onClose}
-              className="absolute top-4 right-6 text-3xl text-gray-400 hover:text-black z-10"
+              className="absolute top-4 right-6 text-3xl text-gray-400 hover:text-black z-50 bg-white/80 md:bg-transparent rounded-full w-10 h-10 flex items-center justify-center"
             >
               ×
             </button>
 
-            {/* Car Preview Section */}
-            <div className="w-full md:w-1/2 bg-gray-50 p-8 flex flex-col justify-center">
+            {/* Car Preview Section - GALLERY REDESIGN */}
+            <div className="w-full md:w-[55%] bg-gray-50 p-6 md:p-8 flex flex-col">
               <h3 className="text-2xl font-serif mb-4">{car.name}</h3>
-              <div className="aspect-video overflow-hidden mb-6 bg-gray-200 rounded-sm">
-                <img src={car.image} alt={car.name} className="w-full h-full object-cover" />
+              
+              {/* Main Image Display */}
+              <div className="relative aspect-video overflow-hidden mb-4 bg-gray-200 rounded-sm shadow-inner group">
+                <AnimatePresence mode="wait">
+                  <motion.img 
+                    key={activeImageIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    src={allImages[activeImageIndex]} 
+                    alt={`${car.name} - ${activeImageIndex}`} 
+                    className="w-full h-full object-cover" 
+                  />
+                </AnimatePresence>
+                
+                {/* Image Counter Overlay */}
+                <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full backdrop-blur-sm">
+                  {activeImageIndex + 1} / {allImages.length}
+                </div>
               </div>
-              <div className="space-y-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">
+
+              {/* Thumbnails Gallery */}
+              <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
+                {allImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`flex-shrink-0 w-20 h-14 rounded-sm overflow-hidden border-2 transition-all ${
+                      activeImageIndex === idx ? 'border-luxury-accent' : 'border-transparent opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-6 space-y-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">
                 <div className="flex justify-between border-b pb-2">
                   <span>Reference ID</span>
-                  <span className="text-black">#{car.id}0024</span>
+                  <span className="text-black">#{car.id?.slice(-6) || 'LLM-24'}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
-                  <span>List Price</span>
+                  <span>Inquiry Price</span>
                   <span className="text-luxury-accent">Price on Request</span>
                 </div>
               </div>
             </div>
 
             {/* Form Section */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 bg-white">
+            <div className="w-full md:w-[45%] p-8 md:p-12 bg-white">
               {submitted ? (
                 <div className="h-full flex flex-col items-center justify-center text-center py-12">
                   <motion.div 
