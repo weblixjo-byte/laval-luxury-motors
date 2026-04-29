@@ -8,6 +8,7 @@ import { client } from '../client';
 const Inventory = ({ onInquire }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const brandFromUrl = searchParams.get('brand');
+  const searchFromUrl = searchParams.get('search') || '';
 
   const [brands, setBrands] = useState(['All']);
   const [allCars, setAllCars] = useState([]);
@@ -63,9 +64,15 @@ const Inventory = ({ onInquire }) => {
     fetchData();
   }, []);
 
-  const filteredCars = selectedBrand === 'All' 
-    ? allCars 
-    : allCars.filter(car => car.brand?.toLowerCase() === selectedBrand.toLowerCase());
+  const filteredCars = allCars.filter(car => {
+    const matchesBrand = selectedBrand === 'All' || car.brand?.toLowerCase() === selectedBrand.toLowerCase();
+    const matchesSearch = !searchFromUrl || 
+      car.name?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||
+      car.model?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||
+      car.brand?.toLowerCase().includes(searchFromUrl.toLowerCase());
+    
+    return matchesBrand && matchesSearch;
+  });
 
   const handleBrandChange = (brand) => {
     if (brand === 'All') {
@@ -73,6 +80,7 @@ const Inventory = ({ onInquire }) => {
     } else {
       searchParams.set('brand', brand);
     }
+    searchParams.delete('search'); // Clear search when changing brand
     setSearchParams(searchParams);
   };
 
@@ -150,7 +158,7 @@ const Inventory = ({ onInquire }) => {
             className="py-32 text-center"
           >
             <p className="text-xl text-gray-400 font-serif italic">
-              No {selectedBrand !== 'All' ? selectedBrand : ''} vehicles currently available.
+              No {selectedBrand !== 'All' ? selectedBrand : ''} {searchFromUrl ? `matching "${searchFromUrl}"` : ''} vehicles currently available.
             </p>
             <button 
               onClick={() => handleBrandChange('All')}

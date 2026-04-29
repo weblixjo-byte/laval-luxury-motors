@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { urlFor } from '../client';
+import Lightbox from './Lightbox';
+import { Maximize2 } from 'lucide-react';
 
 // TODO: Replace with the Access Key from web3forms.com
 const WEB3FORMS_ACCESS_KEY = "a2d2bd68-b305-4d15-9036-2727a7961799";
@@ -12,6 +14,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   if (!car) return null;
 
@@ -102,7 +105,10 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
               <h3 className="text-2xl font-serif mb-4">{car.name}</h3>
               
               {/* Main Image Display */}
-              <div className="relative aspect-video overflow-hidden mb-4 bg-gray-200 rounded-sm shadow-inner group">
+              <div 
+                className="relative aspect-video overflow-hidden mb-4 bg-gray-200 rounded-sm shadow-inner group cursor-zoom-in"
+                onClick={() => setIsLightboxOpen(true)}
+              >
                 <AnimatePresence mode="wait">
                   <motion.img 
                     key={activeImageIndex}
@@ -111,10 +117,15 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                     exit={{ opacity: 0 }}
                     src={allImages[activeImageIndex]} 
                     alt={`${car.name} - ${activeImageIndex}`} 
-                    className="w-full h-full object-cover" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   />
                 </AnimatePresence>
                 
+                {/* Enlarge Icon Overlay */}
+                <div className="absolute top-4 left-4 bg-black/40 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                  <Maximize2 size={16} />
+                </div>
+
                 {/* Image Counter Overlay */}
                 <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[10px] px-3 py-1 rounded-full backdrop-blur-sm">
                   {activeImageIndex + 1} / {allImages.length}
@@ -215,6 +226,14 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Fullscreen Lightbox */}
+      <Lightbox 
+        isOpen={isLightboxOpen} 
+        onClose={() => setIsLightboxOpen(false)} 
+        images={allImages} 
+        initialIndex={activeImageIndex} 
+      />
     </AnimatePresence>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { client } from '../client';
 
@@ -7,7 +7,9 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [brands, setBrands] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +35,15 @@ const Navbar = () => {
     fetchBrands();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' || e.type === 'submit') {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        navigate(`/inventory?search=${encodeURIComponent(searchQuery.trim())}`);
+      }
+    }
+  };
 
   const isHome = location.pathname === '/';
 
@@ -66,14 +77,19 @@ const Navbar = () => {
         {/* Search Bar - Center */}
         <div className="hidden lg:flex flex-1 max-w-xl mx-12">
           <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search Cars"
-              className={`w-full px-12 py-3 rounded-full text-sm transition-all border ${isScrolled || !isHome
-                ? 'bg-gray-100 border-gray-200 focus:bg-white text-black'
-                : 'bg-white/10 border-white/20 focus:bg-white/20 text-white placeholder-white/70'
-                } outline-none focus:ring-1 focus:ring-luxury-accent/50`}
-            />
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Search Cars"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearch}
+                className={`w-full px-12 py-3 rounded-full text-sm transition-all border ${isScrolled || !isHome
+                  ? 'bg-gray-100 border-gray-200 focus:bg-white text-black'
+                  : 'bg-white/10 border-white/20 focus:bg-white/20 text-white placeholder-white/70'
+                  } outline-none focus:ring-1 focus:ring-luxury-accent/50`}
+              />
+            </form>
             <svg
               className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${isScrolled || !isHome ? 'text-gray-400' : 'text-white/70'}`}
               fill="none"
@@ -152,7 +168,7 @@ const Navbar = () => {
               className="absolute inset-y-0 left-0 w-[80%] max-w-sm bg-luxury-black flex flex-col p-8 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-16">
+              <div className="flex justify-between items-center mb-12">
                 <span className="text-white text-2xl font-serif tracking-[0.2em]">LAVAL</span>
                 <button
                   className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
@@ -162,6 +178,26 @@ const Navbar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
+              </div>
+
+              {/* Mobile Search */}
+              <div className="mb-12">
+                <form onSubmit={(e) => { handleSearch(e); setIsMenuOpen(false); }}>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search Inventory..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-none px-4 py-4 text-white placeholder-white/30 text-sm outline-none focus:border-luxury-accent transition-colors"
+                    />
+                    <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-luxury-accent">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
               </div>
 
               <div className="flex flex-col space-y-8">
