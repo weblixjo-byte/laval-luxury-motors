@@ -99,6 +99,8 @@ const PopularMakes = () => {
                 <img
                   src={brand.logo}
                   alt={brand.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-auto max-w-[80px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
                 />
               ) : (

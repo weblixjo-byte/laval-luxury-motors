@@ -74,6 +74,7 @@ const Home = ({ onInquire }) => {
             alt="Find Your Perfect Car" 
             className="w-full h-full object-cover opacity-100"
             fetchpriority="high"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
         </div>
@@ -140,7 +141,7 @@ const Home = ({ onInquire }) => {
               className="lg:w-1/2 relative"
             >
               <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-[#D4AF37] z-10"></div>
-              <img src={aboutShort} alt="Laval Showroom" className="w-full h-[500px] object-cover shadow-2xl relative z-0" loading="lazy" />
+              <img src={aboutShort} alt="Laval Showroom" className="w-full h-[500px] object-cover shadow-2xl relative z-0" loading="lazy" decoding="async" />
               <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-[#D4AF37] z-10"></div>
             </motion.div>
             
@@ -237,7 +238,7 @@ const Home = ({ onInquire }) => {
               className="group relative h-[450px] md:h-[550px] flex flex-col justify-end p-8 md:p-16 rounded-sm overflow-hidden text-left shadow-2xl"
             >
               <div className="absolute inset-0">
-                <img src={financingBg} alt="Financing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <img src={financingBg} alt="Financing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
               </div>
               
@@ -264,7 +265,7 @@ const Home = ({ onInquire }) => {
               className="group relative h-[450px] md:h-[550px] flex flex-col justify-end p-8 md:p-16 rounded-sm overflow-hidden text-left shadow-2xl"
             >
               <div className="absolute inset-0">
-                <img src={tradeinBg} alt="Trade-in" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <img src={tradeinBg} alt="Trade-in" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
               </div>
               
@@ -288,7 +289,7 @@ const Home = ({ onInquire }) => {
       {/* Contact Concierge Preview */}
       <section className="relative py-24 md:py-32 overflow-hidden bg-[#0F0F0F] text-white">
         <div className="absolute inset-0 opacity-40">
-          <img src={contactShort} alt="Concierge" className="w-full h-full object-cover" loading="lazy" />
+          <img src={contactShort} alt="Concierge" className="w-full h-full object-cover" loading="lazy" decoding="async" />
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
         

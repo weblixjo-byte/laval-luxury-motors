@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { urlFor } from '../client';
 import Lightbox from './Lightbox';
+import ProgressiveImage from './ProgressiveImage';
 import { Maximize2 } from 'lucide-react';
 
 // TODO: Replace with the Access Key from web3forms.com
@@ -21,14 +22,26 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
   // Prepare images array
   // Prepare images array with optimization
   const mainImg = car.image?.asset 
-    ? urlFor(car.image).width(1200).quality(90).url() 
+    ? urlFor(car.image).width(1600).quality(80).url() 
     : car.image;
     
   const galleryImgs = car.gallery?.map(img => 
-    img.asset ? urlFor(img).width(1200).quality(90).url() : img
+    img.asset ? urlFor(img).width(1600).quality(80).url() : img
   ) || [];
   
   const allImages = [mainImg, ...galleryImgs].filter(Boolean);
+
+  // Helper to get srcset for a specific image in the gallery
+  const getSrcSet = (index) => {
+    const imgAsset = index === 0 ? car.image : car.gallery?.[index - 1];
+    if (!imgAsset?.asset) return undefined;
+    
+    return [
+      `${urlFor(imgAsset).width(600).quality(75).url()} 600w`,
+      `${urlFor(imgAsset).width(1200).quality(80).url()} 1200w`,
+      `${urlFor(imgAsset).width(1600).quality(80).url()} 1600w`,
+    ].join(', ');
+  };
 
   // Thumbnail-specific optimized URLs
   const thumbnailUrls = [
@@ -110,15 +123,22 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                 onClick={() => setIsLightboxOpen(true)}
               >
                 <AnimatePresence mode="wait">
-                  <motion.img 
+                  <motion.div
                     key={activeImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    src={allImages[activeImageIndex]} 
-                    alt={`${car.name} - ${activeImageIndex}`} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                  />
+                    className="w-full h-full"
+                  >
+                    <ProgressiveImage 
+                      src={allImages[activeImageIndex]} 
+                      srcSet={getSrcSet(activeImageIndex)}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      placeholder={activeImageIndex === 0 ? car.image?.asset?.metadata?.lqip : car.gallery?.[activeImageIndex - 1]?.asset?.metadata?.lqip}
+                      alt={`${car.name} - ${activeImageIndex}`} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                    />
+                  </motion.div>
                 </AnimatePresence>
                 
                 {/* Enlarge Icon Overlay */}

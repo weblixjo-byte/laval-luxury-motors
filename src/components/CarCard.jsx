@@ -6,8 +6,17 @@ import ProgressiveImage from './ProgressiveImage';
 const CarCard = ({ car, onInquire }) => {
   // Optimized Sanity image with responsive width and quality
   const imageUrl = car.image?.asset 
-    ? urlFor(car.image).width(800).quality(85).url() 
+    ? urlFor(car.image).width(800).quality(80).url() 
     : car.image;
+    
+  // Responsive srcset for different screen sizes
+  const srcSet = car.image?.asset ? [
+    `${urlFor(car.image).width(400).quality(70).url()} 400w`,
+    `${urlFor(car.image).width(800).quality(80).url()} 800w`,
+    `${urlFor(car.image).width(1200).quality(80).url()} 1200w`,
+  ].join(', ') : undefined;
+
+  const sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw";
     
   const placeholderUrl = car.image?.asset?.metadata?.lqip;
 
@@ -26,6 +35,8 @@ const CarCard = ({ car, onInquire }) => {
       <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
         <ProgressiveImage 
           src={imageUrl} 
+          srcSet={srcSet}
+          sizes={sizes}
           placeholder={placeholderUrl}
           alt={car.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
