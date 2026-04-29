@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { urlFor } from '../client';
 
 // TODO: Replace with the Access Key from web3forms.com
-const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+const WEB3FORMS_ACCESS_KEY = "a2d2bd68-b305-4d15-9036-2727a7961799";
 
 const InquiryModal = ({ isOpen, onClose, car }) => {
   const [inquiryType, setInquiryType] = useState('purchase');

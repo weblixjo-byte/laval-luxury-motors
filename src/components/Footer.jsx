@@ -1,7 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// TODO: Replace with the Access Key from web3forms.com
+const WEB3FORMS_ACCESS_KEY = "a2d2bd68-b305-4d15-9036-2727a7961799";
+
 const Footer = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.target);
+    formData.append("access_key", WEB3FORMS_ACCESS_KEY);
+    formData.append("subject", "New Newsletter Subscription");
+    formData.append("from_name", "Laval Motors Website");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        e.target.reset();
+        setTimeout(() => setSubmitted(false), 5000);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-luxury-black text-white pt-24 pb-12">
       <div className="luxury-container">
@@ -41,14 +74,26 @@ const Footer = () => {
           <div>
             <h4 className="text-xs uppercase tracking-widest mb-6 text-gray-500">Newsletter</h4>
             <p className="text-xs text-gray-400 mb-4 italic">Sign up for exclusive automotive news.</p>
-            <form className="flex border-b border-gray-700 pb-2">
-              <input 
-                type="email" 
-                placeholder="EMAIL ADDRESS" 
-                className="bg-transparent border-none text-xs w-full focus:outline-none uppercase tracking-widest"
-              />
-              <button type="submit" className="text-xs tracking-widest">→</button>
-            </form>
+            {submitted ? (
+              <p className="text-xs text-luxury-accent font-bold tracking-widest animate-pulse">THANK YOU FOR SUBSCRIBING</p>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex border-b border-gray-700 pb-2">
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  placeholder="EMAIL ADDRESS" 
+                  className="bg-transparent border-none text-xs w-full focus:outline-none uppercase tracking-widest"
+                />
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="text-xs tracking-widest hover:text-luxury-accent transition-colors"
+                >
+                  {isSubmitting ? '...' : '→'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
