@@ -1,10 +1,15 @@
 import React from 'react';
 import { urlFor } from '../client';
 import { Heart, Clock, Settings2 } from 'lucide-react';
+import ProgressiveImage from './ProgressiveImage';
 
 const CarCard = ({ car, onInquire }) => {
-  // Handle both static assets and Sanity image references
-  const imageUrl = car.image?.asset ? urlFor(car.image).url() : car.image;
+  // Optimized Sanity image with responsive width and quality
+  const imageUrl = car.image?.asset 
+    ? urlFor(car.image).width(800).quality(85).url() 
+    : car.image;
+    
+  const placeholderUrl = car.image?.asset?.metadata?.lqip;
 
   // Formatting helpers
   const mileage = car.specifications?.mileage || car.mileage;
@@ -19,14 +24,14 @@ const CarCard = ({ car, onInquire }) => {
     >
       {/* Image Container */}
       <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-        <img 
+        <ProgressiveImage 
           src={imageUrl} 
+          placeholder={placeholderUrl}
           alt={car.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         {/* Heart Icon */}
-        <button className="absolute top-3 right-3 text-white drop-shadow-md hover:text-red-500 transition-colors">
+        <button className="absolute top-3 right-3 text-white drop-shadow-md hover:text-red-500 transition-colors z-10">
           <Heart size={20} className="stroke-2" />
         </button>
       </div>

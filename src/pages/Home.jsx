@@ -35,8 +35,20 @@ const Home = ({ onInquire }) => {
           "brand": brand->name,
           model,
           name,
-          "image": mainImage,
-          gallery,
+          "image": mainImage {
+            asset-> {
+              _id,
+              url,
+              metadata { lqip }
+            }
+          },
+          gallery[] {
+            asset-> {
+              _id,
+              url,
+              metadata { lqip }
+            }
+          },
           specifications
         }`;
         const data = await client.fetch(query);
@@ -61,6 +73,7 @@ const Home = ({ onInquire }) => {
             src={heroBright} 
             alt="Find Your Perfect Car" 
             className="w-full h-full object-cover opacity-100"
+            fetchpriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
         </div>

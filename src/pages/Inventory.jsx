@@ -33,8 +33,20 @@ const Inventory = ({ onInquire }) => {
           "brand": brand->name,
           model,
           year,
-          "image": mainImage,
-          gallery,
+          "image": mainImage {
+            asset-> {
+              _id,
+              url,
+              metadata { lqip }
+            }
+          },
+          gallery[] {
+            asset-> {
+              _id,
+              url,
+              metadata { lqip }
+            }
+          },
           specifications
         }`;
         const vehiclesData = await client.fetch(vehiclesQuery);

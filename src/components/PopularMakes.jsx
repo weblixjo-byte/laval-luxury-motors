@@ -33,7 +33,7 @@ const PopularMakes = () => {
         if (data && data.length > 0) {
           const formattedSanityBrands = data.map(b => ({
             name: b.name,
-            logo: b.logo ? urlFor(b.logo).url() : null
+            logo: b.logo ? urlFor(b.logo).width(150).quality(80).url() : null
           }));
 
           // Merge: use Sanity brands but if they have no logo, try to find one in fallbacks

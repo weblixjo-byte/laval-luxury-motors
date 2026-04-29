@@ -16,9 +16,22 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
   if (!car) return null;
 
   // Prepare images array
-  const mainImg = car.image?.asset ? urlFor(car.image).url() : car.image;
-  const galleryImgs = car.gallery?.map(img => img.asset ? urlFor(img).url() : img) || [];
+  // Prepare images array with optimization
+  const mainImg = car.image?.asset 
+    ? urlFor(car.image).width(1200).quality(90).url() 
+    : car.image;
+    
+  const galleryImgs = car.gallery?.map(img => 
+    img.asset ? urlFor(img).width(1200).quality(90).url() : img
+  ) || [];
+  
   const allImages = [mainImg, ...galleryImgs].filter(Boolean);
+
+  // Thumbnail-specific optimized URLs
+  const thumbnailUrls = [
+    car.image?.asset ? urlFor(car.image).width(200).quality(70).url() : car.image,
+    ...(car.gallery?.map(img => img.asset ? urlFor(img).width(200).quality(70).url() : img) || [])
+  ].filter(Boolean);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,7 +123,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
 
               {/* Thumbnails Gallery */}
               <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
-                {allImages.map((img, idx) => (
+                {thumbnailUrls.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
