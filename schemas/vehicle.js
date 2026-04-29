@@ -44,8 +44,12 @@ export default {
     {
       name: 'gallery',
       title: 'Image Gallery',
+      description: 'You can upload multiple images at once by dragging them here or using the "Upload" button and selecting multiple files.',
       type: 'array',
-      of: [{ type: 'image', options: { hotspot: true } }]
+      of: [{ type: 'image', options: { hotspot: true } }],
+      options: {
+        layout: 'grid'
+      }
     },
     {
       name: 'specifications',
