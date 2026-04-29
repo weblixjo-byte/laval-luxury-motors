@@ -16,7 +16,7 @@ const Navbar = () => {
   }, []);
 
   const brands = [
-    'Bugatti', 'Pagani', 'Koenigsegg', 'Ferrari', 'Lamborghini', 'Mercedes', 'Rolls-Royce', 'McLaren', 'Brabus', 'Porsche', 'Aston Martin'
+    'Mercedes', 'Audi', 'Honda', 'Toyota', 'BMW', 'Lexus', 'Volkswagen', 'Hyundai', 'Jeep', 'Mazda'
   ];
 
   const isHome = location.pathname === '/';
@@ -27,9 +27,9 @@ const Navbar = () => {
         }`}
     >
       {/* Main Header Row */}
-      <div className={`luxury-container flex justify-between items-center bg-inherit transition-all duration-500 ${isScrolled || !isHome ? 'pt-4 pb-2' : 'pt-8 pb-2'
+      <div className={`luxury-container flex justify-between items-end bg-inherit transition-all duration-500 ${isScrolled || !isHome ? 'h-12 md:h-auto pt-2 pb-3 md:pb-2' : 'h-16 md:h-auto pt-4 pb-4 md:pb-2'
         }`}>
-        <div className="flex items-center space-x-8">
+        <div className="flex items-center space-x-8 mb-1 md:mb-0">
           <button
             className={`flex flex-col space-y-1.5 focus:outline-none ${isScrolled || !isHome ? 'text-black' : 'text-white'}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -73,33 +73,44 @@ const Navbar = () => {
         {/* Right Actions */}
         <div className={`hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold ${isScrolled || !isHome ? 'text-luxury-black' : 'text-white'
           }`}>
-          <Link to="/inventory" className="hover:opacity-70 transition-opacity">Inventory</Link>
-          <Link to="/services" className="hover:opacity-70 transition-opacity">Services</Link>
-          <Link to="/financing" className="hover:opacity-70 transition-opacity">Financing</Link>
-          <Link to="/about" className="hover:opacity-70 transition-opacity">About</Link>
+          {['Inventory', 'Services', 'Financing', 'About'].map((item) => (
+            <Link 
+              key={item}
+              to={`/${item.toLowerCase()}`} 
+              className={`transition-all duration-300 relative group ${
+                location.pathname === `/${item.toLowerCase()}` ? 'text-luxury-accent' : 'hover:opacity-70'
+              }`}
+            >
+              {item}
+              {location.pathname === `/${item.toLowerCase()}` && (
+                <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-luxury-accent"></span>
+              )}
+            </Link>
+          ))}
           <Link
             to="/contact"
-            className={`px-6 py-2 border transition-all ${isScrolled || !isHome
-              ? 'border-black bg-black text-white hover:bg-white hover:text-black'
-              : 'border-white bg-transparent hover:bg-white hover:text-black'
-              }`}
+            className={`px-6 py-2 border transition-all ${
+              location.pathname === '/contact'
+                ? 'border-luxury-accent bg-luxury-accent text-white'
+                : (isScrolled || !isHome ? 'border-black bg-black text-white hover:bg-white hover:text-black' : 'border-white bg-transparent hover:bg-white hover:text-black')
+            }`}
           >
             Inquire
           </Link>
         </div>
       </div>
 
-      {/* Brands Row */}
-      <div className={`hidden md:block border-t transition-all duration-300 ${isScrolled || !isHome
+      {/* Brands Row - Optimized for Mobile Scroll */}
+      <div className={`border-t transition-all duration-300 ${isScrolled || !isHome
         ? 'bg-white border-gray-100 py-3'
         : 'bg-transparent border-white/10 py-3'
         }`}>
-        <div className="luxury-container flex justify-between">
+        <div className="luxury-container flex justify-between md:justify-around overflow-x-auto no-scrollbar gap-8 md:gap-0">
           {brands.map(brand => (
             <Link
               key={brand}
               to={`/inventory?brand=${brand}`}
-              className={`text-[9px] uppercase tracking-widest transition-colors ${isScrolled || !isHome ? 'text-gray-500 hover:text-black' : 'text-white/80 hover:text-white'
+              className={`text-[9px] uppercase tracking-widest transition-colors whitespace-nowrap ${isScrolled || !isHome ? 'text-gray-500 hover:text-black' : 'text-white/80 hover:text-white'
                 }`}
             >
               {brand}
@@ -108,38 +119,80 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Premium Redesign */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '-100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 bg-luxury-black z-[60] flex flex-col p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60]"
+            onClick={() => setIsMenuOpen(false)}
           >
-            <div className="flex justify-between items-center mb-16">
-              <span className="text-white text-xl font-serif tracking-widest">LAVAL</span>
-              <button
-                className="text-white text-3xl"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="flex flex-col space-y-8">
-              {['Inventory', 'Services', 'Financing', 'About', 'Contact'].map((item) => (
-                <Link
-                  key={item}
-                  to={`/${item.toLowerCase().replace(/ /g, '-')}`}
-                  className="text-white text-2xl uppercase tracking-[0.2em] font-light hover:text-luxury-accent transition-colors"
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute inset-y-0 left-0 w-[80%] max-w-sm bg-luxury-black flex flex-col p-8 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-16">
+                <span className="text-white text-2xl font-serif tracking-[0.2em]">LAVAL</span>
+                <button
+                  className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item}
-                </Link>
-              ))}
-            </div>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="flex flex-col space-y-8">
+                {['Inventory', 'Services', 'Financing', 'About', 'Contact'].map((item, idx) => {
+                  const path = `/${item.toLowerCase().replace(/ /g, '-')}`;
+                  const isActive = location.pathname === path;
+                  
+                  return (
+                    <motion.div
+                      key={item}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * idx }}
+                    >
+                      <Link
+                        to={path}
+                        className={`uppercase tracking-[0.2em] font-light transition-colors flex items-center justify-between group ${
+                          isActive ? 'text-luxury-accent text-3xl font-normal' : 'text-white text-2xl hover:text-luxury-accent'
+                        }`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className="flex items-center gap-4">
+                          {item}
+                          {isActive && <div className="w-2 h-2 rounded-full bg-luxury-accent animate-pulse"></div>}
+                        </div>
+                        <span className={`text-[10px] transition-opacity ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>→</span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-auto pt-12 border-t border-white/10 space-y-6">
+                <div className="space-y-1">
+                  <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Showroom</p>
+                  <p className="text-sm text-gray-300 font-light italic">1530 Iris Dr SW, Conyers Ga</p>
+                </div>
+                <div className="flex space-x-6">
+                  {['Instagram', 'LinkedIn'].map(social => (
+                    <a key={social} href="#" className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors">
+                      {social}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

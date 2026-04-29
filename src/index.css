@@ -2,9 +2,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-luxury-black: #151515;
-  --color-luxury-grey: #F5F5F5;
-  --color-luxury-accent: #C5A059; /* Subtle gold accent */
+  --color-luxury-black: #0F0F0F;
+  --color-luxury-grey: #F8F8F8;
+  --color-luxury-accent: #D4AF37; /* Premium Metallic Gold */
   
   --font-serif: "Prata", serif;
   --font-sans: "Inter", sans-serif;
@@ -37,6 +37,36 @@ h1, h2, h3, h4, .serif {
   margin: 0 auto;
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+/* Custom Utilities for Luxury Feel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+}
+
+/* Mobile Typography Optimization */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
+  }
+  h2 {
+    font-size: 1.75rem !important;
+  }
+  .luxury-container {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
 }
 
 @media (max-width: 768px) {

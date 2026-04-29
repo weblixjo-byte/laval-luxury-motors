@@ -25,7 +25,6 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
     
     // Add car details to the submission
     formData.append("car_name", car.name);
-    formData.append("car_price", car.price);
     formData.append("car_id", car.id);
     formData.append("interest_type", inquiryType);
 

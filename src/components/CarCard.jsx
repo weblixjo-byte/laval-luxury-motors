@@ -1,54 +1,64 @@
 import React from 'react';
-import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { urlFor } from '../client';
+import { Heart, Clock, Settings2 } from 'lucide-react';
 
 const CarCard = ({ car, onInquire }) => {
   // Handle both static assets and Sanity image references
   const imageUrl = car.image?.asset ? urlFor(car.image).url() : car.image;
 
+  // Formatting helpers
+  const formattedMileage = car.mileage ? `${car.mileage.toLocaleString()} km` : 'N/A';
+  const bodyType = car.bodyType || 'Sedan';
+  const transmission = car.transmission || 'Automatic';
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-      className="group cursor-pointer"
+    <div 
+      className="bg-white border border-gray-200 shadow-sm overflow-hidden flex flex-col group cursor-pointer hover:shadow-md transition-shadow font-sans"
       onClick={() => onInquire && onInquire(car)}
     >
-      <div className="relative aspect-[16/10] overflow-hidden mb-4 bg-gray-100">
+      {/* Image Container */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
         <img 
           src={imageUrl} 
           alt={car.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover"
+          loading="lazy"
         />
-        
-        {/* Hover Overlay Button */}
-        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileHover={{ scale: 1.05 }}
-            className="bg-white text-[#151515] px-8 py-3 text-[10px] uppercase tracking-[0.2em] font-bold opacity-0 group-hover:opacity-100 transition-all duration-500 shadow-2xl"
-          >
-            Inquire Now
-          </motion.div>
-        </div>
+        {/* Heart Icon */}
+        <button className="absolute top-3 right-3 text-white drop-shadow-md hover:text-red-500 transition-colors">
+          <Heart size={20} className="stroke-2" />
+        </button>
       </div>
-      <div className="space-y-1">
-        <h3 className="text-lg font-serif">{car.name}</h3>
-        <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">
-          {car.year} {car.brand ? `• ${car.brand}` : ''}
-        </p>
-        <div className="flex justify-between items-end pt-2">
-          <p className="text-sm font-medium text-luxury-accent uppercase tracking-widest">
-            Price on Request
-          </p>
 
-          <span className="text-[10px] uppercase tracking-widest text-[#C5A059] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-            Details →
-          </span>
+      {/* Details Container */}
+      <div className="p-4 md:p-5 flex flex-col flex-grow">
+        {/* Title & Body Type */}
+        <div className="mb-4 text-left">
+          <h3 className="text-sm md:text-base font-bold text-gray-900 leading-tight">
+            {car.year} {car.brand ? `${car.brand} ` : ''}{car.model || car.name}
+          </h3>
+          <p className="text-[10px] md:text-xs text-gray-500 mt-1 uppercase tracking-widest">{bodyType}</p>
+        </div>
+
+        {/* Specs Row */}
+        <div className="flex items-center space-x-4 text-[10px] md:text-xs text-gray-600 mb-6 font-medium">
+          <div className="flex items-center space-x-2">
+            <Clock size={14} className="text-gray-400" />
+            <span>{formattedMileage}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Settings2 size={14} className="text-gray-400" />
+            <span>{transmission}</span>
+          </div>
+        </div>
+
+        {/* Price Row */}
+        <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
+          <span className="text-[10px] md:text-xs font-black text-luxury-black tracking-[0.2em] uppercase">Price on Request</span>
+          <div className="w-2 h-2 rounded-full bg-luxury-accent animate-pulse"></div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

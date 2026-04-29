@@ -4,39 +4,28 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'image',
-      options: { hotspot: true }
+      name: 'hero',
+      title: 'Hero Section',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Main Title', type: 'string' },
+        { name: 'subtitle', title: 'Subtitle', type: 'string' },
+        { name: 'image', title: 'Hero Image', type: 'image', options: { hotspot: true } }
+      ]
     },
     {
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'Mastery & Preservation'
-    },
-    {
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string'
-    },
-    {
-      name: 'introQuote',
-      title: 'Intro Quote',
-      type: 'string'
-    },
-    {
-      name: 'services',
-      title: 'Services List',
+      name: 'serviceBlocks',
+      title: 'Service Blocks',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
             { name: 'title', title: 'Service Title', type: 'string' },
+            { name: 'subtitle', title: 'Small Subtitle', type: 'string' },
             { name: 'description', title: 'Description', type: 'text' },
             { name: 'image', title: 'Service Image', type: 'image', options: { hotspot: true } },
-            { name: 'features', title: 'Features', type: 'array', of: [{ type: 'string' }] }
+            { name: 'features', title: 'Feature List', type: 'array', of: [{ type: 'string' }] }
           ]
         }
       ]

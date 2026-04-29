@@ -4,47 +4,38 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'image',
-      options: { hotspot: true }
+      name: 'hero',
+      title: 'Hero Section',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Main Title', type: 'string' },
+        { name: 'subtitle', title: 'Subtitle', type: 'string' },
+        { name: 'image', title: 'Hero Image', type: 'image', options: { hotspot: true } }
+      ]
     },
     {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      initialValue: 'The Art of Driving'
+      name: 'values',
+      title: 'Core Values',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', title: 'Value Title', type: 'string' },
+            { name: 'description', title: 'Description', type: 'text' }
+          ]
+        }
+      ]
     },
     {
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string'
-    },
-    {
-      name: 'historyTitle',
-      title: 'History Section Title',
-      type: 'string'
-    },
-    {
-      name: 'historyText',
-      title: 'History Section Text',
-      type: 'text'
-    },
-    {
-      name: 'philosophyTitle',
-      title: 'Philosophy Section Title',
-      type: 'string'
-    },
-    {
-      name: 'philosophyText',
-      title: 'Philosophy Section Text',
-      type: 'text'
-    },
-    {
-      name: 'craftsmanshipImage',
-      title: 'Craftsmanship Image',
-      type: 'image',
-      options: { hotspot: true }
+      name: 'story',
+      title: 'Our Story Section',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'text', title: 'Text', type: 'text' },
+        { name: 'image', title: 'Section Image', type: 'image', options: { hotspot: true } }
+      ]
     }
   ]
 }

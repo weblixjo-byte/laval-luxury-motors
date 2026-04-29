@@ -62,16 +62,18 @@ export default {
       title: 'Contact Information',
       type: 'object',
       fields: [
-        { name: 'email', title: 'Email', type: 'string' },
-        { name: 'phone', title: 'Phone', type: 'string' },
-        { name: 'address', title: 'Address', type: 'string' }
+        { name: 'generalEmail', title: 'General Email', type: 'string', initialValue: 'Help@lavalmotors.com' },
+        { name: 'directEmail', title: 'Direct Email', type: 'string', initialValue: 'Mike@lavalmotors.com' },
+        { name: 'salesPhone', title: 'Sales Phone', type: 'string', initialValue: '+1 (404) 790-8336' },
+        { name: 'servicePhone', title: 'Service Phone', type: 'string', initialValue: '+1 (229) 237-4046' },
+        { name: 'address', title: 'Showroom Address', type: 'string', initialValue: '1530 Iris Dr SW, Conyers Ga 30092' }
       ]
     },
     {
       name: 'footerText',
       title: 'Footer Copyright Text',
       type: 'string',
-      initialValue: '© 2024 Laval Luxury Motors. All rights reserved.'
+      initialValue: '© 2026 Laval Luxury Motors. All rights reserved.'
     }
   ]
 }

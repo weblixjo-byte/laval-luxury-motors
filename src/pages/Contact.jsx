@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 
 const Contact = () => {
   return (
-    <div className="min-h-screen bg-white pt-32">
+    <div className="min-h-screen bg-white pt-32 pb-32">
       <div className="luxury-container">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -42,8 +42,8 @@ const Contact = () => {
               <div>
                 <h3 className="text-xl font-serif mb-8 text-luxury-black">Global HQ & Showroom</h3>
                 <div className="space-y-4 text-gray-500 font-light leading-relaxed">
-                  <p className="text-lg">123 Luxury Boulevard</p>
-                  <p className="text-lg">Geneva, Switzerland, 1201</p>
+                  <p className="text-lg">1530 Iris Dr SW</p>
+                  <p className="text-lg">Conyers Ga 30092</p>
                   <div className="pt-4">
                     <a href="#" className="text-xs uppercase tracking-widest border-b border-luxury-accent pb-1 text-luxury-black font-bold">Get Directions</a>
                   </div>
@@ -55,15 +55,19 @@ const Contact = () => {
                 <div className="space-y-6">
                   <div className="flex justify-between items-end border-b border-gray-100 pb-4">
                     <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">General Inquiries</span>
-                    <span className="text-lg text-luxury-black">concierge@lavalmotors.com</span>
+                    <span className="text-lg text-luxury-black">Help@lavalmotors.com</span>
+                  </div>
+                  <div className="flex justify-between items-end border-b border-gray-100 pb-4">
+                    <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Direct Inquiry</span>
+                    <span className="text-lg text-luxury-black">Mike@lavalmotors.com</span>
                   </div>
                   <div className="flex justify-between items-end border-b border-gray-100 pb-4">
                     <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Sales Desk</span>
-                    <span className="text-lg text-luxury-black">+41 22 123 4567</span>
+                    <span className="text-lg text-luxury-black">+1 (404) 790-8336</span>
                   </div>
                   <div className="flex justify-between items-end border-b border-gray-100 pb-4">
                     <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Service Atelier</span>
-                    <span className="text-lg text-luxury-black">+41 22 123 4568</span>
+                    <span className="text-lg text-luxury-black">+1 (229) 237-4046</span>
                   </div>
                 </div>
               </div>
@@ -128,14 +132,6 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Decorative Image/Map Section */}
-      <section className="mt-32 h-[50vh] w-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000">
-        <img 
-          src="https://images.unsplash.com/photo-1562141989-c5c79ac8f576?auto=format&fit=crop&q=80" 
-          alt="Laval Showroom" 
-          className="w-full h-full object-cover"
-        />
-      </section>
     </div>
   );
 };
