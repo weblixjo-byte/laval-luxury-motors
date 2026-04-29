@@ -1,12 +1,13 @@
 export default {
   name: 'vehicle',
-  title: 'Vehicle',
+  title: 'Vehicles',
   type: 'document',
   fields: [
     {
       name: 'name',
-      title: 'Full Name (Make & Model)',
+      title: 'Full Name',
       type: 'string',
+      description: 'e.g. 2024 Mercedes-Benz S-Class',
       validation: Rule => Rule.required()
     },
     {
@@ -14,73 +15,61 @@ export default {
       title: 'Brand',
       type: 'reference',
       to: [{ type: 'brand' }],
-      weak: true,
       validation: Rule => Rule.required()
     },
-
+    {
+      name: 'model',
+      title: 'Model',
+      type: 'string',
+    },
     {
       name: 'year',
       title: 'Year',
       type: 'number',
-      validation: Rule => Rule.required()
     },
-
+    {
+      name: 'isNewArrival',
+      title: 'Show in New Arrivals?',
+      type: 'boolean',
+      description: 'If toggled, this vehicle will appear in the New Arrivals section on the home page.',
+      initialValue: false
+    },
     {
       name: 'mainImage',
-
       title: 'Main Image',
       type: 'image',
-      options: {
-        hotspot: true
-      },
+      options: { hotspot: true },
       validation: Rule => Rule.required()
     },
     {
       name: 'gallery',
-      title: 'Gallery Images',
+      title: 'Image Gallery',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }]
     },
     {
-      name: 'specs',
-      title: 'Technical Specifications',
+      name: 'specifications',
+      title: 'Specifications',
       type: 'object',
       fields: [
-        { name: 'engine', title: 'Engine', type: 'string' },
-        { name: 'power', title: 'Horsepower', type: 'string' },
-        { name: 'accel', title: '0-100 km/h (s)', type: 'string' },
-        { name: 'topSpeed', title: 'Top Speed (km/h)', type: 'string' }
+        { name: 'mileage', title: 'Mileage (km)', type: 'number' },
+        { name: 'transmission', title: 'Transmission', type: 'string', options: { list: ['Automatic', 'Manual'] } },
+        { name: 'fuelType', title: 'Fuel Type', type: 'string' },
+        { name: 'engine', title: 'Engine Details', type: 'string' },
+        { name: 'exteriorColor', title: 'Exterior Color', type: 'string' },
+        { name: 'interiorColor', title: 'Interior Color', type: 'string' }
       ]
     },
     {
-      name: 'isFeatured',
-      title: 'Featured on Home Page?',
-      type: 'boolean',
-      initialValue: false,
-      description: 'If enabled, this car will appear in the Featured Collection section on the home page.'
-    },
-
-    {
       name: 'description',
-      title: 'Description',
-      type: 'text'
+      title: 'Detailed Description',
+      type: 'text',
     }
   ],
   preview: {
     select: {
       title: 'name',
-      brand: 'brand.name',
-      year: 'year',
       media: 'mainImage'
-    },
-    prepare(selection) {
-      const { title, brand, year, media } = selection;
-      return {
-        title: title,
-        subtitle: `${brand ? brand : 'No Brand'} | ${year}`,
-        media: media
-      }
     }
   }
 }
-

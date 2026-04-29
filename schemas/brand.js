@@ -1,6 +1,6 @@
 export default {
   name: 'brand',
-  title: 'Brand',
+  title: 'Brands (Navbar)',
   type: 'document',
   fields: [
     {
@@ -10,19 +10,20 @@ export default {
       validation: Rule => Rule.required()
     },
     {
-      name: 'logo',
-      title: 'Brand Logo',
-      type: 'image',
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
       options: {
-        hotspot: true
-      }
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required()
+    },
+    {
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Order in which this brand appears in the Navbar'
     }
-  ],
-  preview: {
-    select: {
-      title: 'name',
-      media: 'logo'
-    }
-  }
+  ]
 }
-

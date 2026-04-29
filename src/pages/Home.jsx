@@ -8,8 +8,6 @@ import CarCard from '../components/CarCard';
 import heroBright from '../assets/hero_bright.png';
 import hondaCivic from '../assets/honda_civic.png';
 import mazda3 from '../assets/mazda3.png';
-import audiA4 from '../assets/audi_a4.png';
-import hyundaiElantra from '../assets/hyundai_elantra.png';
 import financingBg from '../assets/financing_bg.png';
 import tradeinBg from '../assets/tradein_bg.png';
 import aboutShort from '../assets/about_short.png';
@@ -34,11 +32,6 @@ const Home = ({ onInquire }) => {
       year: 2021,
       brand: 'Honda',
       model: 'Civic Si',
-      bodyType: 'Sedan',
-      mileage: 48250,
-      transmission: 'Manual',
-      price: 26995,
-      weeklyPayment: '$146/wk',
       image: hondaCivic
     },
     {
@@ -46,56 +39,23 @@ const Home = ({ onInquire }) => {
       year: 2020,
       brand: 'Mazda',
       model: 'Mazda3 GT',
-      bodyType: 'Sedan',
-      mileage: 36800,
-      transmission: 'Automatic',
-      price: 23995,
-      weeklyPayment: '$140/wk',
       image: mazda3
-    },
-    {
-      id: 3,
-      year: 2019,
-      brand: 'Audi',
-      model: 'A4 Progressiv',
-      bodyType: 'Sedan',
-      mileage: 62100,
-      transmission: 'Automatic',
-      price: 25995,
-      weeklyPayment: '$141/wk',
-      image: audiA4
-    },
-    {
-      id: 4,
-      year: 2022,
-      brand: 'Hyundai',
-      model: 'Elantra Preferred',
-      bodyType: 'Sedan',
-      mileage: 29400,
-      transmission: 'Automatic',
-      price: 21995,
-      weeklyPayment: '$141/wk',
-      image: hyundaiElantra
     }
   ];
 
   const [featuredCars, setFeaturedCars] = useState(staticFallbackCars);
 
   useEffect(() => {
-    const fetchFeatured = async () => {
+    const fetchNewArrivals = async () => {
       try {
-        const query = `*[_type == "vehicle" && isFeatured == true][0...4] {
+        const query = `*[_type == "vehicle" && isNewArrival == true][0...4] {
           "id": _id,
           year,
           "brand": brand->name,
           model,
           name,
-          bodyType,
-          mileage,
-          transmission,
-          price,
-          weeklyPayment,
-          "image": mainImage
+          "image": mainImage,
+          specifications
         }`;
         const data = await client.fetch(query);
         if (data && data.length > 0) {
@@ -106,7 +66,7 @@ const Home = ({ onInquire }) => {
       }
     };
 
-    fetchFeatured();
+    fetchNewArrivals();
   }, []);
 
   return (

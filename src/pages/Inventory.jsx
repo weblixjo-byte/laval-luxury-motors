@@ -9,86 +9,41 @@ const Inventory = ({ onInquire }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const brandFromUrl = searchParams.get('brand');
 
-  const brands = [
-    'All',
-    'Honda',
-    'Mazda',
-    'Audi',
-    'Hyundai',
-    'Mercedes',
-    'BMW',
-    'Toyota'
-  ];
+  const [brands, setBrands] = useState(['All']);
+  const [allCars, setAllCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const staticFallbackCars = [
-    {
-      id: 'fb1',
-      year: 2021,
-      brand: 'Honda',
-      name: 'Honda Civic Si',
-      model: 'Civic Si',
-      mileage: 48250,
-      transmission: 'Manual',
-      price: 26995,
-      weeklyPayment: '$146/wk',
-      image: 'https://images.unsplash.com/photo-1605515298946-d062f2e9da53?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'fb2',
-      year: 2020,
-      brand: 'Mazda',
-      name: 'Mazda3 GT',
-      model: 'Mazda3 GT',
-      mileage: 36800,
-      transmission: 'Automatic',
-      image: 'https://images.unsplash.com/photo-1517524008436-bbdb53c57d59?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'fb3',
-      year: 2019,
-      brand: 'Audi',
-      name: 'Audi A4 Progressiv',
-      model: 'A4 Progressiv',
-      mileage: 62100,
-      transmission: 'Automatic',
-      image: 'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'fb4',
-      year: 2022,
-      brand: 'Hyundai',
-      name: 'Hyundai Elantra Preferred',
-      model: 'Elantra Preferred',
-      mileage: 29400,
-      transmission: 'Automatic',
-      image: 'https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?auto=format&fit=crop&q=80'
-    }
-  ];
-
-  const [allCars, setAllCars] = useState(staticFallbackCars);
   const selectedBrand = brandFromUrl || 'All';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const query = `*[_type == "vehicle"] | order(year desc) {
+        setIsLoading(true);
+        // Fetch Brands
+        const brandsQuery = `*[_type == "brand"] | order(order asc, name asc) { name }`;
+        const brandsData = await client.fetch(brandsQuery);
+        if (brandsData) {
+          setBrands(['All', ...brandsData.map(b => b.name)]);
+        }
+
+        // Fetch Vehicles
+        const vehiclesQuery = `*[_type == "vehicle"] | order(year desc) {
           "id": _id,
           name,
           "brand": brand->name,
+          model,
           year,
-          mileage,
-          transmission,
-          bodyType,
-          price,
-          weeklyPayment,
-          "image": mainImage
+          "image": mainImage,
+          specifications
         }`;
-        const data = await client.fetch(query);
-        if (data && data.length > 0) {
-          setAllCars(data);
+        const vehiclesData = await client.fetch(vehiclesQuery);
+        if (vehiclesData) {
+          setAllCars(vehiclesData);
         }
       } catch (err) {
         console.error("Sanity fetch error:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -107,6 +62,14 @@ const Inventory = ({ onInquire }) => {
     }
     setSearchParams(searchParams);
   };
+
+  if (isLoading) {
+    return (
+      <div className="pt-32 pb-32 min-h-screen bg-white flex items-center justify-center">
+        <div className="w-12 h-12 border-2 border-luxury-accent border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-32 min-h-screen bg-white">

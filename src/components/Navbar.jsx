@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { client } from '../client';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [brands, setBrands] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -12,12 +14,26 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Fetch dynamic brands from Sanity
+    const fetchBrands = async () => {
+      try {
+        const query = `*[_type == "brand"] | order(order asc, name asc) { name }`;
+        const data = await client.fetch(query);
+        if (data && data.length > 0) {
+          setBrands(data.map(b => b.name));
+        } else {
+          // Fallback if no brands in Sanity
+          setBrands(['Mercedes', 'Audi', 'Honda', 'Toyota', 'BMW', 'Lexus']);
+        }
+      } catch (err) {
+        console.error("Fetch brands error:", err);
+      }
+    };
+
+    fetchBrands();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const brands = [
-    'Mercedes', 'Audi', 'Honda', 'Toyota', 'BMW', 'Lexus', 'Volkswagen', 'Hyundai', 'Jeep', 'Mazda'
-  ];
 
   const isHome = location.pathname === '/';
 

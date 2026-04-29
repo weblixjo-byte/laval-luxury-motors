@@ -7,9 +7,10 @@ const CarCard = ({ car, onInquire }) => {
   const imageUrl = car.image?.asset ? urlFor(car.image).url() : car.image;
 
   // Formatting helpers
-  const formattedMileage = car.mileage ? `${car.mileage.toLocaleString()} km` : 'N/A';
+  const mileage = car.specifications?.mileage || car.mileage;
+  const formattedMileage = mileage ? `${mileage.toLocaleString()} km` : 'N/A';
   const bodyType = car.bodyType || 'Sedan';
-  const transmission = car.transmission || 'Automatic';
+  const transmission = car.specifications?.transmission || car.transmission || 'Automatic';
 
   return (
     <div 
