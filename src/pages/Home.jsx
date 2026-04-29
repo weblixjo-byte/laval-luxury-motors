@@ -6,8 +6,6 @@ import CarCard from '../components/CarCard';
 
 // Using the newly generated high-quality images
 import heroBright from '../assets/hero_bright.png';
-import hondaCivic from '../assets/honda_civic.png';
-import mazda3 from '../assets/mazda3.png';
 import financingBg from '../assets/financing_bg.png';
 import tradeinBg from '../assets/tradein_bg.png';
 import aboutShort from '../assets/about_short.png';
@@ -26,24 +24,7 @@ import {
 } from 'lucide-react';
 
 const Home = ({ onInquire }) => {
-  const staticFallbackCars = [
-    {
-      id: 1,
-      year: 2021,
-      brand: 'Honda',
-      model: 'Civic Si',
-      image: hondaCivic
-    },
-    {
-      id: 2,
-      year: 2020,
-      brand: 'Mazda',
-      model: 'Mazda3 GT',
-      image: mazda3
-    }
-  ];
-
-  const [featuredCars, setFeaturedCars] = useState(staticFallbackCars);
+  const [featuredCars, setFeaturedCars] = useState([]);
 
   useEffect(() => {
     const fetchNewArrivals = async () => {

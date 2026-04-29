@@ -23,8 +23,7 @@ const Navbar = () => {
         if (data && data.length > 0) {
           setBrands(data.map(b => b.name));
         } else {
-          // Fallback if no brands in Sanity
-          setBrands(['Mercedes', 'Audi', 'Honda', 'Toyota', 'BMW', 'Lexus']);
+          setBrands([]);
         }
       } catch (err) {
         console.error("Fetch brands error:", err);
