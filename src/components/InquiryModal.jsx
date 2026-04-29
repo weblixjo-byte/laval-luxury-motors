@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { urlFor } from '../client';
@@ -17,19 +17,32 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  if (!car) return null;
-
-  // Prepare images array
-  // Prepare images array with optimization
-  const mainImg = car.image?.asset 
-    ? urlFor(car.image).width(1600).quality(80).url() 
-    : car.image;
+  // Memoize optimized image URLs to avoid extra renders and effect triggers
+  const allImages = React.useMemo(() => {
+    if (!car) return [];
     
-  const galleryImgs = car.gallery?.map(img => 
-    img.asset ? urlFor(img).width(1600).quality(80).url() : img
-  ) || [];
-  
-  const allImages = [mainImg, ...galleryImgs].filter(Boolean);
+    const mainImg = car.image?.asset 
+      ? urlFor(car.image).width(1200).quality(70).url() 
+      : car.image;
+      
+    const galleryImgs = car.gallery?.map(img => 
+      img.asset ? urlFor(img).width(1200).quality(70).url() : img
+    ) || [];
+    
+    return [mainImg, ...galleryImgs].filter(Boolean);
+  }, [car]);
+
+  // Insane Speed: Prefetch all images when modal opens
+  useEffect(() => {
+    if (isOpen && car && allImages.length > 0) {
+      allImages.forEach(url => {
+        const prefetchImg = new Image();
+        prefetchImg.src = url;
+      });
+    }
+  }, [isOpen, car, allImages]);
+
+  if (!car) return null;
 
   // Helper to get srcset for a specific image in the gallery
   const getSrcSet = (index) => {
@@ -37,9 +50,10 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
     if (!imgAsset?.asset) return undefined;
     
     return [
-      `${urlFor(imgAsset).width(600).quality(75).url()} 600w`,
-      `${urlFor(imgAsset).width(1200).quality(80).url()} 1200w`,
-      `${urlFor(imgAsset).width(1600).quality(80).url()} 1600w`,
+      `${urlFor(imgAsset).width(400).quality(60).url()} 400w`,
+      `${urlFor(imgAsset).width(800).quality(70).url()} 800w`,
+      `${urlFor(imgAsset).width(1200).quality(70).url()} 1200w`,
+      `${urlFor(imgAsset).width(1600).quality(70).url()} 1600w`,
     ].join(', ');
   };
 

@@ -26,10 +26,24 @@ const CarCard = ({ car, onInquire }) => {
   const bodyType = car.bodyType || 'Sedan';
   const transmission = car.specifications?.transmission || car.transmission || 'Automatic';
 
+  const handleMouseEnter = () => {
+    // Prefetch first 3 gallery images on hover for "insane" speed
+    if (car.gallery?.length > 0) {
+      car.gallery.slice(0, 3).forEach(img => {
+        if (img.asset) {
+          const url = urlFor(img).width(1200).quality(70).url();
+          const prefetchImg = new Image();
+          prefetchImg.src = url;
+        }
+      });
+    }
+  };
+
   return (
     <div 
       className="bg-white border border-gray-200 shadow-sm overflow-hidden flex flex-col group cursor-pointer hover:shadow-md transition-shadow font-sans"
       onClick={() => onInquire && onInquire(car)}
+      onMouseEnter={handleMouseEnter}
     >
       {/* Image Container */}
       <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
