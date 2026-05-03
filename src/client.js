@@ -6,12 +6,7 @@ export const client = createClient({
   dataset: 'production',
   useCdn: true, // `false` if you want to ensure fresh data every time
   apiVersion: '2023-05-03', // Use today's date
-  stega: {
-    enabled: true,
-    studioUrl: '/studio',
-  },
 });
-
 
 const builder = imageUrlBuilder(client);
 

@@ -10,10 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@portabletext/react": "^6.0.3",
-    "@sanity/client": "^7.22.0",
+    "@sanity/client": "^7.21.0",
     "@sanity/image-url": "^2.1.1",
-    "@sanity/presentation": "^2.0.0",
     "@sanity/vision": "^5.21.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
@@ -21,7 +19,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.1",
-    "sanity": "^5.23.0",
+    "sanity": "^5.21.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

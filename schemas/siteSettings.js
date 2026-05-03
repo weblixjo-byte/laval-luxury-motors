@@ -30,8 +30,8 @@ export default {
       title: 'Home Hero Section',
       type: 'object',
       fields: [
-        { name: 'title', title: 'Hero Title', type: 'richText' },
-        { name: 'subtitle', title: 'Hero Subtitle', type: 'richText' },
+        { name: 'title', title: 'Hero Title', type: 'string' },
+        { name: 'subtitle', title: 'Hero Subtitle', type: 'string' },
         { name: 'image', title: 'Hero Image', type: 'image', options: { hotspot: true } }
       ]
     },
@@ -52,8 +52,8 @@ export default {
       title: 'Home Heritage Section',
       type: 'object',
       fields: [
-        { name: 'title', title: 'Title', type: 'richText' },
-        { name: 'text', title: 'Text', type: 'richText' },
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'text', title: 'Text', type: 'text' },
         { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } }
       ]
     },
@@ -68,7 +68,12 @@ export default {
         { name: 'servicePhone', title: 'Service Phone', type: 'string', initialValue: '+1 (229) 237-4046' },
         { name: 'address', title: 'Showroom Address', type: 'string', initialValue: '1530 Iris Dr SW, Conyers Ga 30092' }
       ]
+    },
+    {
+      name: 'footerText',
+      title: 'Footer Copyright Text',
+      type: 'string',
+      initialValue: '© 2026 Laval Luxury Motors. All rights reserved.'
     }
-
   ]
 }

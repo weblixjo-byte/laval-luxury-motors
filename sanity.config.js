@@ -1,13 +1,7 @@
 import { defineConfig, buildLegacyTheme } from 'sanity';
 import { structureTool } from 'sanity/structure';
-import { presentationTool } from 'sanity/presentation';
 import vehicle from './schemas/vehicle';
 import brand from './schemas/brand';
-import pageAbout from './schemas/pageAbout';
-import pageFinancing from './schemas/pageFinancing';
-import pageServices from './schemas/pageServices';
-import siteSettings from './schemas/siteSettings';
-import richText from './schemas/richText';
 
 const props = {
   '--laval-white': '#ffffff',
@@ -64,51 +58,18 @@ export default defineConfig({
     structureTool({
       structure: (S) =>
         S.list()
-          .title('Website Management')
+          .title('Inventory Management')
           .items([
-            S.listItem()
-              .title('Global Settings')
-              .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
-            S.divider(),
-            S.listItem()
-              .title('Inventory')
-              .child(
-                S.list()
-                  .title('Inventory')
-                  .items([
-                    S.documentTypeListItem('vehicle').title('Vehicles'),
-                    S.documentTypeListItem('brand').title('Brands'),
-                  ])
-              ),
-            S.divider(),
-            S.listItem()
-              .title('Pages')
-              .child(
-                S.list()
-                  .title('Pages')
-                  .items([
-                    S.documentTypeListItem('pageAbout').title('About Us'),
-                    S.documentTypeListItem('pageServices').title('Services'),
-                    S.documentTypeListItem('pageFinancing').title('Financing'),
-                  ])
-              ),
+            S.documentTypeListItem('vehicle').title('Vehicles (Inventory)'),
+            S.documentTypeListItem('brand').title('Brands'),
           ]),
-    }),
-    presentationTool({
-      previewUrl: {
-        origin: 'http://localhost:5173',
-        previewMode: {
-          enable: '/api/draft',
-        },
-      },
     }),
   ],
 
   schema: {
-    types: [vehicle, brand, pageAbout, pageFinancing, pageServices, siteSettings, richText],
+    types: [vehicle, brand],
   },
 });
-
 
 
 

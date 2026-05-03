@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import React from 'react';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 import { 
   Wrench, 
   Sparkles, 
@@ -8,36 +9,23 @@ import {
   Activity,
   CheckCircle2
 } from 'lucide-react';
-import { client, urlFor } from '../client';
-import SanityContent from '../components/SanityContent';
+
+// Using local assets to ensure they show up
+import heroImg from '../assets/hero_bright.png';
+import interiorImg from '../assets/about_interior.png';
+import exteriorImg from '../assets/about_exterior.png';
 
 const Services = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const query = '*[_type == "pageServices"][0]';
-    client.fetch(query).then((res) => {
-      setData(res);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) return <div className="min-h-screen bg-white pt-32 text-center font-serif italic">Loading Services...</div>;
-  if (!data) return null;
-
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
-          {data.hero?.image && (
-            <img 
-              src={urlFor(data.hero.image).width(1920).url()} 
-              alt="Services Hero" 
-              className="w-full h-full object-cover"
-            />
-          )}
+          <img 
+            src={heroImg} 
+            alt="Services Hero" 
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
         </div>
         
@@ -48,66 +36,82 @@ const Services = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-8xl mb-6 font-serif tracking-tight">
-              <SanityContent value={data.hero?.title} />
+              Mastery & <span className="italic text-[#D4AF37]">Care.</span>
             </h1>
-            <div className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-gray-300">
-              <SanityContent value={data.hero?.subtitle} />
-            </div>
+            <p className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-gray-300">
+              Technical Excellence for Exceptional Machines
+            </p>
           </motion.div>
         </div>
       </section>
 
       {/* Main Services Grid */}
       <section className="py-24 luxury-container">
-        {data.serviceBlocks?.map((block, idx) => {
-          const isEven = idx % 2 === 0;
-          const Icons = [Wrench, Sparkles, Activity, Settings];
-          const Icon = Icons[idx % Icons.length];
-
-          return (
-            <div key={idx} className={`grid grid-cols-1 md:grid-cols-2 gap-16 items-center ${idx !== data.serviceBlocks.length - 1 ? 'mb-32' : 'mb-20'}`}>
-              <motion.div 
-                initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className={`space-y-8 ${!isEven ? 'md:order-2 order-1' : ''}`}
-              >
-                <div className="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center rounded-full">
-                  <Icon className="text-[#D4AF37]" size={24} />
-                </div>
-                <div className="text-4xl font-serif text-gray-900 leading-tight">
-                  <SanityContent value={block.title} />
-                </div>
-                <div className="text-gray-600 font-light leading-relaxed text-lg">
-                  <SanityContent value={block.description} />
-                </div>
-                <ul className="space-y-4">
-                  {block.features?.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-500">
-                      <CheckCircle2 size={16} className="text-[#D4AF37]" />
-                      <SanityContent value={feature} />
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className={`rounded-sm overflow-hidden shadow-2xl h-[500px] ${!isEven ? 'md:order-1 order-2' : ''}`}
-              >
-                {block.image && (
-                  <img 
-                    src={urlFor(block.image).width(800).url()} 
-                    alt={block.title} 
-                    className="w-full h-full object-cover" 
-                    loading="lazy" 
-                  />
-                )}
-              </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center rounded-full">
+              <Wrench className="text-[#D4AF37]" size={24} />
             </div>
-          );
-        })}
+            <h2 className="text-4xl font-serif text-gray-900 leading-tight">Mechanical Excellence <br />& Maintenance</h2>
+            <p className="text-gray-600 font-light leading-relaxed text-lg">
+              Our state-of-the-art atelier is staffed by certified master technicians who treat every vehicle with the precision it deserves. From routine maintenance to complex performance tuning.
+            </p>
+            <ul className="space-y-4">
+              {["Diagnostic Precision", "Engine & Transmission", "Suspension Tuning", "Brake Systems"].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-500">
+                  <CheckCircle2 size={16} className="text-[#D4AF37]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-sm overflow-hidden shadow-2xl h-[500px]"
+          >
+            <img src={interiorImg} alt="Workshop Interior" className="w-full h-full object-cover" loading="lazy" />
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-20 md:mb-0">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-sm overflow-hidden shadow-2xl h-[500px] md:order-1 order-2"
+          >
+            <img src={exteriorImg} alt="Detailing Center" className="w-full h-full object-cover" loading="lazy" />
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8 md:order-2 order-1"
+          >
+            <div className="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center rounded-full">
+              <Sparkles className="text-[#D4AF37]" size={24} />
+            </div>
+            <h2 className="text-4xl font-serif text-gray-900 leading-tight">Aesthetic Perfection <br />& Protection</h2>
+            <p className="text-gray-600 font-light leading-relaxed text-lg">
+              Preserve the beauty of your investment with our museum-grade detailing services. We specialize in ceramic coatings, paint protection films, and comprehensive aesthetic restorations.
+            </p>
+            <ul className="space-y-4">
+              {["Ceramic Pro Coating", "Self-Healing PPF", "Paint Correction", "Interior Rejuvenation"].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-500">
+                  <CheckCircle2 size={16} className="text-[#D4AF37]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
       </section>
 
       {/* Why Choose Us - Dark Section */}
@@ -164,4 +168,3 @@ const Services = () => {
 };
 
 export default Services;
-
