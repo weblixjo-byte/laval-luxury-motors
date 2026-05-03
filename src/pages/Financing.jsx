@@ -1,6 +1,5 @@
-import React from 'react';
-// eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { 
   CreditCard, 
   ShieldCheck, 
@@ -9,19 +8,37 @@ import {
   Briefcase,
   Globe
 } from 'lucide-react';
+import { client, urlFor } from '../client';
+import SanityContent from '../components/SanityContent';
 
 const Financing = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const query = '*[_type == "pageFinancing"][0]';
+    client.fetch(query).then((res) => {
+      setData(res);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <div className="min-h-screen bg-white pt-32 text-center font-serif italic">Loading Financing Solutions...</div>;
+  if (!data) return null;
+
   return (
     <div className="min-h-screen bg-white pt-24 md:pt-32">
       {/* Hero Section */}
       <section className="luxury-container mb-24 md:mb-32">
         <div className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden rounded-sm shadow-2xl">
           <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80" 
-              alt="Bespoke Financing" 
-              className="w-full h-full object-cover"
-            />
+            {data.hero?.image && (
+              <img 
+                src={urlFor(data.hero.image).width(1920).url()} 
+                alt="Bespoke Financing" 
+                className="w-full h-full object-cover"
+              />
+            )}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
           </div>
           
@@ -33,13 +50,13 @@ const Financing = () => {
               className="space-y-6"
             >
               <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-luxury-accent">Private Capital</h2>
-              <h1 className="text-5xl md:text-8xl font-serif leading-tight">
-                Bespoke <span className="italic">Financing</span>
-              </h1>
+              <div className="text-5xl md:text-8xl font-serif leading-tight">
+                <SanityContent value={data.hero?.title} />
+              </div>
               <div className="w-24 h-px bg-luxury-accent mx-auto"></div>
-              <p className="text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto text-gray-200">
-                Tailored capital solutions for the world’s most extraordinary automotive assets.
-              </p>
+              <div className="text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto text-gray-200">
+                <SanityContent value={data.hero?.subtitle} />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -56,12 +73,16 @@ const Financing = () => {
             className="space-y-10"
           >
             <h2 className="text-sm uppercase tracking-[0.4em] text-luxury-accent font-bold">The Laval Advantage</h2>
-            <h3 className="text-4xl md:text-6xl font-serif text-luxury-black leading-tight">
-              Financial Flexibility <br />for the Modern Collector
-            </h3>
-            <p className="text-lg text-gray-500 font-light leading-relaxed">
-              Acquiring a masterpiece requires more than just capital; it requires a partner who understands the unique value of high-end automotive assets. At Laval, we offer private financing structures designed to align with your personal wealth strategy.
-            </p>
+            {data.advantages && data.advantages[0] && (
+              <>
+                <div className="text-4xl md:text-6xl font-serif text-luxury-black leading-tight">
+                  <SanityContent value={data.advantages[0].title} />
+                </div>
+                <div className="text-lg text-gray-500 font-light leading-relaxed">
+                  <SanityContent value={data.advantages[0].description} />
+                </div>
+              </>
+            )}
             <div className="grid grid-cols-2 gap-8 pt-6">
               <div className="space-y-3">
                 <div className="text-luxury-accent"><Clock size={24} strokeWidth={1.5} /></div>
@@ -83,11 +104,13 @@ const Financing = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <img 
-              src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80" 
-              alt="Consultation" 
-              className="w-full h-[500px] object-cover shadow-2xl rounded-sm"
-            />
+            {data.hero?.image && (
+              <img 
+                src={urlFor(data.hero.image).width(800).url()} 
+                alt="Consultation" 
+                className="w-full h-[500px] object-cover shadow-2xl rounded-sm"
+              />
+            )}
             <div className="absolute -bottom-6 -left-6 bg-luxury-black p-10 text-white hidden md:block">
               <span className="text-4xl font-serif text-luxury-accent">6.99%</span>
               <p className="text-[10px] uppercase tracking-widest font-bold mt-2">Starting Rates*</p>
@@ -105,36 +128,26 @@ const Financing = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/10">
-            {[
-              {
-                title: 'Traditional Financing',
-                desc: 'Competitive market rates with flexible terms up to 84 months for new acquisitions.',
-                Icon: CreditCard
-              },
-              {
-                title: 'Asset-Backed Lending',
-                desc: 'Unlock liquidity from your existing collection with bespoke lending structures.',
-                Icon: Briefcase
-              },
-              {
-                title: 'International Solutions',
-                desc: 'Cross-border financing for global collectors and international acquisitions.',
-                Icon: Globe
-              }
-            ].map((sol, idx) => (
-              <div key={idx} className={`p-16 space-y-8 group hover:bg-white hover:text-black transition-all duration-700 ${idx !== 2 ? 'md:border-r border-white/10' : ''}`}>
-                <div className="text-luxury-accent group-hover:scale-110 transition-transform duration-500">
-                  <sol.Icon size={48} strokeWidth={1} />
+            {data.solutions?.map((sol, idx) => {
+              const Icons = [CreditCard, Briefcase, Globe];
+              const Icon = Icons[idx % Icons.length];
+              return (
+                <div key={idx} className={`p-16 space-y-8 group hover:bg-white hover:text-black transition-all duration-700 ${idx !== 2 ? 'md:border-r border-white/10' : ''}`}>
+                  <div className="text-luxury-accent group-hover:scale-110 transition-transform duration-500">
+                    <Icon size={48} strokeWidth={1} />
+                  </div>
+                  <div className="text-xl font-serif">
+                    <SanityContent value={sol.title} />
+                  </div>
+                  <div className="text-sm text-gray-400 group-hover:text-gray-600 font-light leading-relaxed">
+                    <SanityContent value={sol.description} />
+                  </div>
+                  <div className="pt-4">
+                    <div className="w-8 h-px bg-luxury-accent group-hover:w-full transition-all duration-700"></div>
+                  </div>
                 </div>
-                <h4 className="text-xl font-serif">{sol.title}</h4>
-                <p className="text-sm text-gray-400 group-hover:text-gray-600 font-light leading-relaxed">
-                  {sol.desc}
-                </p>
-                <div className="pt-4">
-                  <div className="w-8 h-px bg-luxury-accent group-hover:w-full transition-all duration-700"></div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -180,7 +193,7 @@ const Financing = () => {
             
             <textarea placeholder="ADDITIONAL DETAILS" className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400 h-24 resize-none"></textarea>
             
-            <button className="w-full bg-luxury-black text-white py-5 uppercase tracking-[0.4em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500 shadow-xl">
+            <button className="w-full bg-luxury-black text-white py-5 uppercase tracking-[0.4em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500 shadow-xl" onClick={(e) => e.preventDefault()}>
               Request Proposal
             </button>
           </form>
@@ -198,5 +211,6 @@ const Financing = () => {
 };
 
 export default Financing;
+
 
 

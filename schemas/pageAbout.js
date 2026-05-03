@@ -8,8 +8,8 @@ export default {
       title: 'Hero Section',
       type: 'object',
       fields: [
-        { name: 'title', title: 'Main Title', type: 'string' },
-        { name: 'subtitle', title: 'Subtitle', type: 'string' },
+        { name: 'title', title: 'Main Title', type: 'richText' },
+        { name: 'subtitle', title: 'Subtitle', type: 'richText' },
         { name: 'image', title: 'Hero Image', type: 'image', options: { hotspot: true } }
       ]
     },
@@ -21,8 +21,8 @@ export default {
         {
           type: 'object',
           fields: [
-            { name: 'title', title: 'Value Title', type: 'string' },
-            { name: 'description', title: 'Description', type: 'text' }
+            { name: 'title', title: 'Value Title', type: 'richText' },
+            { name: 'description', title: 'Description', type: 'richText' }
           ]
         }
       ]
@@ -32,10 +32,11 @@ export default {
       title: 'Our Story Section',
       type: 'object',
       fields: [
-        { name: 'title', title: 'Title', type: 'string' },
-        { name: 'text', title: 'Text', type: 'text' },
+        { name: 'title', title: 'Title', type: 'richText' },
+        { name: 'text', title: 'Text', type: 'richText' },
         { name: 'image', title: 'Section Image', type: 'image', options: { hotspot: true } }
       ]
     }
+
   ]
 }
