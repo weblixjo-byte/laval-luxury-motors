@@ -7,7 +7,7 @@ export default {
       name: 'title',
       title: 'Site Title',
       type: 'string',
-      initialValue: 'Laval Luxury Motors'
+      initialValue: 'Laval Motors'
     },
     {
       name: 'navbarLinks',
@@ -73,7 +73,7 @@ export default {
       name: 'footerText',
       title: 'Footer Copyright Text',
       type: 'string',
-      initialValue: '© 2026 Laval Luxury Motors. All rights reserved.'
+      initialValue: '© 2026 Laval Motors. All rights reserved.'
     }
   ]
 }

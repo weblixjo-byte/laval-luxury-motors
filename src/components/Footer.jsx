@@ -42,7 +42,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link to="/" className="text-2xl tracking-[0.2em] font-serif mb-6 block">LAVAL</Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              The worlds ultimate luxury car marketplace. Exceptional vehicles for the global connoisseur.
+              The world's premier automotive marketplace. Quality vehicles you can trust.
             </p>
             <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
               <p>1530 Iris Dr SW</p>
@@ -54,10 +54,9 @@ const Footer = () => {
             <h4 className="text-xs uppercase tracking-widest mb-6 text-gray-500">Inventory</h4>
             <ul className="space-y-4 text-sm opacity-80">
               <li><Link to="/inventory">New Arrivals</Link></li>
-              <li><Link to="/inventory">Luxury Sedans</Link></li>
+              <li><Link to="/inventory">Sedans</Link></li>
               <li><Link to="/inventory">SUVs & Off-road</Link></li>
-              <li><Link to="/inventory">Family Collections</Link></li>
-              <li><Link to="/services">Atelier Services</Link></li>
+              <li><Link to="/services">Services</Link></li>
             </ul>
           </div>
 
@@ -67,7 +66,6 @@ const Footer = () => {
               <li><Link to="/about">Our Story</Link></li>
               <li><Link to="/contact">Contact Us</Link></li>
               <li><Link to="/financing">Financing</Link></li>
-              <li><Link to="/contact">Concierge</Link></li>
             </ul>
           </div>
 
@@ -99,7 +97,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] text-gray-500 gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-center md:text-left">
-            <span>© 2026 LAVAL LUXURY MOTORS.</span>
+            <span>© 2026 LAVAL MOTORS.</span>
             <div className="flex gap-6">
               <a href="#privacy" className="hover:text-white transition-colors">Privacy</a>
               <a href="#terms" className="hover:text-white transition-colors">Terms</a>

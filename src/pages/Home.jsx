@@ -8,19 +8,14 @@ import CarCard from '../components/CarCard';
 import heroBright from '../assets/hero_bright.png';
 import financingBg from '../assets/financing_bg.png';
 import tradeinBg from '../assets/tradein_bg.png';
-import aboutShort from '../assets/about_short.png';
-import contactShort from '../assets/contact_short.png';
+import aboutShort from '../assets/about_short.jpeg';
 import { 
   CheckCircle2, 
   ArrowRight, 
   ShieldCheck, 
   Banknote, 
   CheckCircle, 
-  RefreshCcw, 
-  Truck,
-  MapPin,
-  Phone,
-  Mail
+  RefreshCcw
 } from 'lucide-react';
 
 const Home = ({ onInquire }) => {
@@ -151,10 +146,10 @@ const Home = ({ onInquire }) => {
               transition={{ duration: 0.8 }}
               className="lg:w-1/2 space-y-8"
             >
-              <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-[#D4AF37]">The Laval Heritage</h2>
-              <h3 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight">Defining Luxury in Every Mile</h3>
+              <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-[#D4AF37]">The Laval Experience</h2>
+              <h3 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight">Quality Cars You Can Trust</h3>
               <p className="text-lg text-gray-500 font-light leading-relaxed">
-                Founded on the principles of integrity and excellence, Laval Luxury Motors has grown from a private collection into Canada's premier destination for high-end automotive assets.
+                Built on honesty and reliability, Laval Motors offers carefully selected vehicles at fair prices, with financing options designed to make your purchase simple and stress-free.
               </p>
               <div className="pt-6">
                 <Link 
@@ -199,20 +194,19 @@ const Home = ({ onInquire }) => {
             <h3 className="text-4xl md:text-5xl font-serif text-gray-900">Excellence in Every Detail</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-0 border border-gray-100 bg-white shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border border-gray-100 bg-white shadow-sm">
             {[
               { title: 'Quality Inspected', desc: 'Every vehicle is carefully inspected for your peace of mind.', Icon: ShieldCheck },
               { title: 'Affordable Prices', desc: 'Great value vehicles with financing options to fit your budget.', Icon: Banknote },
               { title: 'Warranty Options', desc: 'Extended warranty options available for added protection.', Icon: CheckCircle },
               { title: 'Trade-Ins Welcome', desc: 'We make it easy to trade in your current vehicle.', Icon: RefreshCcw },
-              { title: 'Nationwide Shipping', desc: 'Ask us about delivery options across Canada.', Icon: Truck }
             ].map((feature, i) => {
               return (
                 <div 
                   key={i} 
                   className={`flex flex-col items-center p-12 group transition-all duration-500 hover:bg-[#0F0F0F] hover:text-white ${
-                    i !== 4 ? 'md:border-r border-gray-100' : ''
-                  } ${i < 4 ? 'border-b md:border-b-0 border-gray-100' : ''}`}
+                    i !== 3 ? 'md:border-r border-gray-100' : ''
+                  } ${i < 3 ? 'border-b md:border-b-0 border-gray-100' : ''}`}
                 >
                   <div className="w-12 h-12 mb-8 flex items-center justify-center text-[#D4AF37] group-hover:scale-110 transition-transform duration-500">
                     <feature.Icon size={40} strokeWidth={1} />
@@ -286,48 +280,6 @@ const Home = ({ onInquire }) => {
         </div>
       </section>
 
-      {/* Contact Concierge Preview */}
-      <section className="relative py-24 md:py-32 overflow-hidden bg-[#0F0F0F] text-white">
-        <div className="absolute inset-0 opacity-40">
-          <img src={contactShort} alt="Concierge" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-[1440px] mx-auto px-4 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto space-y-10"
-          >
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#D4AF37]">Private Consultation</h2>
-            <h3 className="text-3xl md:text-6xl font-serif italic">Your Personal Concierge Awaits</h3>
-            <p className="text-base md:text-lg text-gray-300 font-light leading-relaxed">
-              Whether you are looking to acquire a rare masterpiece or require bespoke services for your collection, our team is at your disposal 24/7.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-8 md:gap-12 pt-8 text-[10px] uppercase tracking-[0.2em] font-medium text-gray-400">
-              <div className="flex items-center gap-3">
-                <Phone size={14} className="text-[#D4AF37]" />
-                <span>+1 (404) 790-8336</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail size={14} className="text-[#D4AF37]" />
-                <span>Help@lavalmotors.com</span>
-              </div>
-            </div>
-
-            <div className="pt-10">
-              <Link 
-                to="/contact" 
-                className="bg-[#D4AF37] text-white px-10 md:px-16 py-5 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-white hover:text-black transition-all duration-500 shadow-2xl w-full sm:w-auto inline-block"
-              >
-                Book a Private Meeting
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };

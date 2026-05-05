@@ -47,7 +47,7 @@ export const myTheme = buildLegacyTheme({
 
 export default defineConfig({
   name: 'default',
-  title: 'Laval Luxury Motors | Admin',
+  title: 'Laval Motors | Admin',
   theme: myTheme,
 
   projectId: 'nyiie8qw', 
