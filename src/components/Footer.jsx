@@ -42,7 +42,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link to="/" className="text-2xl tracking-[0.2em] font-serif mb-6 block">LAVAL</Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              The world's premier automotive marketplace. Quality vehicles you can trust.
+              Quality vehicles. Honest service.
             </p>
             <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
               <p>1530 Iris Dr SW</p>

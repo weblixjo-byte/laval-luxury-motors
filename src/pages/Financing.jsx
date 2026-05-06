@@ -57,21 +57,21 @@ const Financing = () => {
           >
             <h2 className="text-sm uppercase tracking-[0.4em] text-luxury-accent font-bold">The Laval Advantage</h2>
             <h3 className="text-4xl md:text-6xl font-serif text-luxury-black leading-tight">
-              Financial Flexibility <br />for the Modern Collector
+              Flexible Financing for Everyday Drivers
             </h3>
             <p className="text-lg text-gray-500 font-light leading-relaxed">
-              Acquiring a masterpiece requires more than just capital; it requires a partner who understands the unique value of high-end automotive assets. At Laval, we offer private financing structures designed to align with your personal wealth strategy.
+              At Laval Motors, we make vehicle financing simple, transparent, and tailored to your budget. Whether you're purchasing your first car, upgrading your current vehicle, or rebuilding credit, our team works with trusted lenders to help you drive away with confidence.
             </p>
             <div className="grid grid-cols-2 gap-8 pt-6">
               <div className="space-y-3">
                 <div className="text-luxury-accent"><Clock size={24} strokeWidth={1.5} /></div>
-                <h4 className="text-[10px] uppercase tracking-widest font-bold">Rapid Approval</h4>
-                <p className="text-xs text-gray-400 font-light">Valuation within 24 hours.</p>
+                <h4 className="text-[10px] uppercase tracking-widest font-bold">Rapid Approval.</h4>
+                <p className="text-xs text-gray-400 font-light">Fast financing decisions available the same day.</p>
               </div>
               <div className="space-y-3">
-                <div className="text-luxury-accent"><ShieldCheck size={24} strokeWidth={1.5} /></div>
-                <h4 className="text-[10px] uppercase tracking-widest font-bold">Confidential</h4>
-                <p className="text-xs text-gray-400 font-light">Discrete private handling.</p>
+                <div className="text-luxury-accent"><TrendingUp size={24} strokeWidth={1.5} /></div>
+                <h4 className="text-[10px] uppercase tracking-widest font-bold">Flexible Options.</h4>
+                <p className="text-xs text-gray-400 font-light">Financing solutions for all credit situations.</p>
               </div>
             </div>
           </motion.div>
@@ -88,56 +88,11 @@ const Financing = () => {
               alt="Consultation" 
               className="w-full h-[500px] object-cover shadow-2xl rounded-sm"
             />
-            <div className="absolute -bottom-6 -left-6 bg-luxury-black p-10 text-white hidden md:block">
-              <span className="text-4xl font-serif text-luxury-accent">6.99%</span>
-              <p className="text-[10px] uppercase tracking-widest font-bold mt-2">Starting Rates*</p>
-            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Solutions Grid */}
-      <section className="py-32 bg-[#0F0F0F] text-white">
-        <div className="luxury-container">
-          <div className="text-center mb-24 space-y-6">
-            <h2 className="text-sm uppercase tracking-[0.4em] text-luxury-accent font-bold">Our Solutions</h2>
-            <h3 className="text-4xl md:text-6xl font-serif">Tailored to Your Ambition</h3>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/10">
-            {[
-              {
-                title: 'Traditional Financing',
-                desc: 'Competitive market rates with flexible terms up to 84 months for new acquisitions.',
-                Icon: CreditCard
-              },
-              {
-                title: 'Asset-Backed Lending',
-                desc: 'Unlock liquidity from your existing collection with bespoke lending structures.',
-                Icon: Briefcase
-              },
-              {
-                title: 'International Solutions',
-                desc: 'Cross-border financing for global collectors and international acquisitions.',
-                Icon: Globe
-              }
-            ].map((sol, idx) => (
-              <div key={idx} className={`p-16 space-y-8 group hover:bg-white hover:text-black transition-all duration-700 ${idx !== 2 ? 'md:border-r border-white/10' : ''}`}>
-                <div className="text-luxury-accent group-hover:scale-110 transition-transform duration-500">
-                  <sol.Icon size={48} strokeWidth={1} />
-                </div>
-                <h4 className="text-xl font-serif">{sol.title}</h4>
-                <p className="text-sm text-gray-400 group-hover:text-gray-600 font-light leading-relaxed">
-                  {sol.desc}
-                </p>
-                <div className="pt-4">
-                  <div className="w-8 h-px bg-luxury-accent group-hover:w-full transition-all duration-700"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Application Section */}
       <section className="py-32 luxury-container">

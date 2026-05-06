@@ -146,10 +146,9 @@ const Home = ({ onInquire }) => {
               transition={{ duration: 0.8 }}
               className="lg:w-1/2 space-y-8"
             >
-              <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-[#D4AF37]">The Laval Experience</h2>
-              <h3 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight">Quality Cars You Can Trust</h3>
+              <h3 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight">About Us</h3>
               <p className="text-lg text-gray-500 font-light leading-relaxed">
-                Built on honesty and reliability, Laval Motors offers carefully selected vehicles at fair prices, with financing options designed to make your purchase simple and stress-free.
+                At Laval Motors, we are committed to providing quality vehicles, honest service, and a smooth car-buying experience. Our goal is to help every customer find the right vehicle at the right price with confidence and ease.
               </p>
               <div className="pt-6">
                 <Link 
