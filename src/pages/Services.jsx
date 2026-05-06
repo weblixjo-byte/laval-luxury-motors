@@ -111,7 +111,7 @@ const Services = () => {
         <div className="luxury-container">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-4xl font-bold mb-6 text-[#D4AF37]">The Laval Standard</h2>
-            <p className="text-gray-400 font-light">Experience service that goes beyond the ordinary. We provide a seamless, white-glove experience from start to finish.</p>
+            <p className="text-gray-400 font-light">Experience service that goes beyond the ordinary.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
