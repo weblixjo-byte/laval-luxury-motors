@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { Link } from 'react-router-dom';
 import { client } from '../client';
 import CarCard from '../components/CarCard';
+import Reviews from '../components/Reviews';
 
 // Using the newly generated high-quality images
 import heroBright from '../assets/hero_bright.png';
@@ -267,7 +268,7 @@ const Home = ({ onInquire }) => {
                 <p className="text-sm text-gray-300 mb-10 font-light max-w-sm leading-relaxed">Unlock the true value of your current vehicle with our expert appraisal service.</p>
                 
                 <div>
-                  <Link to="/services" className="group/btn bg-white text-black font-bold py-4 px-10 text-[10px] uppercase tracking-[0.3em] inline-flex items-center hover:bg-[#D4AF37] hover:text-white transition-all duration-300 shadow-lg w-full sm:w-auto justify-center">
+                  <Link to="/contact" className="group/btn bg-white text-black font-bold py-4 px-10 text-[10px] uppercase tracking-[0.3em] inline-flex items-center hover:bg-[#D4AF37] hover:text-white transition-all duration-300 shadow-lg w-full sm:w-auto justify-center">
                     Get My Offer
                     <ArrowRight size={16} className="ml-3 transition-transform group-hover/btn:translate-x-2" />
                   </Link>
@@ -279,6 +280,8 @@ const Home = ({ onInquire }) => {
         </div>
       </section>
 
+      {/* Reviews Section */}
+      <Reviews />
     </div>
   );
 };

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 // Using the newly generated high-quality images
-import aboutExterior from '../assets/about_exterior.png';
+import aboutExterior from '../assets/about_exterior.jpeg';
 
 const About = () => {
   return (

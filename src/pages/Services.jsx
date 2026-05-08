@@ -12,7 +12,7 @@ import {
 
 // Using local assets to ensure they show up
 import interiorImg from '../assets/about_interior.jpg';
-import exteriorImg from '../assets/about_exterior.png';
+import exteriorImg from '../assets/about_exterior.jpeg';
 
 const Services = () => {
   return (
@@ -93,15 +93,72 @@ const Services = () => {
             <div className="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center rounded-full">
               <Sparkles className="text-[#D4AF37]" size={24} />
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 leading-tight">Aesthetic Perfection <br />& Protection</h2>
+            <h2 className="text-4xl font-bold text-gray-900 leading-tight">Perfection <br />& Protection</h2>
             <ul className="space-y-4">
-              {["Ceramic Pro Coating", "Self-Healing PPF", "Paint Correction"].map((item, i) => (
+              {[
+                "Hand Wash & Wax",
+                "Interior Deep Clean",
+                "Ceramic Coating",
+                "Paint Correction",
+                "Scratch Removal",
+                "Wheel & Tire Shine",
+                "Leather Conditioning",
+                "Showroom Finish"
+              ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-500">
                   <CheckCircle2 size={16} className="text-[#D4AF37]" />
                   {item}
                 </li>
               ))}
             </ul>
+          </motion.div>
+        </div>
+
+        {/* Trade-In & Acquisition Section */}
+        <div id="trade-in" className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mt-32">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="w-12 h-12 bg-[#D4AF37]/10 flex items-center justify-center rounded-full">
+              <Activity className="text-[#D4AF37]" size={24} />
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 leading-tight">Trade-In & <br />Acquisition</h2>
+            <p className="text-gray-500 font-light leading-relaxed">
+              Looking to upgrade? We offer professional appraisal services to ensure you get the best market value for your current vehicle.
+            </p>
+            <ul className="space-y-4">
+              {[
+                "Expert Appraisal",
+                "Instant Market Offers",
+                "Trade-In Credit",
+                "Straight Purchase"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-500">
+                  <CheckCircle2 size={16} className="text-[#D4AF37]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-sm overflow-hidden shadow-2xl h-[400px] bg-gray-50 flex flex-col items-center justify-center border border-gray-100"
+          >
+            <div className="text-center p-12">
+              <h4 className="text-2xl font-serif mb-6 text-gray-900">Ready for an Offer?</h4>
+              <p className="text-sm text-gray-500 mb-8 font-light">Get a professional valuation for your vehicle today.</p>
+              <a 
+                href="/contact" 
+                className="inline-block bg-black text-white px-10 py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#D4AF37] transition-all shadow-lg"
+              >
+                Get Appraisal
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

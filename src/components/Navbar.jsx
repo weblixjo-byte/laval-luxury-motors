@@ -70,7 +70,7 @@ const Navbar = () => {
             className={`text-2xl tracking-[0.25em] font-serif font-bold transition-colors duration-300 ${isScrolled || !isHome ? 'text-luxury-black' : 'text-white'
               }`}
           >
-            LAVAL
+            LAVAL MOTORS
           </Link>
         </div>
 
@@ -169,7 +169,7 @@ const Navbar = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center mb-12">
-                <span className="text-white text-2xl font-serif tracking-[0.2em]">LAVAL</span>
+                <span className="text-white text-2xl font-serif tracking-[0.2em]">LAVAL MOTORS</span>
                 <button
                   className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
                   onClick={() => setIsMenuOpen(false)}
