@@ -71,7 +71,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
     const formData = new FormData(e.target);
     formData.append("access_key", WEB3FORMS_ACCESS_KEY);
     formData.append("subject", `New Inquiry: ${car.name} - ${inquiryType === 'financing' ? 'Financing Request' : 'Direct Purchase'}`);
-    formData.append("from_name", "Laval Motors Concierge");
+    formData.append("from_name", "Laval Motors Support");
     
     // Add car details to the submission
     formData.append("car_name", car.name);
@@ -207,7 +207,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                   <h3 className="text-2xl font-serif mb-2">Request Submitted</h3>
                   <p className="text-gray-500 text-sm italic">
                     Your inquiry for the {car.name} has been sent successfully. 
-                    Our concierge team will review the details and contact you shortly.
+                    Our team will review the details and contact you shortly.
                   </p>
                 </div>
               ) : (

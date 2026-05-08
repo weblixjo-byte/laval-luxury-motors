@@ -52,7 +52,7 @@ const Contact = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-[10px] uppercase tracking-[0.5em] text-luxury-accent font-bold mb-6"
             >
-              Concierge Service
+              Customer Service
             </motion.h2>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -130,7 +130,7 @@ const Contact = () => {
                 <div className="py-20 text-center">
                   <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl mb-6 mx-auto">✓</div>
                   <h4 className="text-xl font-serif mb-2">Message Sent</h4>
-                  <p className="text-gray-500 text-sm italic">Thank you for reaching out. Our concierge will contact you shortly.</p>
+                  <p className="text-gray-500 text-sm italic">Thank you for reaching out. Our team will contact you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-10">
