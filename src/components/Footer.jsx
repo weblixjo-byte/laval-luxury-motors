@@ -44,10 +44,15 @@ const Footer = () => {
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Quality vehicles. Honest service.
             </p>
-            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+            <a 
+              href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[10px] text-gray-500 uppercase tracking-widest font-bold hover:text-luxury-accent transition-colors block"
+            >
               <p>1530 Iris Dr SW</p>
               <p>Conyers Ga 30092</p>
-            </div>
+            </a>
           </div>
           
           <div>

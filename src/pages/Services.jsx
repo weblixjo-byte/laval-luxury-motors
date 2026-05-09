@@ -155,7 +155,7 @@ const Services = () => {
                 Book Appointment
               </a>
               <a
-                href="tel:+14702054117"
+                href="tel:+12292374046"
                 className="border border-black text-black px-12 py-5 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all"
               >
                 Call Our Team

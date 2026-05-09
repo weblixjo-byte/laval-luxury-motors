@@ -81,10 +81,17 @@ const Contact = () => {
               <div>
                 <h3 className="text-xl font-serif mb-8 text-luxury-black">Global HQ & Showroom</h3>
                 <div className="space-y-4 text-gray-500 font-light leading-relaxed">
-                  <p className="text-lg">1530 Iris Dr SW</p>
-                  <p className="text-lg">Conyers Ga 30092</p>
+                  <a 
+                    href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block hover:text-luxury-accent transition-colors"
+                  >
+                    <p className="text-lg">1530 Iris Dr SW</p>
+                    <p className="text-lg">Conyers Ga 30092</p>
+                  </a>
                   <div className="pt-4">
-                    <a href="#" className="text-xs uppercase tracking-widest border-b border-luxury-accent pb-1 text-luxury-black font-bold">Get Directions</a>
+                    <a href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest border-b border-luxury-accent pb-1 text-luxury-black font-bold">Get Directions</a>
                   </div>
                 </div>
               </div>
@@ -102,11 +109,11 @@ const Contact = () => {
                   </div>
                   <div className="flex justify-between items-end border-b border-gray-100 pb-4">
                     <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Sales Desk</span>
-                    <span className="text-lg text-luxury-black">+1 (404) 790-8336</span>
+                    <a href="tel:+14047908336" className="text-lg text-luxury-black hover:text-luxury-accent transition-colors">+1 (404) 790-8336</a>
                   </div>
                   <div className="flex justify-between items-end border-b border-gray-100 pb-4">
                     <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Service Atelier</span>
-                    <span className="text-lg text-luxury-black">+1 (229) 237-4046</span>
+                    <a href="tel:+12292374046" className="text-lg text-luxury-black hover:text-luxury-accent transition-colors">+1 (229) 237-4046</a>
                   </div>
                 </div>
               </div>

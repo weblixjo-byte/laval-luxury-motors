@@ -123,10 +123,9 @@ const Financing = () => {
             <div className="space-y-2">
               <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Estimated Loan Amount</label>
               <select className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light appearance-none cursor-pointer">
-                <option>$100,000 - $500,000</option>
-                <option>$500,000 - $1,000,000</option>
-                <option>$1,000,000 - $5,000,000</option>
-                <option>$5,000,000+</option>
+                <option>$1,000 - $10,000</option>
+                <option>$10,000 - $20,000</option>
+                <option>Over $20,000</option>
               </select>
             </div>
             

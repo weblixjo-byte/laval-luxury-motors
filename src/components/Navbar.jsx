@@ -231,10 +231,15 @@ const Navbar = () => {
               </div>
 
               <div className="mt-auto pt-12 border-t border-white/10 space-y-6">
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Showroom</p>
-                  <p className="text-sm text-gray-300 font-light italic">1530 Iris Dr SW, Conyers Ga</p>
-                </div>
+                <a 
+                  href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="space-y-1 block group"
+                >
+                  <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-luxury-accent transition-colors">Showroom</p>
+                  <p className="text-sm text-gray-300 font-light italic group-hover:text-white transition-colors">1530 Iris Dr SW, Conyers Ga</p>
+                </a>
                 <div className="flex space-x-6">
                   {['Instagram', 'LinkedIn'].map(social => (
                     <a key={social} href="#" className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors">
