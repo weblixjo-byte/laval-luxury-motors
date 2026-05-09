@@ -66,6 +66,7 @@ const About = () => {
                 alt="Laval Showroom Exterior" 
                 className="w-full h-[400px] md:h-[600px] object-cover shadow-2xl rounded-sm"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           </motion.div>

@@ -21,6 +21,8 @@ const Financing = () => {
               src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80" 
               alt="Bespoke Financing" 
               className="w-full h-full object-cover"
+              fetchpriority="high"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
           </div>
@@ -87,6 +89,8 @@ const Financing = () => {
               src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80" 
               alt="Consultation" 
               className="w-full h-[500px] object-cover shadow-2xl rounded-sm"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
         </div>

@@ -32,9 +32,21 @@ function App() {
 
   const isStudio = location.pathname.startsWith('/studio');
   
-  // Scroll to top on route change
+  // Scroll to top on route change and initial mount
   useEffect(() => {
+    // Immediate scroll
     window.scrollTo(0, 0);
+    
+    // Backup scroll for slower loading content
+    const timeoutId = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      });
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
   return (
