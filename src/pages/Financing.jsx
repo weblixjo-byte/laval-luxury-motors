@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { 
@@ -10,7 +10,45 @@ import {
   Globe
 } from 'lucide-react';
 
+const WEB3FORMS_ACCESS_KEY = "d7f8311f-fb43-4cdd-96ed-afcf8c00bba3";
+
 const Financing = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    const formData = new FormData(e.target);
+    formData.append("access_key", WEB3FORMS_ACCESS_KEY);
+    formData.append("subject", "New Financing Inquiry");
+    formData.append("from_name", "Laval Motors Financing");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+        e.target.reset();
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white pt-24 md:pt-32">
       {/* Hero Section */}
@@ -34,13 +72,13 @@ const Financing = () => {
               transition={{ duration: 0.8 }}
               className="space-y-6"
             >
-              <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-luxury-accent">Private Capital</h2>
+              <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-luxury-accent">Financing</h2>
               <h1 className="text-5xl md:text-8xl font-serif leading-tight">
                 Bespoke <span className="italic">Financing</span>
               </h1>
               <div className="w-24 h-px bg-luxury-accent mx-auto"></div>
               <p className="text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto text-gray-200">
-                Tailored capital solutions for the world’s most extraordinary automotive assets.
+                Get the car you want with flexible options that work for you. Simple, fast, and transparent.
               </p>
             </motion.div>
           </div>
@@ -96,8 +134,6 @@ const Financing = () => {
         </div>
       </section>
 
-
-
       {/* Application Section */}
       <section className="py-32 luxury-container">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24">
@@ -123,25 +159,60 @@ const Financing = () => {
             </div>
           </div>
 
-          <form className="bg-gray-50 p-12 md:p-16 rounded-sm border border-gray-100 shadow-sm space-y-10">
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Estimated Loan Amount</label>
-              <select className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light appearance-none cursor-pointer">
-                <option>$1,000 - $10,000</option>
-                <option>$10,000 - $20,000</option>
-                <option>Over $20,000</option>
-              </select>
-            </div>
-            
-            <input type="text" placeholder="FULL NAME" className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400" />
-            <input type="email" placeholder="EMAIL ADDRESS" className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400" />
-            
-            <textarea placeholder="ADDITIONAL DETAILS" className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400 h-24 resize-none"></textarea>
-            
-            <button className="w-full bg-luxury-black text-white py-5 uppercase tracking-[0.4em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500 shadow-xl">
-              Request Proposal
-            </button>
-          </form>
+          <div className="bg-gray-50 p-12 md:p-16 rounded-sm border border-gray-100 shadow-sm">
+            {submitted ? (
+              <div className="py-20 text-center">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl mb-6 mx-auto">✓</div>
+                <h4 className="text-xl font-serif mb-2">Inquiry Sent</h4>
+                <p className="text-gray-500 text-sm italic">Thank you for your interest. Our financing specialist will contact you shortly.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-10">
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Estimated Loan Amount</label>
+                  <select 
+                    name="loan_amount"
+                    className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light appearance-none cursor-pointer"
+                  >
+                    <option value="1000-10000">$1,000 - $10,000</option>
+                    <option value="10000-20000">$10,000 - $20,000</option>
+                    <option value="Over-20000">Over $20,000</option>
+                  </select>
+                </div>
+                
+                <input 
+                  type="text" 
+                  name="name"
+                  required
+                  placeholder="FULL NAME" 
+                  className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400" 
+                />
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  placeholder="EMAIL ADDRESS" 
+                  className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400" 
+                />
+                
+                <textarea 
+                  name="details"
+                  required
+                  placeholder="ADDITIONAL DETAILS" 
+                  className="w-full bg-transparent border-b border-gray-300 py-3 outline-none focus:border-luxury-accent transition-colors text-sm font-light placeholder:text-gray-400 h-24 resize-none"
+                ></textarea>
+                
+                {error && <p className="text-xs text-red-500 italic">{error}</p>}
+
+                <button 
+                  disabled={isSubmitting}
+                  className="w-full bg-luxury-black text-white py-5 uppercase tracking-[0.4em] text-[10px] font-bold hover:bg-luxury-accent transition-all duration-500 shadow-xl disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Sending...' : 'Request Proposal'}
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </section>
 

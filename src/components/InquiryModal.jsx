@@ -7,7 +7,7 @@ import ProgressiveImage from './ProgressiveImage';
 import { Maximize2 } from 'lucide-react';
 
 // TODO: Replace with the Access Key from web3forms.com
-const WEB3FORMS_ACCESS_KEY = "a2d2bd68-b305-4d15-9036-2727a7961799";
+const WEB3FORMS_ACCESS_KEY = "d7f8311f-fb43-4cdd-96ed-afcf8c00bba3";
 
 const InquiryModal = ({ isOpen, onClose, car }) => {
   const [inquiryType, setInquiryType] = useState('purchase');
