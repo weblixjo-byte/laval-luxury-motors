@@ -62,7 +62,7 @@ const Home = ({ onInquire }) => {
   return (
     <div className="flex flex-col bg-white font-sans">
       {/* Hero Section */}
-      <section className="relative h-[800px] md:h-[850px] flex items-end md:items-center bg-white pb-20 md:pb-0">
+      <section className="relative h-[800px] md:h-[850px] flex items-end md:items-center bg-white pb-20 md:pb-0 mt-[45px] md:mt-[70px]">
         {/* Background Image - Bright Luxury Setting */}
         <div className="absolute inset-0">
           <img 
