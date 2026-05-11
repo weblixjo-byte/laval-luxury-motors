@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line 
 import { client } from '../client';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [brands, setBrands] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,11 +11,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    
     // Fetch dynamic brands from Sanity
     const fetchBrands = async () => {
       try {
@@ -33,7 +27,6 @@ const Navbar = () => {
     };
 
     fetchBrands();
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSearch = (e) => {
@@ -45,19 +38,17 @@ const Navbar = () => {
     }
   };
 
-  const isHome = location.pathname === '/';
+
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled || !isHome ? 'bg-white shadow-md' : 'bg-transparent'
-        }`}
+      className="fixed w-full z-50 transition-all duration-300 bg-white shadow-md"
     >
       {/* Main Header Row */}
-      <div className={`luxury-container flex justify-between items-end bg-inherit transition-all duration-500 ${isScrolled || !isHome ? 'h-12 md:h-auto pt-2 pb-3 md:pb-2' : 'h-16 md:h-auto pt-4 pb-4 md:pb-2'
-        }`}>
+      <div className="luxury-container flex justify-between items-end bg-inherit transition-all duration-500 h-12 md:h-auto pt-2 pb-3 md:pb-2">
         <div className="flex items-center space-x-8 mb-1 md:mb-0">
           <button
-            className={`flex flex-col space-y-1.5 focus:outline-none ${isScrolled || !isHome ? 'text-black' : 'text-white'}`}
+            className="flex flex-col space-y-1.5 focus:outline-none text-black"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <span className="block w-6 h-0.5 bg-current"></span>
@@ -67,8 +58,7 @@ const Navbar = () => {
 
           <Link
             to="/"
-            className={`text-2xl tracking-[0.25em] font-serif font-bold transition-colors duration-300 ${isScrolled || !isHome ? 'text-luxury-black' : 'text-white'
-              }`}
+            className="text-2xl tracking-[0.25em] font-serif font-bold transition-colors duration-300 text-luxury-black"
           >
             LAVAL MOTORS
           </Link>
@@ -84,14 +74,11 @@ const Navbar = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearch}
-                className={`w-full px-12 py-3 rounded-full text-sm transition-all border ${isScrolled || !isHome
-                  ? 'bg-gray-100 border-gray-200 focus:bg-white text-black'
-                  : 'bg-white/10 border-white/20 focus:bg-white/20 text-white placeholder-white/70'
-                  } outline-none focus:ring-1 focus:ring-luxury-accent/50`}
+                className="w-full px-12 py-3 rounded-full text-sm transition-all border bg-gray-100 border-gray-200 focus:bg-white text-black outline-none focus:ring-1 focus:ring-luxury-accent/50"
               />
             </form>
             <svg
-              className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${isScrolled || !isHome ? 'text-gray-400' : 'text-white/70'}`}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -102,8 +89,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Actions */}
-        <div className={`hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold ${isScrolled || !isHome ? 'text-luxury-black' : 'text-white'
-          }`}>
+        <div className="hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold text-luxury-black">
           {['Inventory', 'Services', 'Financing', 'About'].map((item) => (
             <Link 
               key={item}
@@ -123,7 +109,7 @@ const Navbar = () => {
             className={`px-6 py-2 border transition-all ${
               location.pathname === '/contact'
                 ? 'border-luxury-accent bg-luxury-accent text-white'
-                : (isScrolled || !isHome ? 'border-black bg-black text-white hover:bg-white hover:text-black' : 'border-white bg-transparent hover:bg-white hover:text-black')
+                : 'border-black bg-black text-white hover:bg-white hover:text-black'
             }`}
           >
             Inquire
@@ -132,17 +118,13 @@ const Navbar = () => {
       </div>
 
       {/* Brands Row - Optimized for Mobile Scroll */}
-      <div className={`border-t transition-all duration-300 ${isScrolled || !isHome
-        ? 'bg-white border-gray-100 py-3'
-        : 'bg-transparent border-white/10 py-3'
-        }`}>
+      <div className="border-t transition-all duration-300 bg-white border-gray-100 py-3">
         <div className="luxury-container flex justify-between md:justify-around overflow-x-auto no-scrollbar gap-8 md:gap-0">
           {brands.map(brand => (
             <Link
               key={brand}
               to={`/inventory?brand=${brand}`}
-              className={`text-[9px] uppercase tracking-widest transition-colors whitespace-nowrap ${isScrolled || !isHome ? 'text-gray-500 hover:text-black' : 'text-white/80 hover:text-white'
-                }`}
+              className="text-[9px] uppercase tracking-widest transition-colors whitespace-nowrap text-gray-500 hover:text-black"
             >
               {brand}
             </Link>

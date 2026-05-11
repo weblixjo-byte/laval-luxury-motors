@@ -62,7 +62,7 @@ const Home = ({ onInquire }) => {
   return (
     <div className="flex flex-col bg-white font-sans">
       {/* Hero Section */}
-      <section className="relative h-[650px] md:h-[850px] flex items-center bg-white">
+      <section className="relative h-[800px] md:h-[850px] flex items-end md:items-center bg-white pb-20 md:pb-0">
         {/* Background Image - Bright Luxury Setting */}
         <div className="absolute inset-0">
           <img 
@@ -72,10 +72,10 @@ const Home = ({ onInquire }) => {
             fetchpriority="high"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/60 md:via-black/20 md:to-transparent"></div>
         </div>
 
-        <div className="relative z-10 max-w-[1440px] mx-auto px-4 lg:px-8 w-full pt-20">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-4 lg:px-8 w-full">
           <div className="max-w-xl text-white">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
