@@ -12,6 +12,7 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Financing = lazy(() => import('./pages/Financing'));
 const Services = lazy(() => import('./pages/Services'));
 const StudioPage = lazy(() => import('./pages/StudioPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // High-end loading fallback
 const PageLoader = () => (
@@ -62,6 +63,7 @@ function App() {
             <Route path="/financing" element={<Financing />} />
             <Route path="/services" element={<Services />} />
             <Route path="/studio/*" element={<StudioPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
