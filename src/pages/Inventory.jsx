@@ -24,7 +24,8 @@ const Inventory = ({ onInquire }) => {
         const brandsQuery = `*[_type == "brand"] | order(order asc, name asc) { name }`;
         const brandsData = await client.fetch(brandsQuery);
         if (brandsData) {
-          setBrands(['All', ...brandsData.map(b => b.name)]);
+          const uniqueBrands = ['All', ...new Set(brandsData.map(b => b.name.trim()))];
+          setBrands(uniqueBrands);
         }
 
         // Fetch Vehicles
@@ -67,7 +68,7 @@ const Inventory = ({ onInquire }) => {
   }, []);
 
   const filteredCars = allCars.filter(car => {
-    const matchesBrand = selectedBrand === 'All' || car.brand?.toLowerCase() === selectedBrand.toLowerCase();
+    const matchesBrand = selectedBrand === 'All' || car.brand?.trim().toLowerCase() === selectedBrand.trim().toLowerCase();
     const matchesSearch = !searchFromUrl || 
       car.name?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||
       car.model?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||
