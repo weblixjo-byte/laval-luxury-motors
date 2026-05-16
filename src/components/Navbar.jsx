@@ -17,7 +17,8 @@ const Navbar = () => {
         const query = `*[_type == "brand"] | order(order asc, name asc) { name }`;
         const data = await client.fetch(query);
         if (data && data.length > 0) {
-          setBrands(data.map(b => b.name));
+          const uniqueBrands = [...new Set(data.map(b => b.name.trim()))];
+          setBrands(uniqueBrands);
         } else {
           setBrands([]);
         }

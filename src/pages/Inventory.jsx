@@ -50,6 +50,7 @@ const Inventory = ({ onInquire }) => {
             }
           },
           specifications,
+          mileage,
           price,
           priceDisplayMode
         }`;

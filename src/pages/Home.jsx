@@ -46,6 +46,7 @@ const Home = ({ onInquire }) => {
             }
           },
           specifications,
+          mileage,
           price,
           priceDisplayMode
         }`;
