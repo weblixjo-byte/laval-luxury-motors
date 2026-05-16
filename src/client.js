@@ -4,7 +4,7 @@ import imageUrlBuilder from '@sanity/image-url';
 export const client = createClient({
   projectId: 'nyiie8qw',
   dataset: 'production',
-  useCdn: true, // `false` if you want to ensure fresh data every time
+  useCdn: false, // `false` if you want to ensure fresh data every time
   apiVersion: '2023-05-03', // Use today's date
 });
 

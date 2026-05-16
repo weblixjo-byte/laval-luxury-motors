@@ -66,6 +66,13 @@ const Inventory = ({ onInquire }) => {
     };
 
     fetchData();
+
+    // Real-time listener for "insane" updates
+    const subscription = client.listen(`*[_type == "vehicle" || _type == "brand"]`).subscribe(() => {
+      fetchData();
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const filteredCars = allCars.filter(car => {

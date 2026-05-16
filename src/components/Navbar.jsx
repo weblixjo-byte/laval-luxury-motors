@@ -28,6 +28,13 @@ const Navbar = () => {
     };
 
     fetchBrands();
+
+    // Real-time listener for brands
+    const subscription = client.listen(`*[_type == "brand"]`).subscribe(() => {
+      fetchBrands();
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleSearch = (e) => {

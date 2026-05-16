@@ -60,6 +60,13 @@ const Home = ({ onInquire }) => {
     };
 
     fetchNewArrivals();
+
+    // Real-time listener for "insane" updates
+    const subscription = client.listen(`*[_type == "vehicle"]`).subscribe(() => {
+      fetchNewArrivals();
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (

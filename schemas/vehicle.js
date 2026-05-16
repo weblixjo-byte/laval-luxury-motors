@@ -74,6 +74,7 @@ export default {
       title: 'Price',
       type: 'number',
       description: 'Enter the price of the vehicle (numerical value).',
+      hidden: ({ document }) => document?.priceDisplayMode !== 'fixed'
     },
     {
       name: 'priceDisplayMode',
@@ -82,7 +83,6 @@ export default {
       options: {
         list: [
           { title: 'Show Fixed Price', value: 'fixed' },
-          { title: 'Call for Price (اتصل لمعرفة السعر)', value: 'call' },
           { title: 'Price on Request (Default)', value: 'request' }
         ]
       },
