@@ -188,7 +188,17 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span>Inquiry Price</span>
-                  <span className="text-luxury-accent">Price on Request</span>
+                  <span className="text-luxury-accent">
+                    {car.priceDisplayMode === 'fixed' && car.price 
+                      ? new Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                          maximumFractionDigits: 0,
+                        }).format(car.price)
+                      : car.priceDisplayMode === 'call'
+                        ? 'Call for Price'
+                        : 'Price on Request'}
+                  </span>
                 </div>
               </div>
             </div>

@@ -22,7 +22,7 @@ const CarCard = ({ car, onInquire }) => {
 
   // Formatting helpers
   const mileage = car.specifications?.mileage || car.mileage;
-  const formattedMileage = mileage ? `${mileage.toLocaleString()} km` : 'N/A';
+  const formattedMileage = mileage ? `${mileage.toLocaleString()} mi` : 'N/A';
   const bodyType = car.bodyType || 'Sedan';
   const transmission = car.specifications?.transmission || car.transmission || 'Automatic';
 
@@ -85,7 +85,17 @@ const CarCard = ({ car, onInquire }) => {
 
         {/* Price Row */}
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
-          <span className="text-[10px] md:text-xs font-black text-luxury-black tracking-[0.2em] uppercase">Price on Request</span>
+          <span className="text-[10px] md:text-xs font-black text-luxury-black tracking-[0.2em] uppercase">
+            {car.priceDisplayMode === 'fixed' && car.price 
+              ? new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  maximumFractionDigits: 0,
+                }).format(car.price)
+              : car.priceDisplayMode === 'call'
+                ? 'Call for Price'
+                : 'Price on Request'}
+          </span>
           <div className="w-2 h-2 rounded-full bg-luxury-accent animate-pulse"></div>
         </div>
       </div>

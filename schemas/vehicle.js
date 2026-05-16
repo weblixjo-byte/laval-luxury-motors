@@ -56,7 +56,7 @@ export default {
       title: 'Specifications',
       type: 'object',
       fields: [
-        { name: 'mileage', title: 'Mileage (km)', type: 'number' },
+        { name: 'mileage', title: 'Mileage (mi)', type: 'number' },
         { name: 'transmission', title: 'Transmission', type: 'string', options: { list: ['Automatic', 'Manual'] } },
         { name: 'fuelType', title: 'Fuel Type', type: 'string' },
         { name: 'engine', title: 'Engine Details', type: 'string' },
@@ -68,6 +68,25 @@ export default {
       name: 'description',
       title: 'Detailed Description',
       type: 'text',
+    },
+    {
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      description: 'Enter the price of the vehicle (numerical value).',
+    },
+    {
+      name: 'priceDisplayMode',
+      title: 'Price Display Mode',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Show Fixed Price', value: 'fixed' },
+          { title: 'Call for Price (اتصل لمعرفة السعر)', value: 'call' },
+          { title: 'Price on Request (Default)', value: 'request' }
+        ]
+      },
+      initialValue: 'request'
     }
   ],
   preview: {

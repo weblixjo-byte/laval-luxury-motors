@@ -48,7 +48,9 @@ const Inventory = ({ onInquire }) => {
               metadata { lqip }
             }
           },
-          specifications
+          specifications,
+          price,
+          priceDisplayMode
         }`;
         const vehiclesData = await client.fetch(vehiclesQuery);
         if (vehiclesData) {

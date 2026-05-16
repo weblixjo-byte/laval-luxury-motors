@@ -45,7 +45,9 @@ const Home = ({ onInquire }) => {
               metadata { lqip }
             }
           },
-          specifications
+          specifications,
+          price,
+          priceDisplayMode
         }`;
         const data = await client.fetch(query);
         if (data && data.length > 0) {
