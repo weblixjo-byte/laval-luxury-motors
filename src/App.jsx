@@ -10,6 +10,7 @@ const Inventory = lazy(() => import('./pages/Inventory'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Financing = lazy(() => import('./pages/Financing'));
+const ApplyFinancing = lazy(() => import('./pages/ApplyFinancing'));
 const Services = lazy(() => import('./pages/Services'));
 const StudioPage = lazy(() => import('./pages/StudioPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -61,6 +62,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/financing" element={<Financing />} />
+            <Route path="/apply-financing" element={<ApplyFinancing />} />
             <Route path="/services" element={<Services />} />
             <Route path="/studio/*" element={<StudioPage />} />
             <Route path="*" element={<NotFound />} />
