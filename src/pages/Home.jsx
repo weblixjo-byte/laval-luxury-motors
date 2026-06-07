@@ -48,7 +48,8 @@ const Home = ({ onInquire }) => {
           specifications,
           mileage,
           price,
-          priceDisplayMode
+          priceDisplayMode,
+          isSold
         }`;
         const data = await client.fetch(query);
         if (data && data.length > 0) {

@@ -9,6 +9,7 @@ import {
   Briefcase,
   Globe
 } from 'lucide-react';
+import FinanceModal from '../components/FinanceModal';
 
 const WEB3FORMS_ACCESS_KEY = "d7f8311f-fb43-4cdd-96ed-afcf8c00bba3";
 
@@ -16,6 +17,7 @@ const Financing = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [isFinanceModalOpen, setIsFinanceModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,6 +82,14 @@ const Financing = () => {
               <p className="text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto text-gray-200">
                 Get the car you want with flexible options that work for you. Simple, fast, and transparent.
               </p>
+              <div className="pt-6">
+                <button
+                  onClick={() => setIsFinanceModalOpen(true)}
+                  className="bg-luxury-accent text-white hover:bg-white hover:text-luxury-black px-8 py-4 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-300 shadow-lg inline-block hover:scale-105"
+                >
+                  Apply For Financing
+                </button>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -222,6 +232,11 @@ const Financing = () => {
           * Estimated rates subject to credit approval and asset valuation. See dealer for terms and conditions.
         </p>
       </section>
+
+      <FinanceModal 
+        isOpen={isFinanceModalOpen} 
+        onClose={() => setIsFinanceModalOpen(false)} 
+      />
     </div>
   );
 };

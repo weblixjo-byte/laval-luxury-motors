@@ -52,7 +52,8 @@ const Inventory = ({ onInquire }) => {
           specifications,
           mileage,
           price,
-          priceDisplayMode
+          priceDisplayMode,
+          isSold
         }`;
         const vehiclesData = await client.fetch(vehiclesQuery);
         if (vehiclesData) {

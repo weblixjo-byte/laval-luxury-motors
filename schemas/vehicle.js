@@ -35,6 +35,13 @@ export default {
       initialValue: false
     },
     {
+      name: 'isSold',
+      title: 'Mark as Sold?',
+      type: 'boolean',
+      description: 'If toggled, this vehicle will be marked as SOLD on the website.',
+      initialValue: false
+    },
+    {
       name: 'mainImage',
       title: 'Main Image',
       type: 'image',

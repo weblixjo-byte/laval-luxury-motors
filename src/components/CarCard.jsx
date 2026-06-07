@@ -55,6 +55,12 @@ const CarCard = ({ car, onInquire }) => {
           alt={car.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
+        {/* SOLD Badge */}
+        {car.isSold && (
+          <div className="absolute top-3 left-3 bg-black/95 text-luxury-accent text-[9px] font-extrabold uppercase tracking-[0.2em] px-3 py-1.5 rounded-sm z-10 border border-luxury-accent/30 shadow-lg">
+            Sold
+          </div>
+        )}
         {/* Heart Icon */}
         <button className="absolute top-3 right-3 text-white drop-shadow-md hover:text-red-500 transition-colors z-10">
           <Heart size={20} className="stroke-2" />
@@ -96,7 +102,7 @@ const CarCard = ({ car, onInquire }) => {
                 ? 'Call for Price'
                 : 'Price on Request'}
           </span>
-          <div className="w-2 h-2 rounded-full bg-luxury-accent animate-pulse"></div>
+          <div className={`w-2 h-2 rounded-full ${car.isSold ? 'bg-gray-300' : 'bg-luxury-accent animate-pulse'}`}></div>
         </div>
       </div>
     </div>

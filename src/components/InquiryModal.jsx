@@ -187,6 +187,12 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                   <span className="text-black">#{car.id?.slice(-6) || 'LLM-24'}</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
+                  <span>Availability</span>
+                  <span className={car.isSold ? "text-red-600 font-extrabold" : "text-green-600 font-extrabold"}>
+                    {car.isSold ? "SOLD" : "AVAILABLE"}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
                   <span>Inquiry Price</span>
                   <span className="text-luxury-accent">
                     {car.priceDisplayMode === 'fixed' && car.price 
@@ -262,7 +268,7 @@ const InquiryModal = ({ isOpen, onClose, car }) => {
                       isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black'
                     }`}
                   >
-                    {isSubmitting ? 'Sending Request...' : 'Send Inquiry'}
+                    {isSubmitting ? 'Sending Request...' : car.isSold ? 'Inquire About Similar Cars' : 'Send Inquiry'}
                   </button>
                 </form>
               )}
