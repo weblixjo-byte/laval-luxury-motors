@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { client } from '../client';
 import { 
   User, MapPin, Briefcase, Car, Shield, 
-  ChevronRight, ChevronLeft, CheckCircle2, AlertCircle 
+  ChevronRight, ChevronLeft, AlertCircle, Printer
 } from 'lucide-react';
 
 const WEB3FORMS_ACCESS_KEY = "d7f8311f-fb43-4cdd-96ed-afcf8c00bba3";
@@ -16,7 +16,266 @@ const STEPS = [
   { id: 5, title: 'Consent & Submit', icon: Shield }
 ];
 
+// Helper components for the printable layout
+const PrintSummary = ({ data }) => {
+  // Format SSN for display
+  const formatSSN = (ssn) => {
+    if (!ssn) return '';
+    const clean = ssn.replace(/\D/g, '');
+    if (clean.length === 9) {
+      return `${clean.slice(0, 3)}-${clean.slice(3, 5)}-${clean.slice(5)}`;
+    }
+    return ssn;
+  };
+
+  useEffect(() => {
+    // Automatically trigger print dialog once layout is rendered
+    const timer = setTimeout(() => {
+      window.print();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const yearsAtAddress = parseInt(data.yearsAtAddress || 0, 10);
+  const monthsAtAddress = parseInt(data.monthsAtAddress || 0, 10);
+  const isAddressShort = (yearsAtAddress * 12 + monthsAtAddress) < 24;
+
+  const yearsAtJob = parseInt(data.yearsAtJob || 0, 10);
+  const monthsAtJob = parseInt(data.monthsAtJob || 0, 10);
+  const isEmploymentShort = (yearsAtJob * 12 + monthsAtJob) < 24;
+
+  return (
+    <div className="min-h-screen bg-white p-4 font-sans text-black print:p-0 print-container">
+      {/* CSS overrides specifically for printing */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media print {
+          body {
+            background-color: #fff !important;
+            color: #000 !important;
+            font-family: "Inter", sans-serif;
+          }
+          .no-print {
+            display: none !important;
+          }
+          .print-border {
+            border: 1px solid #000 !important;
+          }
+          .print-border-b {
+            border-bottom: 1px solid #000 !important;
+          }
+          .print-bg-gray {
+            background-color: #f3f4f6 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          @page {
+            size: A4 portrait;
+            margin: 1.2cm 1.5cm;
+          }
+        }
+      `}} />
+
+      {/* Control panel (hidden when printing) */}
+      <div className="no-print max-w-4xl mx-auto mb-8 bg-gray-50 border border-gray-200 p-4 flex justify-between items-center rounded-sm">
+        <div>
+          <h4 className="text-sm font-bold text-gray-800">Laval Motors Credit App Print Panel</h4>
+          <p className="text-xs text-gray-500">This page is pre-formatted for A4 printer paper. Press Print if dialog didn't open automatically.</p>
+        </div>
+        <button 
+          onClick={() => window.print()}
+          className="bg-luxury-black text-white hover:bg-luxury-accent px-5 py-2.5 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all"
+        >
+          <Printer size={14} /> Print Document
+        </button>
+      </div>
+
+      {/* Formal PDF Layout */}
+      <div className="max-w-4xl mx-auto border border-black p-6 md:p-8 bg-white print:border-black print:p-0">
+        
+        {/* Document Header */}
+        <div className="flex justify-between items-start border-b border-black pb-4 mb-6">
+          <div>
+            <h1 className="text-xl font-serif tracking-[0.15em] font-bold text-black uppercase">Laval Luxury Motors</h1>
+            <p className="text-[9px] tracking-widest uppercase font-light text-gray-600 mt-1">Bespoke Finance Department | Confidential Credit Application</p>
+          </div>
+          <div className="text-right">
+            <span className="text-[8px] uppercase tracking-wider font-bold bg-black text-white px-2 py-1">Underwriting Copy</span>
+            <p className="text-[9px] text-gray-500 mt-2 font-mono">APP-REF: #{data.lastName?.slice(0, 3).toUpperCase() || 'LLM'}-{new Date().getFullYear()}</p>
+          </div>
+        </div>
+
+        {/* 1. Personal Section */}
+        <div className="mb-5">
+          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 flex-grow print-bg-gray">
+            1. Applicant Personal Identification
+          </h2>
+          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
+            <tbody>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Full Name</td>
+                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.firstName} {data.middleInitial ? data.middleInitial + '. ' : ''}{data.lastName}</td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Social Security No.</td>
+                <td className="w-1/4 p-2 font-mono font-bold border-r border-black">{formatSSN(data.ssn)}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Date of Birth</td>
+                <td className="w-1/4 p-2 font-medium">{data.dob}</td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Primary Phone</td>
+                <td className="w-1/4 p-2 font-medium border-r border-black">{data.phone}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Email Address</td>
+                <td className="w-1/4 p-2 font-medium">{data.email}</td>
+              </tr>
+              <tr>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Marital Status</td>
+                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.maritalStatus}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* 2. Housing History */}
+        <div className="mb-5">
+          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
+            2. Residential History
+          </h2>
+          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
+            <tbody>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Current Address</td>
+                <td className="w-3/4 p-2 font-medium" colSpan="3">
+                  {data.streetAddress}{data.aptUnit ? ' Apt ' + data.aptUnit : ''}, {data.city}, {data.state} {data.zipCode}
+                </td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Residential Status</td>
+                <td className="w-1/4 p-2 font-medium border-r border-black">{data.residenceType}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Housing Payment</td>
+                <td className="w-1/4 p-2 font-medium">${data.monthlyPayment} / month</td>
+              </tr>
+              <tr className={isAddressShort ? 'border-b border-black' : ''}>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Time at Address</td>
+                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.yearsAtAddress} Years, {data.monthsAtAddress || 0} Months</td>
+              </tr>
+              {isAddressShort && (
+                <tr>
+                  <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Previous Address</td>
+                  <td className="w-3/4 p-2 font-medium" colSpan="3">
+                    {data.prevStreetAddress}{data.prevAptUnit ? ' Apt ' + data.prevAptUnit : ''}, {data.prevCity}, {data.prevState} {data.prevZipCode} (Time there: {data.prevYearsAtAddress} Years, {data.prevMonthsAtAddress || 0} Months)
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* 3. Employment & Income */}
+        <div className="mb-5">
+          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
+            3. Employment & Financial Status
+          </h2>
+          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
+            <tbody>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Current Employer</td>
+                <td className="w-1/4 p-2 font-medium border-r border-black">{data.employerName}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Job Title / Title</td>
+                <td className="w-1/4 p-2 font-medium">{data.jobTitle}</td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Status</td>
+                <td className="w-1/4 p-2 font-medium border-r border-black">{data.employmentStatus}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Work Phone</td>
+                <td className="w-1/4 p-2 font-medium">{data.workPhone || 'N/A'}</td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Gross Monthly Income</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black text-black">${parseFloat(data.monthlyIncome || 0).toLocaleString()}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Time at Job</td>
+                <td className="w-1/4 p-2 font-medium">{data.yearsAtJob} Years, {data.monthsAtJob || 0} Months</td>
+              </tr>
+              {isEmploymentShort && (
+                <tr>
+                  <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Prev. Employer Info</td>
+                  <td className="w-3/4 p-2 font-medium" colSpan="3">
+                    {data.prevEmployerName} - {data.prevJobTitle} (Income: ${parseFloat(data.prevMonthlyIncome || 0).toLocaleString()}/mo, Duration: {data.prevYearsAtJob} Years, {data.prevMonthsAtJob || 0} Months)
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* 4. Vehicle & Financing Section */}
+        <div className="mb-5">
+          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
+            4. Requested Transaction Details
+          </h2>
+          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
+            <tbody>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Vehicle of Interest</td>
+                <td className="w-3/4 p-2 font-bold text-black" colSpan="3">{data.vehicleName || 'General Pre-Approval'}</td>
+              </tr>
+              <tr className="border-b border-black">
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Est. Loan Amount</td>
+                <td className="w-1/4 p-2 font-medium border-r border-black">${parseFloat(data.loanAmount || 0).toLocaleString()}</td>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Down Payment</td>
+                <td className="w-1/4 p-2 font-medium">${parseFloat(data.downPayment || 0).toLocaleString()}</td>
+              </tr>
+              <tr>
+                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Trade-In Details</td>
+                <td className="w-3/4 p-2 font-medium" colSpan="3">
+                  {data.tradeInYear ? `${data.tradeInYear} ${data.tradeInMake} ${data.tradeInModel} (Mileage: ${data.tradeInMileage || 'N/A'})` : 'None'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* 5. Authorization & Disclosures */}
+        <div>
+          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
+            5. Disclosures, Credit Authorization & Signatures
+          </h2>
+          <div className="border-x border-b border-black p-3 text-[9px] text-gray-500 leading-normal text-justify">
+            By signing below, the applicant authorizes Laval Luxury Motors and its designated underwriting lending partners to obtain credit bureau reports and verify all information provided on this credit application. The applicant certifies that all entries are correct, complete, and truthful. This inquiry is processed as a soft credit inquiry initially and will not affect the applicant's official credit score.
+          </div>
+          <table className="w-full border-collapse text-xs mt-2">
+            <tbody>
+              <tr>
+                <td className="w-3/5 p-4 border border-black">
+                  <div className="text-[8px] uppercase tracking-wider text-gray-400 font-bold">Applicant Digital Signature</div>
+                  <div className="font-serif italic text-base text-black mt-2 h-6 border-b border-gray-300 pb-1 flex items-end">
+                    {data.signature}
+                  </div>
+                </td>
+                <td className="w-2/5 p-4 border border-black">
+                  <div className="text-[8px] uppercase tracking-wider text-gray-400 font-bold">Authorized Date</div>
+                  <div className="font-mono text-sm text-black mt-3 h-6 border-b border-gray-300 pb-1 flex items-end">
+                    {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-8 text-center text-[8px] text-gray-400 tracking-wider uppercase font-light font-mono">
+          * CONFIDENTIAL DOCUMENT FOR LENDER ASSESSMENT ONLY *
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 const ApplyFinancing = () => {
+  const [isPrintMode, setIsPrintMode] = useState(false);
+  const [printData, setPrintData] = useState(null);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [vehicles, setVehicles] = useState([]);
   const [isLoadingVehicles, setIsLoadingVehicles] = useState(true);
@@ -26,7 +285,6 @@ const ApplyFinancing = () => {
 
   // Form State
   const [formData, setFormData] = useState({
-    // Step 1: Personal
     firstName: '',
     middleInitial: '',
     lastName: '',
@@ -36,7 +294,6 @@ const ApplyFinancing = () => {
     phone: '',
     maritalStatus: '',
 
-    // Step 2: Address
     streetAddress: '',
     aptUnit: '',
     city: '',
@@ -46,7 +303,7 @@ const ApplyFinancing = () => {
     monthlyPayment: '',
     yearsAtAddress: '',
     monthsAtAddress: '',
-    // Previous Address (conditional)
+    
     prevStreetAddress: '',
     prevAptUnit: '',
     prevCity: '',
@@ -55,7 +312,6 @@ const ApplyFinancing = () => {
     prevYearsAtAddress: '',
     prevMonthsAtAddress: '',
 
-    // Step 3: Employment
     employmentStatus: '',
     employerName: '',
     jobTitle: '',
@@ -63,14 +319,13 @@ const ApplyFinancing = () => {
     monthlyIncome: '',
     yearsAtJob: '',
     monthsAtJob: '',
-    // Previous Employment (conditional)
+    
     prevEmployerName: '',
     prevJobTitle: '',
     prevMonthlyIncome: '',
     prevYearsAtJob: '',
     prevMonthsAtJob: '',
 
-    // Step 4: Vehicle & Loan
     vehicleSelection: 'general',
     loanAmount: '',
     downPayment: '',
@@ -79,13 +334,26 @@ const ApplyFinancing = () => {
     tradeInModel: '',
     tradeInMileage: '',
 
-    // Step 5: Consent
     creditConsent: false,
     signature: ''
   });
 
+  // Check URL query parameters for Print Mode
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('print') === 'true') {
+      setIsPrintMode(true);
+      const data = {};
+      params.forEach((value, key) => {
+        data[key] = value;
+      });
+      setPrintData(data);
+    }
+  }, []);
+
   // Fetch active inventory for vehicle selection dropdown
   useEffect(() => {
+    if (isPrintMode) return;
     const fetchVehicles = async () => {
       try {
         setIsLoadingVehicles(true);
@@ -109,7 +377,11 @@ const ApplyFinancing = () => {
       }
     };
     fetchVehicles();
-  }, []);
+  }, [isPrintMode]);
+
+  if (isPrintMode && printData) {
+    return <PrintSummary data={printData} />;
+  }
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -119,14 +391,12 @@ const ApplyFinancing = () => {
     }));
   };
 
-  // Check if current residence is less than 2 years (24 months)
   const isAddressHistoryShort = () => {
     const years = parseInt(formData.yearsAtAddress || 0, 10);
     const months = parseInt(formData.monthsAtAddress || 0, 10);
     return (years * 12 + months) < 24;
   };
 
-  // Check if current employment is less than 2 years (24 months)
   const isEmploymentHistoryShort = () => {
     const years = parseInt(formData.yearsAtJob || 0, 10);
     const months = parseInt(formData.monthsAtJob || 0, 10);
@@ -135,7 +405,6 @@ const ApplyFinancing = () => {
 
   const handleNextStep = (e) => {
     e.preventDefault();
-    // Basic validation before going to next step
     if (validateStep(currentStep)) {
       setCurrentStep(prev => prev + 1);
       window.scrollTo(0, 0);
@@ -148,7 +417,6 @@ const ApplyFinancing = () => {
   };
 
   const validateStep = (step) => {
-    // Implement validation rules for each step
     switch (step) {
       case 1:
         return formData.firstName && formData.lastName && formData.dob && formData.ssn && formData.email && formData.phone && formData.maritalStatus;
@@ -187,23 +455,39 @@ const ApplyFinancing = () => {
     setIsSubmitting(true);
     setSubmitError(null);
 
-    // Format data for Web3Forms email body nicely
+    // Resolve vehicle name
+    let vehicleName = "General Pre-Approval (No specific vehicle)";
+    if (formData.vehicleSelection && formData.vehicleSelection !== 'general') {
+      const selectedCar = vehicles.find(v => v.id === formData.vehicleSelection);
+      if (selectedCar) {
+        vehicleName = `${selectedCar.year} ${selectedCar.brand} ${selectedCar.model}`;
+      }
+    }
+
+    // Generate secure printable link containing data parameters
+    const printParams = new URLSearchParams();
+    printParams.append("print", "true");
+    printParams.append("vehicleName", vehicleName);
+    Object.entries(formData).forEach(([key, val]) => {
+      printParams.append(key, val);
+    });
+
+    const printUrl = `${window.location.origin}/apply-financing?${printParams.toString()}`;
+
+    // Format data for Web3Forms email body
     const submissionBody = new FormData();
     submissionBody.append("access_key", WEB3FORMS_ACCESS_KEY);
     submissionBody.append("subject", `LAVAL CREDIT APP: ${formData.firstName} ${formData.lastName}`);
-    submissionBody.append("from_name", "Laval Motors Finance Portal");
+    submissionBody.append("from_name", "Laval Motors Credit Desk");
+    submissionBody.append("Print Link (Click to Print on 1 Page)", printUrl);
 
-    // Construct pretty email representation
     const fieldsToSubmit = {
-      // Step 1: Personal
       "Full Name": `${formData.firstName} ${formData.middleInitial ? formData.middleInitial + ' ' : ''}${formData.lastName}`,
       "Date of Birth": formData.dob,
       "Social Security Number": formData.ssn,
       "Email Address": formData.email,
       "Phone Number": formData.phone,
       "Marital Status": formData.maritalStatus,
-
-      // Step 2: Address History
       "Current Address": `${formData.streetAddress} ${formData.aptUnit ? 'Apt ' + formData.aptUnit : ''}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
       "Residence Type": formData.residenceType,
       "Monthly Housing Payment": `$${formData.monthlyPayment}`,
@@ -211,28 +495,18 @@ const ApplyFinancing = () => {
       "Previous Address": isAddressHistoryShort() 
         ? `${formData.prevStreetAddress} ${formData.prevAptUnit ? 'Apt ' + formData.prevAptUnit : ''}, ${formData.prevCity}, ${formData.prevState} ${formData.prevZipCode} (Time: ${formData.prevYearsAtAddress} Y, ${formData.prevMonthsAtAddress || 0} M)` 
         : 'N/A (> 2 Years)',
-
-      // Step 3: Employment Details
       "Employment Status": formData.employmentStatus,
       "Employer Name": formData.employerName,
       "Job Title / Position": formData.jobTitle,
-      "Work Phone": formData.workPhone || 'N/A',
       "Gross Monthly Income": `$${formData.monthlyIncome}`,
       "Time at Job": `${formData.yearsAtJob} Years, ${formData.monthsAtJob || 0} Months`,
       "Previous Employer": isEmploymentHistoryShort() 
         ? `${formData.prevEmployerName} - ${formData.prevJobTitle} (Income: $${formData.prevMonthlyIncome}, Time: ${formData.prevYearsAtJob} Y, ${formData.prevMonthsAtJob || 0} M)`
         : 'N/A (> 2 Years)',
-
-      // Step 4: Vehicle Request
-      "Selected Vehicle": formData.vehicleSelection === 'general' ? 'General Approval' : (() => {
-        const sel = vehicles.find(v => v.id === formData.vehicleSelection);
-        return sel ? `${sel.year} ${sel.brand} ${sel.model}` : 'Unknown Vehicle';
-      })(),
+      "Selected Vehicle": vehicleName,
       "Estimated Loan Amount": `$${formData.loanAmount}`,
       "Down Payment Amount": `$${formData.downPayment}`,
       "Trade-in Details": formData.tradeInYear ? `${formData.tradeInYear} ${formData.tradeInMake} ${formData.tradeInModel} (Mileage: ${formData.tradeInMileage || 'N/A'})` : 'None',
-
-      // Step 5: Authorization & Signature
       "Credit Authorization Consent": formData.creditConsent ? "AUTHORIZED" : "DECLINED",
       "Digital Signature": formData.signature,
       "Submission Date": new Date().toLocaleString()
@@ -253,11 +527,11 @@ const ApplyFinancing = () => {
         setSubmitted(true);
         window.scrollTo(0, 0);
       } else {
-        setSubmitError("Failed to submit. Please check your information or try again later.");
+        setSubmitError("Failed to submit application. Please check your details and try again.");
       }
     } catch (err) {
       console.error(err);
-      setSubmitError("Network error. Please check your internet connection.");
+      setSubmitError("Network error. Please verify your internet connection.");
     } finally {
       setIsSubmitting(false);
     }

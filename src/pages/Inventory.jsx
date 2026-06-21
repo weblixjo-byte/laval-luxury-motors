@@ -24,7 +24,7 @@ const Inventory = ({ onInquire }) => {
         const brandsQuery = `*[_type == "brand"] | order(order asc, name asc) { name }`;
         const brandsData = await client.fetch(brandsQuery);
         if (brandsData) {
-          const uniqueBrands = ['All', ...new Set(brandsData.map(b => b.name.trim()))];
+          const uniqueBrands = ['All', ...new Set(brandsData.map(b => b.name.trim())), 'Sold'];
           setBrands(uniqueBrands);
         }
 
@@ -77,7 +77,17 @@ const Inventory = ({ onInquire }) => {
   }, []);
 
   const filteredCars = allCars.filter(car => {
-    const matchesBrand = selectedBrand === 'All' || car.brand?.trim().toLowerCase() === selectedBrand.trim().toLowerCase();
+    const isSoldCategory = selectedBrand.toLowerCase() === 'sold';
+
+    // If we are looking at the "Sold" category, show only sold cars
+    if (isSoldCategory) {
+      if (!car.isSold) return false;
+    } else {
+      // Otherwise, show only available cars
+      if (car.isSold) return false;
+    }
+
+    const matchesBrand = selectedBrand === 'All' || isSoldCategory || car.brand?.trim().toLowerCase() === selectedBrand.trim().toLowerCase();
     const matchesSearch = !searchFromUrl || 
       car.name?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||
       car.model?.toLowerCase().includes(searchFromUrl.toLowerCase()) ||

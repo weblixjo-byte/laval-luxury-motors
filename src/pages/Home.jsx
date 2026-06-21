@@ -25,7 +25,7 @@ const Home = ({ onInquire }) => {
   useEffect(() => {
     const fetchNewArrivals = async () => {
       try {
-        const query = `*[_type == "vehicle" && isNewArrival == true][0...4] {
+        const query = `*[_type == "vehicle" && isNewArrival == true && isSold != true][0...4] {
           "id": _id,
           year,
           "brand": brand->name,

@@ -137,6 +137,12 @@ const Navbar = () => {
               {brand}
             </Link>
           ))}
+          <Link
+            to="/inventory?brand=Sold"
+            className="text-[9px] uppercase tracking-widest transition-colors whitespace-nowrap text-luxury-accent hover:text-luxury-black font-semibold"
+          >
+            Sold
+          </Link>
         </div>
       </div>
 
