@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { client } from '../client';
 import { 
@@ -16,9 +17,104 @@ const STEPS = [
   { id: 5, title: 'Consent & Submit', icon: Shield }
 ];
 
-// Helper components for the printable layout
+// Fixed field order for Base64 serialization
+// Map form keys to short abbreviations to minimize URL length
+const KEY_MAP = {
+  firstName: 'a',
+  middleInitial: 'b',
+  lastName: 'c',
+  dob: 'd',
+  ssn: 'e',
+  email: 'f',
+  phone: 'g',
+  maritalStatus: 'h',
+  streetAddress: 'i',
+  aptUnit: 'j',
+  city: 'k',
+  state: 'l',
+  zipCode: 'm',
+  residenceType: 'n',
+  monthlyPayment: 'o',
+  yearsAtAddress: 'p',
+  monthsAtAddress: 'q',
+  prevStreetAddress: 'r',
+  prevAptUnit: 's',
+  prevCity: 't',
+  prevState: 'u',
+  prevZipCode: 'v',
+  prevYearsAtAddress: 'w',
+  prevMonthsAtAddress: 'x',
+  employmentStatus: 'y',
+  employerName: 'z',
+  jobTitle: 'A',
+  workPhone: 'B',
+  monthlyIncome: 'C',
+  yearsAtJob: 'D',
+  monthsAtJob: 'E',
+  prevEmployerName: 'F',
+  prevJobTitle: 'G',
+  prevMonthlyIncome: 'H',
+  prevYearsAtJob: 'I',
+  prevMonthsAtJob: 'J',
+  vehicleSelection: 'K',
+  vehicleName: 'L',
+  loanAmount: 'M',
+  downPayment: 'N',
+  tradeInYear: 'O',
+  tradeInMake: 'P',
+  tradeInModel: 'Q',
+  tradeInMileage: 'R',
+  signature: 'S'
+};
+
+// Base64 helper methods supporting Unicode and compression via key mapping
+const serializeData = (data, vehicleName) => {
+  const obj = {};
+  Object.keys(KEY_MAP).forEach(key => {
+    let val = key === 'vehicleName' ? (vehicleName || '') : (data[key] || '');
+    if (val !== undefined && val !== null && val !== '') {
+      obj[KEY_MAP[key]] = val;
+    }
+  });
+  const jsonStr = JSON.stringify(obj);
+  const bytes = new TextEncoder().encode(jsonStr);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+};
+
+const deserializeData = (base64Str) => {
+  try {
+    const binary = atob(base64Str);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    const decoded = new TextDecoder().decode(bytes);
+    const obj = JSON.parse(decoded);
+    const data = {};
+    
+    // Create reverse lookup map
+    const revMap = {};
+    Object.entries(KEY_MAP).forEach(([k, v]) => {
+      revMap[v] = k;
+    });
+    
+    Object.keys(KEY_MAP).forEach(key => {
+      const shortKey = KEY_MAP[key];
+      data[key] = obj[shortKey] !== undefined ? obj[shortKey] : '';
+    });
+    return data;
+  } catch (err) {
+    console.error("Error decoding credit application parameters:", err);
+    return null;
+  }
+};
+
+// Print summary using explicit inline styling and A4 table structures
 const PrintSummary = ({ data }) => {
-  // Format SSN for display
   const formatSSN = (ssn) => {
     if (!ssn) return '';
     const clean = ssn.replace(/\D/g, '');
@@ -29,10 +125,10 @@ const PrintSummary = ({ data }) => {
   };
 
   useEffect(() => {
-    // Automatically trigger print dialog once layout is rendered
+    // Automatically trigger printing dialog after rendering
     const timer = setTimeout(() => {
       window.print();
-    }, 1000);
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -44,226 +140,316 @@ const PrintSummary = ({ data }) => {
   const monthsAtJob = parseInt(data.monthsAtJob || 0, 10);
   const isEmploymentShort = (yearsAtJob * 12 + monthsAtJob) < 24;
 
+  // Reusable inline style objects for strict A4 table rendering
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    border: '1px solid #000',
+    marginTop: '4px',
+    marginBottom: '10px'
+  };
+
+  const headerBlockStyle = {
+    backgroundColor: '#e5e7eb',
+    border: '1px solid #000',
+    padding: '4px 8px',
+    fontWeight: 'bold',
+    fontSize: '9.5px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    fontFamily: 'Helvetica, Arial, sans-serif'
+  };
+
+  const labelStyle = {
+    border: '1px solid #000',
+    padding: '5px 8px',
+    fontWeight: 'bold',
+    fontSize: '8.5px',
+    textTransform: 'uppercase',
+    color: '#374151',
+    backgroundColor: '#f9fafb',
+    width: '20%',
+    fontFamily: 'Helvetica, Arial, sans-serif'
+  };
+
+  const valueStyle = {
+    border: '1px solid #000',
+    padding: '5px 8px',
+    fontSize: '10px',
+    fontWeight: '500',
+    color: '#000',
+    width: '30%',
+    fontFamily: 'Helvetica, Arial, sans-serif'
+  };
+
+  // Explicit spanned cells style to prevent overriding standard column widths
+  const valueSpanStyle = {
+    border: '1px solid #000',
+    padding: '5px 8px',
+    fontSize: '10px',
+    fontWeight: '500',
+    color: '#000',
+    fontFamily: 'Helvetica, Arial, sans-serif'
+  };
+
   return (
-    <div className="min-h-screen bg-white p-4 font-sans text-black print:p-0 print-container">
-      {/* CSS overrides specifically for printing */}
+    <div style={{ padding: '15px', backgroundColor: '#fff', minHeight: '100vh', color: '#000' }} className="print-container">
+      {/* CSS rules targeting printing specifically, hiding website wrapper navigation and footer */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
-          body {
+          body, html, #root, main, .print-container {
             background-color: #fff !important;
             color: #000 !important;
-            font-family: "Inter", sans-serif;
+            margin: 0 !important;
+            padding: 0 !important;
           }
-          .no-print {
+          nav, footer, .no-print {
             display: none !important;
-          }
-          .print-border {
-            border: 1px solid #000 !important;
-          }
-          .print-border-b {
-            border-bottom: 1px solid #000 !important;
-          }
-          .print-bg-gray {
-            background-color: #f3f4f6 !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
           }
           @page {
             size: A4 portrait;
-            margin: 1.2cm 1.5cm;
+            margin: 1.0cm 1.2cm;
           }
         }
       `}} />
 
-      {/* Control panel (hidden when printing) */}
-      <div className="no-print max-w-4xl mx-auto mb-8 bg-gray-50 border border-gray-200 p-4 flex justify-between items-center rounded-sm">
+      {/* Printing Toolbar (Hidden during print) */}
+      <div className="no-print" style={{
+        maxWidth: '750px',
+        margin: '0 auto 20px auto',
+        backgroundColor: '#f3f4f6',
+        border: '1px solid #e5e7eb',
+        padding: '12px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: '2px',
+        fontFamily: 'sans-serif'
+      }}>
         <div>
-          <h4 className="text-sm font-bold text-gray-800">Laval Motors Credit App Print Panel</h4>
-          <p className="text-xs text-gray-500">This page is pre-formatted for A4 printer paper. Press Print if dialog didn't open automatically.</p>
+          <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 'bold', color: '#1f2937' }}>Laval Motors Credit App Print Desk</h4>
+          <p style={{ margin: '2px 0 0 0', fontSize: '11px', color: '#6b7280' }}>Formatted specifically for 1-page A4 printouts. Click button if print dialog closed.</p>
         </div>
         <button 
           onClick={() => window.print()}
-          className="bg-luxury-black text-white hover:bg-luxury-accent px-5 py-2.5 rounded-sm text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all"
+          style={{
+            backgroundColor: '#000',
+            color: '#fff',
+            border: 'none',
+            padding: '8px 16px',
+            fontSize: '11px',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
         >
-          <Printer size={14} /> Print Document
+          <Printer size={12} /> Print Page
         </button>
       </div>
 
-      {/* Formal PDF Layout */}
-      <div className="max-w-4xl mx-auto border border-black p-6 md:p-8 bg-white print:border-black print:p-0">
+      {/* Credit Application Sheet */}
+      <div style={{ maxWidth: '750px', margin: '0 auto', padding: '0', backgroundColor: '#fff' }}>
         
-        {/* Document Header */}
-        <div className="flex justify-between items-start border-b border-black pb-4 mb-6">
-          <div>
-            <h1 className="text-xl font-serif tracking-[0.15em] font-bold text-black uppercase">Laval Luxury Motors</h1>
-            <p className="text-[9px] tracking-widest uppercase font-light text-gray-600 mt-1">Bespoke Finance Department | Confidential Credit Application</p>
-          </div>
-          <div className="text-right">
-            <span className="text-[8px] uppercase tracking-wider font-bold bg-black text-white px-2 py-1">Underwriting Copy</span>
-            <p className="text-[9px] text-gray-500 mt-2 font-mono">APP-REF: #{data.lastName?.slice(0, 3).toUpperCase() || 'LLM'}-{new Date().getFullYear()}</p>
-          </div>
-        </div>
+        {/* Document Title Header */}
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '15px' }}>
+          <tbody>
+            <tr>
+              <td style={{ verticalAlign: 'top', padding: 0 }}>
+                <h1 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', fontFamily: 'Georgia, serif', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                  Laval Luxury Motors
+                </h1>
+                <p style={{ margin: '2px 0 0 0', fontSize: '8.5px', textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563', fontWeight: '500' }}>
+                  Bespoke Finance Department | Confidential Credit Assessment
+                </p>
+              </td>
+              <td style={{ textAlign: 'right', verticalAlign: 'top', padding: 0 }}>
+                <span style={{ fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', backgroundColor: '#000', color: '#fff', padding: '3px 6px', letterSpacing: '1px' }}>
+                  Underwriter Copy
+                </span>
+                <p style={{ margin: '6px 0 0 0', fontSize: '8.5px', fontFamily: 'monospace', color: '#4b5563' }}>
+                  APP-REF: #{data.lastName?.slice(0, 3).toUpperCase() || 'LLM'}-{new Date().getFullYear()}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        {/* 1. Personal Section */}
-        <div className="mb-5">
-          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 flex-grow print-bg-gray">
-            1. Applicant Personal Identification
-          </h2>
-          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
-            <tbody>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Full Name</td>
-                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.firstName} {data.middleInitial ? data.middleInitial + '. ' : ''}{data.lastName}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Social Security No.</td>
-                <td className="w-1/4 p-2 font-mono font-bold border-r border-black">{formatSSN(data.ssn)}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Date of Birth</td>
-                <td className="w-1/4 p-2 font-medium">{data.dob}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Primary Phone</td>
-                <td className="w-1/4 p-2 font-medium border-r border-black">{data.phone}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Email Address</td>
-                <td className="w-1/4 p-2 font-medium">{data.email}</td>
-              </tr>
+        {/* SECTION 1: Personal */}
+        <div style={headerBlockStyle}>1. Applicant Identification</div>
+        <table style={tableStyle}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Full Name</td>
+              <td style={valueSpanStyle} colSpan="3">{data.firstName} {data.middleInitial ? data.middleInitial + '. ' : ''}{data.lastName}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Social Security No.</td>
+              <td style={{ ...valueStyle, fontWeight: 'bold', fontFamily: 'monospace' }}>{formatSSN(data.ssn)}</td>
+              <td style={labelStyle}>Date of Birth</td>
+              <td style={valueStyle}>{data.dob}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Primary Phone</td>
+              <td style={valueStyle}>{data.phone}</td>
+              <td style={labelStyle}>Email Address</td>
+              <td style={valueStyle}>{data.email}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Marital Status</td>
+              <td style={valueSpanStyle} colSpan="3">{data.maritalStatus}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/* SECTION 2: Housing */}
+        <div style={headerBlockStyle}>2. Residential History</div>
+        <table style={tableStyle}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Current Address</td>
+              <td style={valueSpanStyle} colSpan="3">
+                {data.streetAddress}{data.aptUnit ? ' Apt ' + data.aptUnit : ''}, {data.city}, {data.state} {data.zipCode}
+              </td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Housing Status</td>
+              <td style={valueStyle}>{data.residenceType}</td>
+              <td style={labelStyle}>Housing Payment</td>
+              <td style={valueStyle}>${data.monthlyPayment} / month</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Duration of Residency</td>
+              <td style={valueSpanStyle} colSpan="3">{data.yearsAtAddress} Years, {data.monthsAtAddress || 0} Months</td>
+            </tr>
+            {isAddressShort && (
               <tr>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Marital Status</td>
-                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.maritalStatus}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        {/* 2. Housing History */}
-        <div className="mb-5">
-          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
-            2. Residential History
-          </h2>
-          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
-            <tbody>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Current Address</td>
-                <td className="w-3/4 p-2 font-medium" colSpan="3">
-                  {data.streetAddress}{data.aptUnit ? ' Apt ' + data.aptUnit : ''}, {data.city}, {data.state} {data.zipCode}
+                <td style={labelStyle}>Previous Address</td>
+                <td style={{ ...valueSpanStyle, fontSize: '9px', color: '#374151' }} colSpan="3">
+                  {data.prevStreetAddress}{data.prevAptUnit ? ' Apt ' + data.prevAptUnit : ''}, {data.prevCity}, {data.prevState} {data.prevZipCode} (Duration: {data.prevYearsAtAddress} Years, {data.prevMonthsAtAddress || 0} Months)
                 </td>
               </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Residential Status</td>
-                <td className="w-1/4 p-2 font-medium border-r border-black">{data.residenceType}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Housing Payment</td>
-                <td className="w-1/4 p-2 font-medium">${data.monthlyPayment} / month</td>
-              </tr>
-              <tr className={isAddressShort ? 'border-b border-black' : ''}>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Time at Address</td>
-                <td className="w-3/4 p-2 font-medium" colSpan="3">{data.yearsAtAddress} Years, {data.monthsAtAddress || 0} Months</td>
-              </tr>
-              {isAddressShort && (
-                <tr>
-                  <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Previous Address</td>
-                  <td className="w-3/4 p-2 font-medium" colSpan="3">
-                    {data.prevStreetAddress}{data.prevAptUnit ? ' Apt ' + data.prevAptUnit : ''}, {data.prevCity}, {data.prevState} {data.prevZipCode} (Time there: {data.prevYearsAtAddress} Years, {data.prevMonthsAtAddress || 0} Months)
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
 
-        {/* 3. Employment & Income */}
-        <div className="mb-5">
-          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
-            3. Employment & Financial Status
-          </h2>
-          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
-            <tbody>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Current Employer</td>
-                <td className="w-1/4 p-2 font-medium border-r border-black">{data.employerName}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Job Title / Title</td>
-                <td className="w-1/4 p-2 font-medium">{data.jobTitle}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Status</td>
-                <td className="w-1/4 p-2 font-medium border-r border-black">{data.employmentStatus}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Work Phone</td>
-                <td className="w-1/4 p-2 font-medium">{data.workPhone || 'N/A'}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Gross Monthly Income</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black text-black">${parseFloat(data.monthlyIncome || 0).toLocaleString()}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Time at Job</td>
-                <td className="w-1/4 p-2 font-medium">{data.yearsAtJob} Years, {data.monthsAtJob || 0} Months</td>
-              </tr>
-              {isEmploymentShort && (
-                <tr>
-                  <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Prev. Employer Info</td>
-                  <td className="w-3/4 p-2 font-medium" colSpan="3">
-                    {data.prevEmployerName} - {data.prevJobTitle} (Income: ${parseFloat(data.prevMonthlyIncome || 0).toLocaleString()}/mo, Duration: {data.prevYearsAtJob} Years, {data.prevMonthsAtJob || 0} Months)
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* 4. Vehicle & Financing Section */}
-        <div className="mb-5">
-          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
-            4. Requested Transaction Details
-          </h2>
-          <table className="w-full border-collapse text-xs mt-1 border-x border-b border-black">
-            <tbody>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Vehicle of Interest</td>
-                <td className="w-3/4 p-2 font-bold text-black" colSpan="3">{data.vehicleName || 'General Pre-Approval'}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Est. Loan Amount</td>
-                <td className="w-1/4 p-2 font-medium border-r border-black">${parseFloat(data.loanAmount || 0).toLocaleString()}</td>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Down Payment</td>
-                <td className="w-1/4 p-2 font-medium">${parseFloat(data.downPayment || 0).toLocaleString()}</td>
-              </tr>
+        {/* SECTION 3: Employment */}
+        <div style={headerBlockStyle}>3. Employment & Income Profile</div>
+        <table style={tableStyle}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Current Employer</td>
+              <td style={valueStyle}>{data.employerName}</td>
+              <td style={labelStyle}>Job Title / Occupation</td>
+              <td style={valueStyle}>{data.jobTitle}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Status</td>
+              <td style={valueStyle}>{data.employmentStatus}</td>
+              <td style={labelStyle}>Employer Work Phone</td>
+              <td style={valueStyle}>{data.workPhone || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Gross Monthly Income</td>
+              <td style={{ ...valueStyle, fontWeight: 'bold' }}>
+                ${data.monthlyIncome ? parseFloat(data.monthlyIncome).toLocaleString() : '0'}
+              </td>
+              <td style={labelStyle}>Time at Employer</td>
+              <td style={valueStyle}>{data.yearsAtJob} Years, {data.monthsAtJob || 0} Months</td>
+            </tr>
+            {isEmploymentShort && (
               <tr>
-                <td className="w-1/4 p-2 font-bold border-r border-black uppercase text-[9px] text-gray-600">Trade-In Details</td>
-                <td className="w-3/4 p-2 font-medium" colSpan="3">
-                  {data.tradeInYear ? `${data.tradeInYear} ${data.tradeInMake} ${data.tradeInModel} (Mileage: ${data.tradeInMileage || 'N/A'})` : 'None'}
+                <td style={labelStyle}>Previous Employer</td>
+                <td style={{ ...valueSpanStyle, fontSize: '9px', color: '#374151' }} colSpan="3">
+                  {data.prevEmployerName} - {data.prevJobTitle} (Income: ${data.prevMonthlyIncome ? parseFloat(data.prevMonthlyIncome).toLocaleString() : '0'}/mo, Duration: {data.prevYearsAtJob} Years, {data.prevMonthsAtJob || 0} Months)
                 </td>
               </tr>
-            </tbody>
-          </table>
+            )}
+          </tbody>
+        </table>
+
+        {/* SECTION 4: Vehicle & Financing */}
+        <div style={headerBlockStyle}>4. Transaction details</div>
+        <table style={tableStyle}>
+          <tbody>
+            <tr>
+              <td style={labelStyle}>Vehicle of Interest</td>
+              <td style={{ ...valueSpanStyle, fontWeight: 'bold' }} colSpan="3">{data.vehicleName || 'General Pre-Approval'}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Est. Loan Amount</td>
+              <td style={valueStyle}>${data.loanAmount ? parseFloat(data.loanAmount).toLocaleString() : '0'}</td>
+              <td style={labelStyle}>Down Payment</td>
+              <td style={valueStyle}>${data.downPayment ? parseFloat(data.downPayment).toLocaleString() : '0'}</td>
+            </tr>
+            <tr>
+              <td style={labelStyle}>Trade-In Details</td>
+              <td style={valueSpanStyle} colSpan="3">
+                {data.tradeInYear ? `${data.tradeInYear} ${data.tradeInMake} ${data.tradeInModel} (Mileage: ${data.tradeInMileage ? parseFloat(data.tradeInMileage).toLocaleString() : 'N/A'})` : 'None'}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/* SECTION 5: Legal & Authorization */}
+        <div style={headerBlockStyle}>5. Certifications & Disclosures</div>
+        <div style={{
+          border: '1px solid #000',
+          borderTop: 'none',
+          padding: '8px 10px',
+          fontSize: '8px',
+          color: '#4b5563',
+          lineHeight: '1.3',
+          textAlign: 'justify',
+          marginBottom: '10px',
+          fontFamily: 'Helvetica, Arial, sans-serif'
+        }}>
+          By signing below, the applicant authorizes Laval Luxury Motors and its designated underwriting lending partners to obtain credit bureau reports and verify all information provided on this credit application. The applicant certifies that all entries are correct, complete, and truthful. This inquiry is processed as a soft credit inquiry initially and will not affect the applicant's official credit score.
         </div>
 
-        {/* 5. Authorization & Disclosures */}
-        <div>
-          <h2 className="text-[10px] uppercase tracking-widest font-extrabold bg-gray-100 p-1.5 border border-black print:bg-gray-100 print-bg-gray">
-            5. Disclosures, Credit Authorization & Signatures
-          </h2>
-          <div className="border-x border-b border-black p-3 text-[9px] text-gray-500 leading-normal text-justify">
-            By signing below, the applicant authorizes Laval Luxury Motors and its designated underwriting lending partners to obtain credit bureau reports and verify all information provided on this credit application. The applicant certifies that all entries are correct, complete, and truthful. This inquiry is processed as a soft credit inquiry initially and will not affect the applicant's official credit score.
-          </div>
-          <table className="w-full border-collapse text-xs mt-2">
-            <tbody>
-              <tr>
-                <td className="w-3/5 p-4 border border-black">
-                  <div className="text-[8px] uppercase tracking-wider text-gray-400 font-bold">Applicant Digital Signature</div>
-                  <div className="font-serif italic text-base text-black mt-2 h-6 border-b border-gray-300 pb-1 flex items-end">
-                    {data.signature}
-                  </div>
-                </td>
-                <td className="w-2/5 p-4 border border-black">
-                  <div className="text-[8px] uppercase tracking-wider text-gray-400 font-bold">Authorized Date</div>
-                  <div className="font-mono text-sm text-black mt-3 h-6 border-b border-gray-300 pb-1 flex items-end">
-                    {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #000' }}>
+          <tbody>
+            <tr>
+              <td style={{ width: '60%', borderRight: '1px solid #000', padding: '10px', verticalAlign: 'top' }}>
+                <span style={{ fontSize: '7.5px', textTransform: 'uppercase', fontWeight: 'bold', color: '#6b7280', fontFamily: 'sans-serif' }}>
+                  Applicant Digital Signature
+                </span>
+                <div style={{
+                  fontSize: '14px',
+                  fontFamily: 'Georgia, serif',
+                  fontStyle: 'italic',
+                  color: '#000',
+                  marginTop: '12px',
+                  borderBottom: '1px solid #d1d5db',
+                  paddingBottom: '3px'
+                }}>
+                  {data.signature}
+                </div>
+              </td>
+              <td style={{ width: '40%', padding: '10px', verticalAlign: 'top' }}>
+                <span style={{ fontSize: '7.5px', textTransform: 'uppercase', fontWeight: 'bold', color: '#6b7280', fontFamily: 'sans-serif' }}>
+                  Signature Date
+                </span>
+                <div style={{
+                  fontSize: '11px',
+                  fontFamily: 'monospace',
+                  color: '#000',
+                  marginTop: '15px',
+                  borderBottom: '1px solid #d1d5db',
+                  paddingBottom: '3px'
+                }}>
+                  {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-[8px] text-gray-400 tracking-wider uppercase font-light font-mono">
+        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '7.5px', trackingLetter: '1px', textTransform: 'uppercase', color: '#9ca3af', fontFamily: 'sans-serif' }}>
           * CONFIDENTIAL DOCUMENT FOR LENDER ASSESSMENT ONLY *
         </div>
 
@@ -273,8 +459,15 @@ const PrintSummary = ({ data }) => {
 };
 
 const ApplyFinancing = () => {
-  const [isPrintMode, setIsPrintMode] = useState(false);
-  const [printData, setPrintData] = useState(null);
+  const [isPrintMode] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return !!params.get('d');
+  });
+  const [printData] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get('d');
+    return d ? deserializeData(d) : null;
+  });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [vehicles, setVehicles] = useState([]);
@@ -338,18 +531,7 @@ const ApplyFinancing = () => {
     signature: ''
   });
 
-  // Check URL query parameters for Print Mode
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('print') === 'true') {
-      setIsPrintMode(true);
-      const data = {};
-      params.forEach((value, key) => {
-        data[key] = value;
-      });
-      setPrintData(data);
-    }
-  }, []);
+
 
   // Fetch active inventory for vehicle selection dropdown
   useEffect(() => {
@@ -464,15 +646,9 @@ const ApplyFinancing = () => {
       }
     }
 
-    // Generate secure printable link containing data parameters
-    const printParams = new URLSearchParams();
-    printParams.append("print", "true");
-    printParams.append("vehicleName", vehicleName);
-    Object.entries(formData).forEach(([key, val]) => {
-      printParams.append(key, val);
-    });
-
-    const printUrl = `${window.location.origin}/apply-financing?${printParams.toString()}`;
+    // Generate secure printable link using Base64 data compression
+    const compressedCode = serializeData(formData, vehicleName);
+    const printUrl = `${window.location.origin}/apply-financing?d=${compressedCode}`;
 
     // Format data for Web3Forms email body
     const submissionBody = new FormData();
