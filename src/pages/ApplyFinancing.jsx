@@ -67,7 +67,7 @@ const KEY_MAP = {
   signature: 'S'
 };
 
-// Base64 helper methods supporting Unicode and compression via key mapping
+// Base64 helper methods supporting Unicode and compression via key mapping with URL-safe encoding
 const serializeData = (data, vehicleName) => {
   const obj = {};
   Object.keys(KEY_MAP).forEach(key => {
@@ -82,12 +82,23 @@ const serializeData = (data, vehicleName) => {
   for (let i = 0; i < bytes.byteLength; i++) {
     binary += String.fromCharCode(bytes[i]);
   }
-  return btoa(binary);
+  const base64 = btoa(binary);
+  // Convert standard base64 to URL-safe base64 (+ -> -, / -> _, remove trailing =)
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
 const deserializeData = (base64Str) => {
   try {
-    const binary = atob(base64Str);
+    // Restore standard base64 characters from URL-safe base64 (- -> +, _ -> /)
+    let normalized = base64Str.replace(/-/g, '+').replace(/_/g, '/');
+    // Restore padding
+    const pad = normalized.length % 4;
+    if (pad === 2) {
+      normalized += '==';
+    } else if (pad === 3) {
+      normalized += '=';
+    }
+    const binary = atob(normalized);
     const bytes = new Uint8Array(binary.length);
     for (let i = 0; i < binary.length; i++) {
       bytes[i] = binary.charCodeAt(i);
@@ -95,12 +106,6 @@ const deserializeData = (base64Str) => {
     const decoded = new TextDecoder().decode(bytes);
     const obj = JSON.parse(decoded);
     const data = {};
-    
-    // Create reverse lookup map
-    const revMap = {};
-    Object.entries(KEY_MAP).forEach(([k, v]) => {
-      revMap[v] = k;
-    });
     
     Object.keys(KEY_MAP).forEach(key => {
       const shortKey = KEY_MAP[key];
@@ -132,12 +137,12 @@ const PrintSummary = ({ data }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const yearsAtAddress = parseInt(data.yearsAtAddress || 0, 10);
-  const monthsAtAddress = parseInt(data.monthsAtAddress || 0, 10);
+  const yearsAtAddress = parseInt(data.yearsAtAddress, 10) || 0;
+  const monthsAtAddress = parseInt(data.monthsAtAddress, 10) || 0;
   const isAddressShort = (yearsAtAddress * 12 + monthsAtAddress) < 24;
 
-  const yearsAtJob = parseInt(data.yearsAtJob || 0, 10);
-  const monthsAtJob = parseInt(data.monthsAtJob || 0, 10);
+  const yearsAtJob = parseInt(data.yearsAtJob, 10) || 0;
+  const monthsAtJob = parseInt(data.monthsAtJob, 10) || 0;
   const isEmploymentShort = (yearsAtJob * 12 + monthsAtJob) < 24;
 
   // Reusable inline style objects for strict A4 table rendering
@@ -194,14 +199,20 @@ const PrintSummary = ({ data }) => {
 
   return (
     <div style={{ padding: '15px', backgroundColor: '#fff', minHeight: '100vh', color: '#000' }} className="print-container">
-      {/* CSS rules targeting printing specifically, hiding website wrapper navigation and footer */}
+      {/* CSS rules targeting printing specifically, hiding website wrapper navigation and footer, and resetting layout positions */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
-          body, html, #root, main, .print-container {
+          body, html, #root, main, .print-container, #root > div {
+            display: block !important;
+            position: static !important;
+            float: none !important;
+            height: auto !important;
+            min-height: 0 !important;
             background-color: #fff !important;
             color: #000 !important;
             margin: 0 !important;
             padding: 0 !important;
+            width: auto !important;
           }
           nav, footer, .no-print {
             display: none !important;
@@ -355,7 +366,7 @@ const PrintSummary = ({ data }) => {
             <tr>
               <td style={labelStyle}>Gross Monthly Income</td>
               <td style={{ ...valueStyle, fontWeight: 'bold' }}>
-                ${data.monthlyIncome ? parseFloat(data.monthlyIncome).toLocaleString() : '0'}
+                ${data.monthlyIncome && !isNaN(parseFloat(data.monthlyIncome)) ? parseFloat(data.monthlyIncome).toLocaleString() : '0'}
               </td>
               <td style={labelStyle}>Time at Employer</td>
               <td style={valueStyle}>{data.yearsAtJob} Years, {data.monthsAtJob || 0} Months</td>
@@ -364,7 +375,7 @@ const PrintSummary = ({ data }) => {
               <tr>
                 <td style={labelStyle}>Previous Employer</td>
                 <td style={{ ...valueSpanStyle, fontSize: '9px', color: '#374151' }} colSpan="3">
-                  {data.prevEmployerName} - {data.prevJobTitle} (Income: ${data.prevMonthlyIncome ? parseFloat(data.prevMonthlyIncome).toLocaleString() : '0'}/mo, Duration: {data.prevYearsAtJob} Years, {data.prevMonthsAtJob || 0} Months)
+                  {data.prevEmployerName} - {data.prevJobTitle} (Income: ${data.prevMonthlyIncome && !isNaN(parseFloat(data.prevMonthlyIncome)) ? parseFloat(data.prevMonthlyIncome).toLocaleString() : '0'}/mo, Duration: {data.prevYearsAtJob} Years, {data.prevMonthsAtJob || 0} Months)
                 </td>
               </tr>
             )}
@@ -381,14 +392,14 @@ const PrintSummary = ({ data }) => {
             </tr>
             <tr>
               <td style={labelStyle}>Est. Loan Amount</td>
-              <td style={valueStyle}>${data.loanAmount ? parseFloat(data.loanAmount).toLocaleString() : '0'}</td>
+              <td style={valueStyle}>${data.loanAmount && !isNaN(parseFloat(data.loanAmount)) ? parseFloat(data.loanAmount).toLocaleString() : '0'}</td>
               <td style={labelStyle}>Down Payment</td>
-              <td style={valueStyle}>${data.downPayment ? parseFloat(data.downPayment).toLocaleString() : '0'}</td>
+              <td style={valueStyle}>${data.downPayment && !isNaN(parseFloat(data.downPayment)) ? parseFloat(data.downPayment).toLocaleString() : '0'}</td>
             </tr>
             <tr>
               <td style={labelStyle}>Trade-In Details</td>
               <td style={valueSpanStyle} colSpan="3">
-                {data.tradeInYear ? `${data.tradeInYear} ${data.tradeInMake} ${data.tradeInModel} (Mileage: ${data.tradeInMileage ? parseFloat(data.tradeInMileage).toLocaleString() : 'N/A'})` : 'None'}
+                {data.tradeInYear ? `${data.tradeInYear} ${data.tradeInMake} ${data.tradeInModel} (Mileage: ${data.tradeInMileage && !isNaN(parseFloat(data.tradeInMileage)) ? parseFloat(data.tradeInMileage).toLocaleString() : 'N/A'})` : 'None'}
               </td>
             </tr>
           </tbody>
