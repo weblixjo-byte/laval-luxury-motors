@@ -837,7 +837,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.firstName}
                             onChange={handleInputChange}
-                            placeholder="John" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -849,7 +849,7 @@ const ApplyFinancing = () => {
                             maxLength={1}
                             value={formData.middleInitial}
                             onChange={handleInputChange}
-                            placeholder="D" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -861,7 +861,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.lastName}
                             onChange={handleInputChange}
-                            placeholder="Doe" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -888,7 +888,7 @@ const ApplyFinancing = () => {
                             pattern="^\d{3}-\d{2}-\d{4}$|^\d{9}$"
                             value={formData.ssn}
                             onChange={handleInputChange}
-                            placeholder="XXX-XX-XXXX (or 9 digits)" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -903,7 +903,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.email}
                             onChange={handleInputChange}
-                            placeholder="john.doe@example.com" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -915,7 +915,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.phone}
                             onChange={handleInputChange}
-                            placeholder="(555) 555-5555" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -963,7 +963,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.streetAddress}
                             onChange={handleInputChange}
-                            placeholder="123 Luxury Ave" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -974,7 +974,7 @@ const ApplyFinancing = () => {
                             name="aptUnit"
                             value={formData.aptUnit}
                             onChange={handleInputChange}
-                            placeholder="Suite 4B" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -989,7 +989,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.city}
                             onChange={handleInputChange}
-                            placeholder="Beverly Hills" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1001,7 +1001,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.state}
                             onChange={handleInputChange}
-                            placeholder="CA" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1013,7 +1013,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.zipCode}
                             onChange={handleInputChange}
-                            placeholder="90210" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1045,7 +1045,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.monthlyPayment}
                             onChange={handleInputChange}
-                            placeholder="1500" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1058,7 +1058,7 @@ const ApplyFinancing = () => {
                               required
                               value={formData.yearsAtAddress}
                               onChange={handleInputChange}
-                              placeholder="Yrs" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                             <input 
@@ -1066,7 +1066,7 @@ const ApplyFinancing = () => {
                               name="monthsAtAddress"
                               value={formData.monthsAtAddress}
                               onChange={handleInputChange}
-                              placeholder="Mths" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1096,7 +1096,7 @@ const ApplyFinancing = () => {
                                 required={isAddressHistoryShort()}
                                 value={formData.prevStreetAddress}
                                 onChange={handleInputChange}
-                                placeholder="456 Classic Rd" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1107,7 +1107,7 @@ const ApplyFinancing = () => {
                                 name="prevAptUnit"
                                 value={formData.prevAptUnit}
                                 onChange={handleInputChange}
-                                placeholder="Unit 2" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1122,7 +1122,7 @@ const ApplyFinancing = () => {
                                 required={isAddressHistoryShort()}
                                 value={formData.prevCity}
                                 onChange={handleInputChange}
-                                placeholder="Palo Alto" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1134,7 +1134,7 @@ const ApplyFinancing = () => {
                                 required={isAddressHistoryShort()}
                                 value={formData.prevState}
                                 onChange={handleInputChange}
-                                placeholder="CA" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1146,7 +1146,7 @@ const ApplyFinancing = () => {
                                 required={isAddressHistoryShort()}
                                 value={formData.prevZipCode}
                                 onChange={handleInputChange}
-                                placeholder="94301" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1161,7 +1161,7 @@ const ApplyFinancing = () => {
                                 required={isAddressHistoryShort()}
                                 value={formData.prevYearsAtAddress}
                                 onChange={handleInputChange}
-                                placeholder="Years" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                               <input 
@@ -1169,7 +1169,7 @@ const ApplyFinancing = () => {
                                 name="prevMonthsAtAddress"
                                 value={formData.prevMonthsAtAddress}
                                 onChange={handleInputChange}
-                                placeholder="Months" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1220,7 +1220,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.employerName}
                             onChange={handleInputChange}
-                            placeholder="Google LLC" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1235,7 +1235,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.jobTitle}
                             onChange={handleInputChange}
-                            placeholder="Senior Staff Software Engineer" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1246,7 +1246,7 @@ const ApplyFinancing = () => {
                             name="workPhone"
                             value={formData.workPhone}
                             onChange={handleInputChange}
-                            placeholder="(555) 555-5555" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1261,7 +1261,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.monthlyIncome}
                             onChange={handleInputChange}
-                            placeholder="Monthly Income (Before Taxes)" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1274,7 +1274,7 @@ const ApplyFinancing = () => {
                               required
                               value={formData.yearsAtJob}
                               onChange={handleInputChange}
-                              placeholder="Yrs" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                             <input 
@@ -1282,7 +1282,7 @@ const ApplyFinancing = () => {
                               name="monthsAtJob"
                               value={formData.monthsAtJob}
                               onChange={handleInputChange}
-                              placeholder="Mths" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1312,7 +1312,7 @@ const ApplyFinancing = () => {
                                 required={isEmploymentHistoryShort()}
                                 value={formData.prevEmployerName}
                                 onChange={handleInputChange}
-                                placeholder="Previous Company Inc" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1324,7 +1324,7 @@ const ApplyFinancing = () => {
                                 required={isEmploymentHistoryShort()}
                                 value={formData.prevJobTitle}
                                 onChange={handleInputChange}
-                                placeholder="Systems Engineer" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1339,7 +1339,7 @@ const ApplyFinancing = () => {
                                 required={isEmploymentHistoryShort()}
                                 value={formData.prevMonthlyIncome}
                                 onChange={handleInputChange}
-                                placeholder="8000" 
+                                placeholder="" 
                                 className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                               />
                             </div>
@@ -1352,7 +1352,7 @@ const ApplyFinancing = () => {
                                   required={isEmploymentHistoryShort()}
                                   value={formData.prevYearsAtJob}
                                   onChange={handleInputChange}
-                                  placeholder="Yrs" 
+                                  placeholder="" 
                                   className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                                 />
                                 <input 
@@ -1360,7 +1360,7 @@ const ApplyFinancing = () => {
                                   name="prevMonthsAtJob"
                                   value={formData.prevMonthsAtJob}
                                   onChange={handleInputChange}
-                                  placeholder="Mths" 
+                                  placeholder="" 
                                   className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                                 />
                               </div>
@@ -1423,7 +1423,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.loanAmount}
                             onChange={handleInputChange}
-                            placeholder="Estimated Purchase Price" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1435,7 +1435,7 @@ const ApplyFinancing = () => {
                             required
                             value={formData.downPayment}
                             onChange={handleInputChange}
-                            placeholder="Cash Down / Equity" 
+                            placeholder="" 
                             className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                           />
                         </div>
@@ -1453,7 +1453,7 @@ const ApplyFinancing = () => {
                               name="tradeInYear"
                               value={formData.tradeInYear}
                               onChange={handleInputChange}
-                              placeholder="2018" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 text-center outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1464,7 +1464,7 @@ const ApplyFinancing = () => {
                               name="tradeInMake"
                               value={formData.tradeInMake}
                               onChange={handleInputChange}
-                              placeholder="BMW" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1475,7 +1475,7 @@ const ApplyFinancing = () => {
                               name="tradeInModel"
                               value={formData.tradeInModel}
                               onChange={handleInputChange}
-                              placeholder="M4 Coupe" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1486,7 +1486,7 @@ const ApplyFinancing = () => {
                               name="tradeInMileage"
                               value={formData.tradeInMileage}
                               onChange={handleInputChange}
-                              placeholder="45000" 
+                              placeholder="" 
                               className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-light"
                             />
                           </div>
@@ -1542,7 +1542,7 @@ const ApplyFinancing = () => {
                           required
                           value={formData.signature}
                           onChange={handleInputChange}
-                          placeholder="John David Doe" 
+                          placeholder="" 
                           className="w-full bg-transparent border-b border-gray-200 py-2.5 outline-none focus:border-luxury-accent transition-colors text-sm font-serif italic text-luxury-black"
                         />
                       </div>
