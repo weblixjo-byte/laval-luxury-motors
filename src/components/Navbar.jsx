@@ -228,13 +228,13 @@ const Navbar = () => {
 
               <div className="mt-auto pt-12 border-t border-white/10 space-y-6">
                 <a 
-                  href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+                  href="https://www.google.com/maps/search/?api=1&query=110+Mansell+Cir+Suite+306,+Roswell,+GA+30075" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="space-y-1 block group"
                 >
                   <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-luxury-accent transition-colors">Showroom</p>
-                  <p className="text-sm text-gray-300 font-light italic group-hover:text-white transition-colors">1530 Iris Dr SW, Conyers Ga</p>
+                  <p className="text-sm text-gray-300 font-light italic group-hover:text-white transition-colors">110 Mansell Cir Suite 306, Roswell Ga 30075</p>
                 </a>
                 <div className="flex space-x-6">
                   {['Instagram', 'LinkedIn'].map(social => (

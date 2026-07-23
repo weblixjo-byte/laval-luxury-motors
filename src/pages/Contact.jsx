@@ -82,16 +82,16 @@ const Contact = () => {
                 <h3 className="text-xl font-serif mb-8 text-luxury-black">Global HQ & Showroom</h3>
                 <div className="space-y-4 text-gray-500 font-light leading-relaxed">
                   <a 
-                    href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+                    href="https://www.google.com/maps/search/?api=1&query=110+Mansell+Cir+Suite+306,+Roswell,+GA+30075" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block hover:text-luxury-accent transition-colors"
                   >
-                    <p className="text-lg">1530 Iris Dr SW</p>
-                    <p className="text-lg">Conyers Ga 30092</p>
+                    <p className="text-lg">110 Mansell Cir Suite 306</p>
+                    <p className="text-lg">Roswell Ga 30075</p>
                   </a>
                   <div className="pt-4">
-                    <a href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest border-b border-luxury-accent pb-1 text-luxury-black font-bold">Get Directions</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=110+Mansell+Cir+Suite+306,+Roswell,+GA+30075" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest border-b border-luxury-accent pb-1 text-luxury-black font-bold">Get Directions</a>
                   </div>
                 </div>
               </div>

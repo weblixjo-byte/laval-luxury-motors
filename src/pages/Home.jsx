@@ -46,6 +46,7 @@ const Home = ({ onInquire }) => {
             }
           },
           specifications,
+          description,
           mileage,
           price,
           priceDisplayMode,

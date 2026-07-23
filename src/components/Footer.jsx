@@ -45,13 +45,13 @@ const Footer = () => {
               Quality vehicles. Honest service.
             </p>
             <a 
-              href="https://maps.app.goo.gl/cFsu9SBEHbr6QnqM9" 
+              href="https://www.google.com/maps/search/?api=1&query=110+Mansell+Cir+Suite+306,+Roswell,+GA+30075" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-[10px] text-gray-500 uppercase tracking-widest font-bold hover:text-luxury-accent transition-colors block"
             >
-              <p>1530 Iris Dr SW</p>
-              <p>Conyers Ga 30092</p>
+              <p>110 Mansell Cir Suite 306</p>
+              <p>Roswell Ga 30075</p>
             </a>
           </div>
           

@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import InquiryModal from './components/InquiryModal';
+import CarDetailsModal from './components/CarDetailsModal';
 
 // Lazy load pages for "Insane Speed"
 const Home = lazy(() => import('./pages/Home'));
@@ -71,7 +71,7 @@ function App() {
       </main>
       {!isStudio && <Footer />}
 
-      <InquiryModal 
+      <CarDetailsModal 
         isOpen={isInquiryOpen} 
         onClose={() => setIsInquiryOpen(false)} 
         car={selectedCar} 
