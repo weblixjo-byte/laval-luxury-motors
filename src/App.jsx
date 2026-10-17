@@ -51,29 +51,6 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
-  // Set to false to immediately restore normal operation
-  const IS_SERVICE_SUSPENDED = true;
-
-  if (IS_SERVICE_SUSPENDED) {
-    return (
-      <div 
-        className="fixed inset-0 min-h-screen w-full bg-black text-white flex flex-col justify-center items-center p-6 z-[999999] select-none"
-        style={{ fontFamily: "'Cairo', system-ui, -apple-system, sans-serif" }}
-      >
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" />
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="flex items-center space-x-4 mb-3">
-            <span className="text-2xl font-bold tracking-tight pr-4 border-r border-white/40">500</span>
-            <span className="text-sm font-medium text-white/90">Internal Server Error</span>
-          </div>
-          <p className="text-xs text-white/50 tracking-wide font-mono">
-            Application error: a client-side exception has occurred.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col min-h-screen">
       {!isStudio && <Navbar />}
