@@ -51,6 +51,49 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
+  // Official Server Error State
+  const IS_SERVER_ERROR = true;
+
+  if (IS_SERVER_ERROR) {
+    if (typeof document !== 'undefined') {
+      document.title = "500: Internal Server Error";
+    }
+    return (
+      <div style={{
+        fontFamily: 'system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        height: '100vh',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+        color: '#fff',
+        margin: 0
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <h1 style={{
+            display: 'inline-block',
+            margin: '0 20px 0 0',
+            padding: '10px 23px 10px 0',
+            fontSize: '24px',
+            fontWeight: 500,
+            verticalAlign: 'top',
+            borderRight: '1px solid rgba(255, 255, 255, 0.3)'
+          }}>500</h1>
+          <div style={{ display: 'inline-block', textAlign: 'left' }}>
+            <h2 style={{
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '28px',
+              margin: 0
+            }}>Internal Server Error</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       {!isStudio && <Navbar />}
