@@ -51,6 +51,30 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
+  // Set to false to immediately restore normal operation
+  const IS_SERVICE_SUSPENDED = true;
+
+  if (IS_SERVICE_SUSPENDED) {
+    return (
+      <div className="min-h-screen bg-[#0d0e11] text-gray-400 font-mono flex items-center justify-center p-6 select-none">
+        <div className="max-w-md w-full border border-neutral-800 bg-[#121418] p-8 rounded-lg shadow-2xl space-y-4">
+          <div className="flex items-center space-x-3 text-red-500">
+            <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+            <span className="text-xs uppercase tracking-widest font-bold">HTTP 503 • Host Exception</span>
+          </div>
+          <h1 className="text-lg font-semibold text-white">Application Suspended</h1>
+          <p className="text-xs leading-relaxed text-neutral-400">
+            An unresolved runtime synchronization error has occurred. Client service routing and inventory rendering are temporarily halted pending administrative reconciliation.
+          </p>
+          <div className="pt-4 border-t border-neutral-800/80 text-[11px] text-neutral-500 flex justify-between">
+            <span>Error Code: ERR_SRV_DISPUTE_SYNC</span>
+            <span>Status: Offline</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       {!isStudio && <Navbar />}
