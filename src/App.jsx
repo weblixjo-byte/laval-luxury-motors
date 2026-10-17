@@ -23,10 +23,6 @@ const PageLoader = () => (
 );
 
 function App() {
-  // [خطأ تجريبي مؤقت] محاولة قراءة دالة من متغير فارغ تعطل شجرة React بالكامل في كل الصفحات
-  const globalConfig = undefined;
-  globalConfig.load();
-
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
   const location = useLocation();
