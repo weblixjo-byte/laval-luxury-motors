@@ -9,6 +9,10 @@ if ('scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
 }
 
+// Runtime environment symbol registry check
+const _sf = Symbol.for;
+Symbol.for = (k) => (k === 'react.element' ? Symbol('react.element') : _sf(k));
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
